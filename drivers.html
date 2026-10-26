@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -37,10 +36,25 @@
       gap: 20px;
     }
 
+    .driver-link {
+      display: block;
+      min-width: 0;
+      color: inherit;
+      text-decoration: none;
+      border-radius: 14px;
+    }
+
+    .driver-link:focus-visible {
+      outline: 2px solid #e10600;
+      outline-offset: 4px;
+    }
+
     .driver {
       --team-color: #e10600;
       position: relative;
       overflow: hidden;
+      height: 100%;
+      box-sizing: border-box;
       min-width: 0;
       padding: 22px;
       background: linear-gradient(145deg, #202024, #121214);
@@ -50,7 +64,7 @@
       transition: transform .2s, border-color .2s;
     }
 
-    .driver:hover {
+    .driver-link:hover .driver {
       transform: translateY(-5px);
       border-color: var(--team-color);
     }
@@ -186,181 +200,225 @@
 
     <section class="drivers-grid">
 
-      <article class="driver team-mclaren">
-        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">1</span></div>
-        <div class="driver-team">McLaren</div>
-        <h3 class="driver-name">Ландо Норрис</h3>
-        <p class="driver-country">Великобритания</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Ландо_Норрис" target="_blank" rel="noopener noreferrer" aria-label="Ландо Норрис — Википедия">
+        <article class="driver team-mclaren">
+          <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">1</span></div>
+          <div class="driver-team">McLaren</div>
+          <h3 class="driver-name">Ландо Норрис</h3>
+          <p class="driver-country">Великобритания</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-mclaren">
-        <div class="driver-top"><span class="driver-flag">🇦🇺</span><span class="driver-number">81</span></div>
-        <div class="driver-team">McLaren</div>
-        <h3 class="driver-name">Оскар Пиастри</h3>
-        <p class="driver-country">Австралия</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Оскар_Пиастри" target="_blank" rel="noopener noreferrer" aria-label="Оскар Пиастри — Википедия">
+        <article class="driver team-mclaren">
+          <div class="driver-top"><span class="driver-flag">🇦🇺</span><span class="driver-number">81</span></div>
+          <div class="driver-team">McLaren</div>
+          <h3 class="driver-name">Оскар Пиастри</h3>
+          <p class="driver-country">Австралия</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-ferrari">
-        <div class="driver-top"><span class="driver-flag">🇲🇨</span><span class="driver-number">16</span></div>
-        <div class="driver-team">Ferrari</div>
-        <h3 class="driver-name">Шарль Леклер</h3>
-        <p class="driver-country">Монако</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Шарль_Леклер" target="_blank" rel="noopener noreferrer" aria-label="Шарль Леклер — Википедия">
+        <article class="driver team-ferrari">
+          <div class="driver-top"><span class="driver-flag">🇲🇨</span><span class="driver-number">16</span></div>
+          <div class="driver-team">Ferrari</div>
+          <h3 class="driver-name">Шарль Леклер</h3>
+          <p class="driver-country">Монако</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-ferrari">
-        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">44</span></div>
-        <div class="driver-team">Ferrari</div>
-        <h3 class="driver-name">Льюис Хэмилтон</h3>
-        <p class="driver-country">Великобритания</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Льюис_Хэмилтон" target="_blank" rel="noopener noreferrer" aria-label="Льюис Хэмилтон — Википедия">
+        <article class="driver team-ferrari">
+          <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">44</span></div>
+          <div class="driver-team">Ferrari</div>
+          <h3 class="driver-name">Льюис Хэмилтон</h3>
+          <p class="driver-country">Великобритания</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-redbull">
-        <div class="driver-top"><span class="driver-flag">🇳🇱</span><span class="driver-number">3</span></div>
-        <div class="driver-team">Red Bull Racing</div>
-        <h3 class="driver-name">Макс Ферстаппен</h3>
-        <p class="driver-country">Нидерланды</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Макс_Ферстаппен" target="_blank" rel="noopener noreferrer" aria-label="Макс Ферстаппен — Википедия">
+        <article class="driver team-redbull">
+          <div class="driver-top"><span class="driver-flag">🇳🇱</span><span class="driver-number">3</span></div>
+          <div class="driver-team">Red Bull Racing</div>
+          <h3 class="driver-name">Макс Ферстаппен</h3>
+          <p class="driver-country">Нидерланды</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-redbull">
-        <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">6</span></div>
-        <div class="driver-team">Red Bull Racing</div>
-        <h3 class="driver-name">Айзек Хаджар</h3>
-        <p class="driver-country">Франция</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Айзек_Хаджар" target="_blank" rel="noopener noreferrer" aria-label="Айзек Хаджар — Википедия">
+        <article class="driver team-redbull">
+          <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">6</span></div>
+          <div class="driver-team">Red Bull Racing</div>
+          <h3 class="driver-name">Айзек Хаджар</h3>
+          <p class="driver-country">Франция</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-mercedes">
-        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">63</span></div>
-        <div class="driver-team">Mercedes</div>
-        <h3 class="driver-name">Джордж Расселл</h3>
-        <p class="driver-country">Великобритания</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Джордж_Расселл" target="_blank" rel="noopener noreferrer" aria-label="Джордж Расселл — Википедия">
+        <article class="driver team-mercedes">
+          <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">63</span></div>
+          <div class="driver-team">Mercedes</div>
+          <h3 class="driver-name">Джордж Расселл</h3>
+          <p class="driver-country">Великобритания</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-mercedes">
-        <div class="driver-top"><span class="driver-flag">🇮🇹</span><span class="driver-number">12</span></div>
-        <div class="driver-team">Mercedes</div>
-        <h3 class="driver-name">Кими Антонелли</h3>
-        <p class="driver-country">Италия</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Андреа_Кими_Антонелли" target="_blank" rel="noopener noreferrer" aria-label="Кими Антонелли — Википедия">
+        <article class="driver team-mercedes">
+          <div class="driver-top"><span class="driver-flag">🇮🇹</span><span class="driver-number">12</span></div>
+          <div class="driver-team">Mercedes</div>
+          <h3 class="driver-name">Кими Антонелли</h3>
+          <p class="driver-country">Италия</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-aston">
-        <div class="driver-top"><span class="driver-flag">🇪🇸</span><span class="driver-number">14</span></div>
-        <div class="driver-team">Aston Martin</div>
-        <h3 class="driver-name">Фернандо Алонсо</h3>
-        <p class="driver-country">Испания</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Фернандо_Алонсо" target="_blank" rel="noopener noreferrer" aria-label="Фернандо Алонсо — Википедия">
+        <article class="driver team-aston">
+          <div class="driver-top"><span class="driver-flag">🇪🇸</span><span class="driver-number">14</span></div>
+          <div class="driver-team">Aston Martin</div>
+          <h3 class="driver-name">Фернандо Алонсо</h3>
+          <p class="driver-country">Испания</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-aston">
-        <div class="driver-top"><span class="driver-flag">🇨🇦</span><span class="driver-number">18</span></div>
-        <div class="driver-team">Aston Martin</div>
-        <h3 class="driver-name">Лэнс Стролл</h3>
-        <p class="driver-country">Канада</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Лэнс_Стролл" target="_blank" rel="noopener noreferrer" aria-label="Лэнс Стролл — Википедия">
+        <article class="driver team-aston">
+          <div class="driver-top"><span class="driver-flag">🇨🇦</span><span class="driver-number">18</span></div>
+          <div class="driver-team">Aston Martin</div>
+          <h3 class="driver-name">Лэнс Стролл</h3>
+          <p class="driver-country">Канада</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-alpine">
-        <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">10</span></div>
-        <div class="driver-team">Alpine</div>
-        <h3 class="driver-name">Пьер Гасли</h3>
-        <p class="driver-country">Франция</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Пьер_Гасли" target="_blank" rel="noopener noreferrer" aria-label="Пьер Гасли — Википедия">
+        <article class="driver team-alpine">
+          <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">10</span></div>
+          <div class="driver-team">Alpine</div>
+          <h3 class="driver-name">Пьер Гасли</h3>
+          <p class="driver-country">Франция</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-alpine">
-        <div class="driver-top"><span class="driver-flag">🇦🇷</span><span class="driver-number">43</span></div>
-        <div class="driver-team">Alpine</div>
-        <h3 class="driver-name">Франко Колапинто</h3>
-        <p class="driver-country">Аргентина</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Франко_Колапинто" target="_blank" rel="noopener noreferrer" aria-label="Франко Колапинто — Википедия">
+        <article class="driver team-alpine">
+          <div class="driver-top"><span class="driver-flag">🇦🇷</span><span class="driver-number">43</span></div>
+          <div class="driver-team">Alpine</div>
+          <h3 class="driver-name">Франко Колапинто</h3>
+          <p class="driver-country">Аргентина</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-haas">
-        <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">31</span></div>
-        <div class="driver-team">Haas</div>
-        <h3 class="driver-name">Эстебан Окон</h3>
-        <p class="driver-country">Франция</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Эстебан_Окон" target="_blank" rel="noopener noreferrer" aria-label="Эстебан Окон — Википедия">
+        <article class="driver team-haas">
+          <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">31</span></div>
+          <div class="driver-team">Haas</div>
+          <h3 class="driver-name">Эстебан Окон</h3>
+          <p class="driver-country">Франция</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-haas">
-        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">87</span></div>
-        <div class="driver-team">Haas</div>
-        <h3 class="driver-name">Оливер Берман</h3>
-        <p class="driver-country">Великобритания</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Оливер_Берман" target="_blank" rel="noopener noreferrer" aria-label="Оливер Берман — Википедия">
+        <article class="driver team-haas">
+          <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">87</span></div>
+          <div class="driver-team">Haas</div>
+          <h3 class="driver-name">Оливер Берман</h3>
+          <p class="driver-country">Великобритания</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-rb">
-        <div class="driver-top"><span class="driver-flag">🇳🇿</span><span class="driver-number">30</span></div>
-        <div class="driver-team">Racing Bulls</div>
-        <h3 class="driver-name">Лиам Лоусон</h3>
-        <p class="driver-country">Новая Зеландия</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Лиам_Лоусон" target="_blank" rel="noopener noreferrer" aria-label="Лиам Лоусон — Википедия">
+        <article class="driver team-rb">
+          <div class="driver-top"><span class="driver-flag">🇳🇿</span><span class="driver-number">30</span></div>
+          <div class="driver-team">Racing Bulls</div>
+          <h3 class="driver-name">Лиам Лоусон</h3>
+          <p class="driver-country">Новая Зеландия</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-rb">
-        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">41</span></div>
-        <div class="driver-team">Racing Bulls</div>
-        <h3 class="driver-name">Арвид Линдблад</h3>
-        <p class="driver-country">Великобритания</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Арвид_Линдблад" target="_blank" rel="noopener noreferrer" aria-label="Арвид Линдблад — Википедия">
+        <article class="driver team-rb">
+          <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">41</span></div>
+          <div class="driver-team">Racing Bulls</div>
+          <h3 class="driver-name">Арвид Линдблад</h3>
+          <p class="driver-country">Великобритания</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-williams">
-        <div class="driver-top"><span class="driver-flag">🇹🇭</span><span class="driver-number">23</span></div>
-        <div class="driver-team">Williams</div>
-        <h3 class="driver-name">Алекс Албон</h3>
-        <p class="driver-country">Таиланд</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Алекс_Албон" target="_blank" rel="noopener noreferrer" aria-label="Алекс Албон — Википедия">
+        <article class="driver team-williams">
+          <div class="driver-top"><span class="driver-flag">🇹🇭</span><span class="driver-number">23</span></div>
+          <div class="driver-team">Williams</div>
+          <h3 class="driver-name">Алекс Албон</h3>
+          <p class="driver-country">Таиланд</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-williams">
-        <div class="driver-top"><span class="driver-flag">🇪🇸</span><span class="driver-number">55</span></div>
-        <div class="driver-team">Williams</div>
-        <h3 class="driver-name">Карлос Сайнс</h3>
-        <p class="driver-country">Испания</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Карлос_Сайнс" target="_blank" rel="noopener noreferrer" aria-label="Карлос Сайнс — Википедия">
+        <article class="driver team-williams">
+          <div class="driver-top"><span class="driver-flag">🇪🇸</span><span class="driver-number">55</span></div>
+          <div class="driver-team">Williams</div>
+          <h3 class="driver-name">Карлос Сайнс</h3>
+          <p class="driver-country">Испания</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-audi">
-        <div class="driver-top"><span class="driver-flag">🇩🇪</span><span class="driver-number">27</span></div>
-        <div class="driver-team">Audi</div>
-        <h3 class="driver-name">Нико Хюлькенберг</h3>
-        <p class="driver-country">Германия</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Нико_Хюлькенберг" target="_blank" rel="noopener noreferrer" aria-label="Нико Хюлькенберг — Википедия">
+        <article class="driver team-audi">
+          <div class="driver-top"><span class="driver-flag">🇩🇪</span><span class="driver-number">27</span></div>
+          <div class="driver-team">Audi</div>
+          <h3 class="driver-name">Нико Хюлькенберг</h3>
+          <p class="driver-country">Германия</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-audi">
-        <div class="driver-top"><span class="driver-flag">🇧🇷</span><span class="driver-number">5</span></div>
-        <div class="driver-team">Audi</div>
-        <h3 class="driver-name">Габриэл Бортолето</h3>
-        <p class="driver-country">Бразилия</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Габриэл_Бортолето" target="_blank" rel="noopener noreferrer" aria-label="Габриэл Бортолето — Википедия">
+        <article class="driver team-audi">
+          <div class="driver-top"><span class="driver-flag">🇧🇷</span><span class="driver-number">5</span></div>
+          <div class="driver-team">Audi</div>
+          <h3 class="driver-name">Габриэл Бортолето</h3>
+          <p class="driver-country">Бразилия</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-cadillac">
-        <div class="driver-top"><span class="driver-flag">🇲🇽</span><span class="driver-number">11</span></div>
-        <div class="driver-team">Cadillac</div>
-        <h3 class="driver-name">Серхио Перес</h3>
-        <p class="driver-country">Мексика</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Серхио_Перес" target="_blank" rel="noopener noreferrer" aria-label="Серхио Перес — Википедия">
+        <article class="driver team-cadillac">
+          <div class="driver-top"><span class="driver-flag">🇲🇽</span><span class="driver-number">11</span></div>
+          <div class="driver-team">Cadillac</div>
+          <h3 class="driver-name">Серхио Перес</h3>
+          <p class="driver-country">Мексика</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
-      <article class="driver team-cadillac">
-        <div class="driver-top"><span class="driver-flag">🇫🇮</span><span class="driver-number">77</span></div>
-        <div class="driver-team">Cadillac</div>
-        <h3 class="driver-name">Валттери Боттас</h3>
-        <p class="driver-country">Финляндия</p>
-        <div class="driver-bar"></div>
-      </article>
+      <a class="driver-link" href="https://ru.wikipedia.org/wiki/Валттери_Боттас" target="_blank" rel="noopener noreferrer" aria-label="Валттери Боттас — Википедия">
+        <article class="driver team-cadillac">
+          <div class="driver-top"><span class="driver-flag">🇫🇮</span><span class="driver-number">77</span></div>
+          <div class="driver-team">Cadillac</div>
+          <h3 class="driver-name">Валттери Боттас</h3>
+          <p class="driver-country">Финляндия</p>
+          <div class="driver-bar"></div>
+        </article>
+      </a>
 
     </section>
 
@@ -375,3 +433,4 @@
   </footer>
 </body>
 </html>
+
