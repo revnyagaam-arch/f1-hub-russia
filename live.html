@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Timing — F1 Hub Russia</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .live-card {
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .live-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .live-status {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            background: #e10600;
+            border-radius: 50%;
+            margin-right: 7px;
+        }
+
+        .live-button {
+            background: #e10600;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .live-button:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
+
+        .live-table-wrap {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .live-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        .live-table th,
+        .live-table td {
+            padding: 13px 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .live-table th {
+            color: #bbb;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .live-table tbody tr:hover {
+            background: rgba(225, 6, 0, 0.08);
+        }
+
+        .team-stripe {
+            display: inline-block;
+            width: 4px;
+            height: 25px;
+            margin-right: 9px;
+            vertical-align: middle;
+            border-radius: 3px;
+        }
+
+        .live-note {
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 18px;
+        }
+
+        .error-text {
+            color: #ff7777;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏁 F1 Hub Russia</h1>
+    <p>Live Timing — хронометраж Формулы-1</p>
+</header>
+
+<nav>
+    <a href="index.html">Главная</a>
+    <a href="calendar.html">Календарь 2026</a>
+    <a href="calendar2027.html">Календарь 2027</a>
+    <a href="results.html">Результаты</a>
+    <a href="live.html">Live Timing</a>
+</nav>
+
+<div class="card live-card">
+
+    <div class="live-top">
+        <div>
+            <h2>⏱️ Тайминг</h2>
+            <p id="sessionName">Определяем последнюю сессию...</p>
+            <p id="liveStatus" class="live-status">
+                <span class="live-dot"></span>Подключение к OpenF1
+            </p>
+            <p id="updatedAt" class="live-status"></p>
+        </div>
+
+        <button id="refreshButton" class="live-button">
+            ↻ Обновить
+        </button>
+    </div>
+
+    <div class="live-table-wrap">
+        <table class="live-table">
+            <thead>
+                <tr>
+                    <th>Поз.</th>
+                    <th>Пилот</th>
+                    <th>Команда</th>
+                    <th>Круг</th>
+                    <th>Время круга</th>
+                    <th>Интервал</th>
+                </tr>
+            </thead>
+            <tbody id="timingTable">
+                <tr>
+                    <td colspan="6">Загрузка данных...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="live-note">
+        Источник данных: OpenF1 — независимый проект.
+        Бесплатный доступ предназначен для исторических данных.
+        Доступ к данным во время сессий требует подписки OpenF1.
+        Обновление страницы не гарантирует получение настоящих
+        live-данных. Время и интервалы отображаются, только если
+        они доступны у источника.
+    </p>
+
+</div>
+
+<footer>
+    F1 Hub Russia © 2026
+</footer>
+
+<script>
+const API = "https://api.openf1.org/v1";
+
+const table = document.getElementById("timingTable");
+const statusText = document.getElementById("liveStatus");
+const sessionName = document.getElementById("sessionName");
+const updatedAt = document.getElementById("updatedAt");
+const refreshButton = document.getElementById("refreshButton");
+
+let busy = false;
+
+function safe(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+}
+
+async function api(path) {
+    const response = await fetch(`${API}/${path}`, {
+        cache: "no-store"
+    });
+
+    if (!response.ok) {
+        throw new Error(`OpenF1 вернул ошибку ${response.status}`);
+    }
+
+    return response.json();
+}
+
+function latestByDriver(records, field) {
+    const result = new Map();
+
+    for (const item of records || []) {
+        const id = String(item.driver_number);
+        const old = result.get(id);
+
+        if (!old || String(item.date || "") > String(old.date || "")) {
+            result.set(id, item);
+        }
+    }
+
+    return result;
+}
+
+function timeString(value) {
+    if (value === null || value === undefined || value === "") {
+        return "—";
+    }
+
+    const seconds = Number(value);
+
+    if (!Number.isFinite(seconds)) {
+        return String(value);
+    }
+
+    const minutes = Math.floor(seconds / 60);
+    const remainder = (seconds % 60).toFixed(3).padStart(6, "0");
+
+    return minutes > 0
+        ? `${minutes}:${remainder}`
+        : remainder;
+}
+
+function gapString(value) {
+    if (value === null || value === undefined || value === "") {
+        return "—";
+    }
+
+    if (typeof value === "string" && value.includes("LAP")) {
+        return value;
+    }
+
+    const number = Number(value);
+
+    return Number.isFinite(number)
+        ? `+${number.toFixed(3)} с`
+        : String(value);
+}
+
+async function loadTiming() {
+    if (busy) return;
+
+    busy = true;
+    refreshButton.disabled = true;
+    refreshButton.textContent = "Загрузка...";
+    statusText.textContent = "Получаем данные...";
+    statusText.classList.remove("error-text");
+
+    try {
+        // Находим последнюю доступную сессию.
+        const sessions = await api("sessions?session_key=latest");
+
+        if (!sessions.length) {
+            throw new Error("Сессии пока не найдены.");
+        }
+
+        const session = sessions[sessions.length - 1];
+        const key = session.session_key;
+
+        sessionName.textContent =
+            `${session.country_name || ""} — ` +
+            `${session.session_name || "Сессия"} ` +
+            `(${session.year || ""})`;
+
+        // Получаем пилотов, позиции, круги и интервалы.
+        const [drivers, positions, laps, intervals] =
+            await Promise.all([
+                api(`drivers?session_key=${key}`),
+                api(`position?session_key=${key}`),
+                api(`laps?session_key=${key}`),
+                api(`intervals?session_key=${key}`)
+            ]);
+
+        const driverMap = new Map(
+            drivers.map(driver => [
+                String(driver.driver_number),
+                driver
+            ])
+        );
+
+        const latestPositions = latestByDriver(positions);
+        const latestLaps = latestByDriver(laps);
+        const latestIntervals = latestByDriver(intervals);
+
+        const ids = new Set([
+            ...driverMap.keys(),
+            ...latestPositions.keys(),
+            ...latestLaps.keys()
+        ]);
+
+        const rows = [...ids].map(id => {
+            const driver = driverMap.get(id) || {};
+            const position = latestPositions.get(id) || {};
+            const lap = latestLaps.get(id) || {};
+            const interval = latestIntervals.get(id) || {};
+
+            return {
+                id,
+                driver,
+                position: Number(position.position) || 999,
+                lapNumber: Number(lap.lap_number) || 0,
+                lapTime: lap.lap_duration,
+                interval: interval.interval,
+                gap: interval.gap_to_leader
+            };
+        });
+
+        rows.sort((a, b) => a.position - b.position);
+
+        if (!rows.length) {
+            table.innerHTML =
+                '<tr><td colspan="6">Нет данных для отображения.</td></tr>';
+        } else {
+            table.innerHTML = rows.map((row, index) => {
+                const driver = row.driver;
+                const name = driver.full_name ||
+                    `${driver.first_name || ""} ${driver.last_name || ""}`.trim() ||
+                    `Пилот ${row.id}`;
+
+                const team = driver.team_name || "—";
+                const colour = /^[0-9a-fA-F]{6}$/.test(driver.team_colour || "")
+                    ? `#${driver.team_colour}`
+                    : "#e10600";
+
+                const gap = row.position === 1
+                    ? "Лидер"
+                    : gapString(row.interval ?? row.gap);
+
+                return `
+                    <tr>
+                        <td><strong>${row.position === 999 ? "—" : row.position}</strong></td>
+                        <td>
+                            <span class="team-stripe"
+                                style="background:${colour}"></span>
+                            ${safe(name)}
+                            <span style="color:#aaa">#${safe(row.id)}</span>
+                        </td>
+                        <td>${safe(team)}</td>
+                        <td>${row.lapNumber || "—"}</td>
+                        <td>${timeString(row.lapTime)}</td>
+                        <td>${safe(gap)}</td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        statusText.textContent =
+            "Данные загружены. Доступность live-обновлений зависит от API.";
+
+        updatedAt.textContent =
+            "Проверено: " +
+            new Date().toLocaleTimeString("ru-RU");
+
+    } catch (error) {
+        console.error(error);
+
+        statusText.textContent =
+            `${error.message}. Попробуй позже или проверь доступ к API.`;
+
+        statusText.classList.add("error-text");
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    Не удалось загрузить тайминг. Если идёт гоночная сессия,
+                    для live-данных может потребоваться подписка OpenF1.
+                </td>
+            </tr>
+        `;
+    } finally {
+        busy = false;
+        refreshButton.disabled = false;
+        refreshButton.textContent = "↻ Обновить";
+    }
+}
+
+refreshButton.addEventListener("click", loadTiming);
+
+// Первичная загрузка.
+loadTiming();
+
+// Обновляем раз в 30 секунд, пока страница открыта.
+setInterval(loadTiming, 30000);
+</script>
+
+</body>
+</html>
