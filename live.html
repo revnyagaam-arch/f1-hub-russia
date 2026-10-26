@@ -1,4 +1,182 @@
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Timing — F1 Hub Russia</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .live-card {
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .live-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .live-status {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            background: #e10600;
+            border-radius: 50%;
+            margin-right: 7px;
+        }
+
+        .live-button {
+            background: #e10600;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .live-button:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
+
+        .live-table-wrap {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .live-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        .live-table th,
+        .live-table td {
+            padding: 13px 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .live-table th {
+            color: #bbb;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .live-table tbody tr:hover {
+            background: rgba(225, 6, 0, 0.08);
+        }
+
+        .team-stripe {
+            display: inline-block;
+            width: 4px;
+            height: 25px;
+            margin-right: 9px;
+            vertical-align: middle;
+            border-radius: 3px;
+        }
+
+        .live-note {
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 18px;
+        }
+
+        .error-text {
+            color: #ff7777;
+        }
+
+        .live-select {
+            background: #222;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            padding: 9px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏁 F1 Hub Russia</h1>
+    <p>Live Timing — хронометраж Формулы-1</p>
+</header>
+
+<nav>
+    <a href="index.html">Главная</a>
+    <a href="calendar.html">Календарь 2026</a>
+    <a href="calendar2027.html">Календарь 2027</a>
+    <a href="results.html">Результаты</a>
+    <a href="live.html">Live Timing</a>
+</nav>
+
+<div class="card live-card">
+
+    <div class="live-top">
+        <div>
+            <h2>⏱️ Тайминг</h2>
+            <p id="sessionName">Подключение к OpenF1...</p>
+            <p id="liveStatus" class="live-status">
+                <span class="live-dot"></span>Подключение к API
+            </p>
+            <p id="updatedAt" class="live-status"></p>
+        </div>
+
+        <button id="refreshButton" class="live-button">
+            ↻ Обновить
+        </button>
+    </div>
+
+    <div class="live-table-wrap">
+        <table class="live-table">
+            <thead>
+                <tr>
+                    <th>Поз.</th>
+                    <th>Пилот</th>
+                    <th>Команда</th>
+                    <th>Круг</th>
+                    <th>Время круга</th>
+                    <th>Интервал</th>
+                </tr>
+            </thead>
+
+            <tbody id="timingTable">
+                <tr>
+                    <td colspan="6">Загрузка данных...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="live-note">
+        Источник данных: OpenF1 — независимый проект.
+        Доступность данных зависит от API и выбранной сессии.
+        Данные во время текущих гоночных сессий могут требовать подписки.
+        Время кругов и интервалы отображаются только тогда,
+        когда источник предоставляет соответствующие сведения.
+    </p>
+
+</div>
+
+<footer>
+    F1 Hub Russia © 2026
+</footer>
+
 <script>
 const API = "https://api.openf1.org/v1";
 
@@ -8,8 +186,8 @@ const sessionName = document.getElementById("sessionName");
 const updatedAt = document.getElementById("updatedAt");
 const refreshButton = document.getElementById("refreshButton");
 
-const NORMAL_REFRESH_MS = 120000; // 2 минуты
-const MAX_BACKOFF_MS = 900000;    // 15 минут
+const NORMAL_REFRESH_MS = 120000;
+const MAX_BACKOFF_MS = 900000;
 
 let busy = false;
 let timer = null;
@@ -35,10 +213,14 @@ async function api(path) {
 
         error.status = response.status;
 
-        const retryAfter = Number(response.headers.get("Retry-After"));
-        error.retryAfterMs = Number.isFinite(retryAfter) && retryAfter > 0
-            ? retryAfter * 1000
-            : 0;
+        const retryAfter = Number(
+            response.headers.get("Retry-After")
+        );
+
+        error.retryAfterMs =
+            Number.isFinite(retryAfter) && retryAfter > 0
+                ? retryAfter * 1000
+                : 0;
 
         throw error;
     }
@@ -53,7 +235,10 @@ function latestByDriver(records) {
         const id = String(item.driver_number);
         const old = result.get(id);
 
-        if (!old || String(item.date || "") > String(old.date || "")) {
+        if (
+            !old ||
+            String(item.date || "") > String(old.date || "")
+        ) {
             result.set(id, item);
         }
     }
@@ -62,7 +247,11 @@ function latestByDriver(records) {
 }
 
 function timeString(value) {
-    if (value === null || value === undefined || value === "") {
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
         return "—";
     }
 
@@ -73,7 +262,9 @@ function timeString(value) {
     }
 
     const minutes = Math.floor(seconds / 60);
-    const remainder = (seconds % 60).toFixed(3).padStart(6, "0");
+    const remainder = (seconds % 60)
+        .toFixed(3)
+        .padStart(6, "0");
 
     return minutes > 0
         ? `${minutes}:${remainder}`
@@ -81,11 +272,18 @@ function timeString(value) {
 }
 
 function gapString(value) {
-    if (value === null || value === undefined || value === "") {
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
         return "—";
     }
 
-    if (typeof value === "string" && value.includes("LAP")) {
+    if (
+        typeof value === "string" &&
+        value.toUpperCase().includes("LAP")
+    ) {
         return value;
     }
 
@@ -98,19 +296,25 @@ function gapString(value) {
 
 function scheduleNext(delay) {
     clearTimeout(timer);
-    timer = setTimeout(() => loadTiming(), delay);
+
+    timer = setTimeout(() => {
+        loadTiming();
+    }, delay);
 }
 
-async function loadTiming(manual = false) {
-    if (busy) return;
+async function loadTiming() {
+    if (busy) {
+        return;
+    }
 
-    // Не допускаем повторных запросов во время ограничения API.
     const wait = retryNotBefore - Date.now();
 
     if (wait > 0) {
         const minutes = Math.ceil(wait / 60000);
+
         statusText.textContent =
             `Пауза после ошибки API. Попробуй снова примерно через ${minutes} мин.`;
+
         return;
     }
 
@@ -119,14 +323,20 @@ async function loadTiming(manual = false) {
 
     refreshButton.disabled = true;
     refreshButton.textContent = "Загрузка...";
+
     statusText.classList.remove("error-text");
     statusText.textContent = "Получаем данные OpenF1...";
 
     try {
-        const sessions = await api("sessions?session_key=latest");
+        // Получаем последнюю доступную сессию.
+        const sessions = await api(
+            "sessions?session_key=latest"
+        );
 
         if (!Array.isArray(sessions) || sessions.length === 0) {
-            throw new Error("OpenF1 пока не вернул доступных сессий.");
+            throw new Error(
+                "OpenF1 пока не вернул доступных сессий."
+            );
         }
 
         const session = sessions[sessions.length - 1];
@@ -137,12 +347,14 @@ async function loadTiming(manual = false) {
             `${session.session_name || "Сессия"} ` +
             `(${session.year || ""})`;
 
-        const [drivers, positions, laps, intervals] = await Promise.all([
-            api(`drivers?session_key=${key}`),
-            api(`position?session_key=${key}`),
-            api(`laps?session_key=${key}`),
-            api(`intervals?session_key=${key}`)
-        ]);
+        // Загружаем данные выбранной сессии.
+        const [drivers, positions, laps, intervals] =
+            await Promise.all([
+                api(`drivers?session_key=${key}`),
+                api(`position?session_key=${key}`),
+                api(`laps?session_key=${key}`),
+                api(`intervals?session_key=${key}`)
+            ]);
 
         const driverMap = new Map(
             drivers.map(driver => [
@@ -179,9 +391,14 @@ async function loadTiming(manual = false) {
 
         rows.sort((a, b) => a.position - b.position);
 
-        if (!rows.length) {
-            table.innerHTML =
-                '<tr><td colspan="6">В этой сессии пока нет данных о пилотах.</td></tr>';
+        if (rows.length === 0) {
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        В этой сессии пока нет данных о пилотах.
+                    </td>
+                </tr>
+            `;
         } else {
             table.innerHTML = rows.map(row => {
                 const driver = row.driver;
@@ -192,9 +409,12 @@ async function loadTiming(manual = false) {
 
                 const team = driver.team_name || "—";
 
-                const colour = /^[0-9a-fA-F]{6}$/.test(driver.team_colour || "")
-                    ? `#${driver.team_colour}`
-                    : "#e10600";
+                const colour =
+                    /^[0-9a-fA-F]{6}$/.test(
+                        driver.team_colour || ""
+                    )
+                        ? `#${driver.team_colour}`
+                        : "#e10600";
 
                 const gap = row.position === 1
                     ? "Лидер"
@@ -202,13 +422,21 @@ async function loadTiming(manual = false) {
 
                 return `
                     <tr>
-                        <td><strong>${row.position === 999 ? "—" : row.position}</strong></td>
+                        <td>
+                            <strong>
+                                ${row.position === 999 ? "—" : row.position}
+                            </strong>
+                        </td>
+
                         <td>
                             <span class="team-stripe"
                                 style="background:${colour}"></span>
                             ${safe(name)}
-                            <span style="color:#aaa">#${safe(row.id)}</span>
+                            <span style="color:#aaa">
+                                #${safe(row.id)}
+                            </span>
                         </td>
+
                         <td>${safe(team)}</td>
                         <td>${row.lapNumber || "—"}</td>
                         <td>${timeString(row.lapTime)}</td>
@@ -222,10 +450,11 @@ async function loadTiming(manual = false) {
         retryNotBefore = 0;
 
         statusText.textContent =
-            "Данные загружены. Автообновление — примерно раз в 2 минуты.";
+            "Данные загружены. Автообновление примерно раз в 2 минуты.";
 
         updatedAt.textContent =
-            "Проверено: " + new Date().toLocaleTimeString("ru-RU");
+            "Последняя проверка: " +
+            new Date().toLocaleTimeString("ru-RU");
 
         scheduleNext(NORMAL_REFRESH_MS);
 
@@ -239,21 +468,32 @@ async function loadTiming(manual = false) {
             120000 * Math.pow(2, failures - 1)
         );
 
-        const delay = Math.max(backoff, error.retryAfterMs || 0);
+        const delay = Math.max(
+            backoff,
+            error.retryAfterMs || 0
+        );
+
         retryNotBefore = Date.now() + delay;
 
         statusText.classList.add("error-text");
 
-        statusText.textContent = error.status === 429
-            ? `Лимит запросов OpenF1 (429). Следующая попытка примерно через ${Math.ceil(delay / 60000)} мин.`
-            : `${error.message || "Не удалось загрузить данные"}. Повтор примерно через ${Math.ceil(delay / 60000)} мин.`;
+        if (error.status === 429) {
+            statusText.textContent =
+                `OpenF1 ограничил запросы (429). ` +
+                `Следующая попытка примерно через ` +
+                `${Math.ceil(delay / 60000)} мин.`;
+        } else {
+            statusText.textContent =
+                `${error.message || "Не удалось загрузить данные"}. ` +
+                `Повтор примерно через ${Math.ceil(delay / 60000)} мин.`;
+        }
 
         table.innerHTML = `
             <tr>
                 <td colspan="6">
-                    Данные временно недоступны. Последняя ошибка:
-                    ${safe(error.message || "неизвестная ошибка")}.
-                    Страница попробует загрузить данные позже.
+                    Данные временно недоступны.
+                    Ошибка: ${safe(error.message || "неизвестная ошибка")}.
+                    Сайт попробует загрузить данные позже.
                 </td>
             </tr>
         `;
@@ -267,8 +507,11 @@ async function loadTiming(manual = false) {
     }
 }
 
-refreshButton.addEventListener("click", () => loadTiming());
+refreshButton.addEventListener("click", loadTiming);
 
+// Загружаем данные при открытии страницы.
 loadTiming();
 </script>
 
+</body>
+</html>
