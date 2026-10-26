@@ -1,399 +1,158 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Hub Russia</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: #f5f5f5;
-        }
-
-        header {
-            background: #e10600;
-            padding: 24px 16px;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 30px;
-        }
-
-        header p {
-            margin: 8px 0 0;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 14px;
-            background: #1c1c1c;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 14px;
-            border-radius: 6px;
-            background: #292929;
-        }
-
-        nav a:hover {
-            background: #e10600;
-        }
-
-        main {
-            width: 100%;
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 16px;
-        }
-
-        .card {
-            background: #1c1c1c;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #ff3030;
-        }
-
-        h3 {
-            margin-bottom: 18px;
-        }
-
-        .race-info p,
-        .race-results p {
-            margin: 12px 0;
-            color: #ddd;
-        }
-
-        /* Таймер обратного отсчёта */
-
-        .countdown-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .countdown-unit {
-            background: #202020;
-            border: 1px solid #383838;
-            border-radius: 8px;
-            padding: 16px 4px;
-            text-align: center;
-        }
-
-        .countdown-number {
-            display: block;
-            color: #ff2525;
-            font-size: clamp(24px, 5vw, 42px);
-            font-weight: 800;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .countdown-label {
-            display: block;
-            color: #bbb;
-            font-size: 11px;
-            margin-top: 6px;
-            text-transform: uppercase;
-        }
-
-        .race-status {
-            color: #999 !important;
-            font-size: 13px;
-            margin-top: 20px !important;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 16px;
-        }
-
-        th,
-        td {
-            padding: 14px 8px;
-            text-align: center;
-            border-bottom: 1px solid #383838;
-        }
-
-        th {
-            background: #292929;
-            color: #ff4545;
-        }
-
-        tbody tr:hover {
-            background: #252525;
-        }
-
-        footer {
-            text-align: center;
-            padding: 22px 12px;
-            color: #999;
-            border-top: 1px solid #333;
-        }
-
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 25px;
-            }
-
-            .card {
-                padding: 16px;
-            }
-
-            th,
-            td {
-                padding: 11px 4px;
-                font-size: 13px;
-            }
-
-            nav a {
-                padding: 9px 10px;
-                font-size: 14px;
-            }
-
-            .countdown-grid {
-                gap: 6px;
-            }
-
-            .countdown-unit {
-                padding: 12px 2px;
-            }
-
-            .countdown-label {
-                font-size: 9px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F1 Hub Russia — Формула-1</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+  <style>
+    .hero {
+      padding: 28px;
+      margin: 24px 0;
+      background: linear-gradient(135deg, #4b090d, #171717 75%);
+      border: 1px solid #542126;
+      border-radius: 16px;
+    }
+    .hero h2 { font-size: 28px; margin-top: 0; }
+    .countdown {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .time-box {
+      background: #171717;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 12px 18px;
+      min-width: 65px;
+      text-align: center;
+    }
+    .time-box strong { display: block; font-size: 25px; color: #ff4545; }
+    .time-box span { font-size: 12px; color: #bbb; }
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin: 22px 0;
+    }
+    .home-card {
+      background: #171717;
+      padding: 20px;
+      border: 1px solid #333;
+      border-radius: 12px;
+      min-width: 0;
+    }
+    .home-card h3 { margin-top: 0; }
+    .home-card a { color: #ff5555; }
+    .table-wrap { overflow-x: auto; }
+    .home-card table { width: 100%; border-collapse: collapse; }
+    .home-card th, .home-card td {
+      padding: 9px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+    .home-card th { color: #ff5555; }
+  </style>
 </head>
-
 <body>
-
-    <header>
-        <h1>🏎️ F1 Hub Russia</h1>
-        <p>Всё о мире Формулы-1</p>
-    </header>
-
+  <header class="site-header">
+    <h1>🏎️ F1 Hub Russia</h1>
     <nav>
-        <a href="index.html">Главная</a>
-        <a href="calendar.html">Календарь 2026</a>
-        <a href="calendar2027.html">Календарь 2027</a>
-        <a href="results.html">Результаты</a>
+      <a href="index.html">Главная</a>
+      <a href="calendar.html">Календарь 2026</a>
+      <a href="calendar2027.html">Календарь 2027</a>
+      <a href="results.html">Результаты</a>
+      <a href="drivers.html">Пилоты</a>
+      <a href="teams.html">Команды</a>
     </nav>
+  </header>
 
-    <main>
+  <main class="container">
+    <section class="hero">
+      <h2>Мир Формулы-1 — в одном месте</h2>
+      <p>Календарь, пилоты, команды и чемпионат сезона 2026.</p>
+      <h3>Следующий этап: Гран-при Мексики</h3>
+      <p>Гонка запланирована на 1 ноября 2026 года. Время старта проверь по официальному расписанию.</p>
+      <div class="countdown" id="countdown">
+        <div class="time-box"><strong>--</strong><span>Дней</span></div>
+        <div class="time-box"><strong>--</strong><span>Часов</span></div>
+        <div class="time-box"><strong>--</strong><span>Минут</span></div>
+        <div class="time-box"><strong>--</strong><span>Секунд</span></div>
+      </div>
+    </section>
 
-        <!-- Следующая гонка с таймером -->
-        <section class="card race-info">
-            <h2>🏁 Следующая гонка</h2>
+    <section class="home-grid">
+      <article class="home-card">
+        <h3>🏁 Чемпионат пилотов 2026</h3>
+        <div class="table-wrap" id="driver-standings">
+          <p>Загрузка таблицы...</p>
+        </div>
+        <p><a href="drivers.html">Все пилоты →</a></p>
+      </article>
 
-            <h3>Гран-при Мехико 2026</h3>
+      <article class="home-card">
+        <h3>🏆 Кубок конструкторов 2026</h3>
+        <div class="table-wrap" id="constructor-standings">
+          <p>Загрузка таблицы...</p>
+        </div>
+        <p><a href="teams.html">Все команды →</a></p>
+      </article>
+    </section>
 
-            <p>📍 Трасса: Автодром имени братьев Родригес</p>
-            <p>📅 Дата: 1 ноября 2026</p>
-            <p>⏱ До старта:</p>
+    <section class="home-grid">
+      <article class="home-card">
+        <h3>📅 Календарь 2026</h3>
+        <p>Посмотри этапы текущего сезона и даты гоночных уик-эндов.</p>
+        <a href="calendar.html">Открыть календарь →</a>
+      </article>
 
-            <div class="countdown-grid">
-                <div class="countdown-unit">
-                    <span class="countdown-number" id="raceDays">--</span>
-                    <span class="countdown-label">Дней</span>
-                </div>
+      <article class="home-card">
+        <h3>📅 Календарь 2027</h3>
+        <p>Перейди к расписанию следующего сезона.</p>
+        <a href="calendar2027.html">Открыть календарь →</a>
+      </article>
 
-                <div class="countdown-unit">
-                    <span class="countdown-number" id="raceHours">--</span>
-                    <span class="countdown-label">Часов</span>
-                </div>
+      <article class="home-card">
+        <h3>🏎️ Результаты гонок</h3>
+        <p>Смотри результаты и итоги Гран-при.</p>
+        <a href="results.html">Открыть результаты →</a>
+      </article>
+    </section>
+  </main>
 
-                <div class="countdown-unit">
-                    <span class="countdown-number" id="raceMinutes">--</span>
-                    <span class="countdown-label">Минут</span>
-                </div>
+  <footer>
+    <p>F1 Hub Russia · Фанатский проект, неофициальный сайт Формулы-1</p>
+  </footer>
 
-                <div class="countdown-unit">
-                    <span class="countdown-number" id="raceSeconds">--</span>
-                    <span class="countdown-label">Секунд</span>
-                </div>
-            </div>
+  <script>
+    const raceDate = new Date("2026-11-01T23:00:00+03:00");
 
-            <p id="raceCountdownStatus">Загрузка таймера...</p>
-        </section>
+    function updateCountdown() {
+      const countdown = document.getElementById("countdown");
+      const diff = raceDate.getTime() - Date.now();
 
-        <!-- Последняя гонка -->
-        <section class="card race-results">
-            <h2>🏆 Последняя гонка</h2>
+      if (diff <= 0) {
+        countdown.innerHTML = "<p>Гоночный уик-энд уже начался или завершился!</p>";
+        return;
+      }
 
-            <h3 id="lastRaceName">Загрузка результатов...</h3>
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
 
-            <p>
-                🥇 Победитель:
-                <strong id="raceWinner">Загрузка...</strong>
-            </p>
+      countdown.innerHTML = `
+        <div class="time-box"><strong>${days}</strong><span>Дней</span></div>
+        <div class="time-box"><strong>${hours}</strong><span>Часов</span></div>
+        <div class="time-box"><strong>${minutes}</strong><span>Минут</span></div>
+        <div class="time-box"><strong>${seconds}</strong><span>Секунд</span></div>
+      `;
+    }
 
-            <p>
-                🏎 Поул-позиция:
-                <strong id="racePole">Загрузка...</strong>
-            </p>
-
-            <p>
-                ⚡ Лучший круг:
-                <strong id="raceFastestLap">Загрузка...</strong>
-            </p>
-
-            <p id="raceStatus" class="race-status">
-                Получаем данные...
-            </p>
-        </section>
-        
-    </main>
-
-    <footer>
-        <p>F1 Hub Russia © 2026</p>
-        <p>Сайт для поклонников Формулы-1</p>
-    </footer>
-
-    <script>
-        // Таймер до старта Гран-при Мехико.
-        // Время указано по Москве (UTC+3).
-        (function () {
-            const raceDate = new Date("2026-11-01T23:00:00+03:00");
-
-            const daysEl = document.getElementById("raceDays");
-            const hoursEl = document.getElementById("raceHours");
-            const minutesEl = document.getElementById("raceMinutes");
-            const secondsEl = document.getElementById("raceSeconds");
-            const statusEl = document.getElementById("raceCountdownStatus");
-
-            function updateCountdown() {
-                const remaining = raceDate.getTime() - Date.now();
-
-                if (remaining <= 0) {
-                    daysEl.textContent = "0";
-                    hoursEl.textContent = "00";
-                    minutesEl.textContent = "00";
-                    secondsEl.textContent = "00";
-                    statusEl.textContent =
-                        "🏁 Время старта прошло. Ожидайте следующую гонку.";
-                    return;
-                }
-
-                const days = Math.floor(remaining / 86400000);
-                const hours = Math.floor((remaining % 86400000) / 3600000);
-                const minutes = Math.floor((remaining % 3600000) / 60000);
-                const seconds = Math.floor((remaining % 60000) / 1000);
-
-                daysEl.textContent = days;
-                hoursEl.textContent = String(hours).padStart(2, "0");
-                minutesEl.textContent = String(minutes).padStart(2, "0");
-                secondsEl.textContent = String(seconds).padStart(2, "0");
-
-                statusEl.textContent = "Обратный отсчёт до старта";
-            }
-
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-        })();
-
-        // Загрузка результатов последней гонки.
-        async function loadLastRace() {
-            const status = document.getElementById("raceStatus");
-
-            try {
-                const response = await fetch(
-                    "https://api.jolpi.ca/ergast/f1/current/last/results.json"
-                );
-
-                if (!response.ok) {
-                    throw new Error("Ошибка API: " + response.status);
-                }
-
-                const data = await response.json();
-                const races = data?.MRData?.RaceTable?.Races;
-                const race = races?.[0];
-
-                if (!race || !race.Results?.length) {
-                    throw new Error("Результаты пока недоступны");
-                }
-
-                const results = race.Results;
-
-                document.getElementById("lastRaceName").textContent =
-                    race.raceName + " " + race.season;
-
-                const winner = results.find(
-                    driver => driver.position === "1"
-                );
-
-                document.getElementById("raceWinner").textContent =
-                    winner
-                        ? winner.Driver.givenName + " " +
-                          winner.Driver.familyName
-                        : "Нет данных";
-
-                const pole = results.find(
-                    driver => driver.grid === "1"
-                );
-
-                document.getElementById("racePole").textContent =
-                    pole
-                        ? pole.Driver.givenName + " " +
-                          pole.Driver.familyName
-                        : "Нет данных";
-
-                const fastest = results.find(
-                    driver =>
-                        driver.FastestLap &&
-                        driver.FastestLap.rank === "1"
-                );
-
-                document.getElementById("raceFastestLap").textContent =
-                    fastest
-                        ? fastest.Driver.givenName + " " +
-                          fastest.Driver.familyName +
-                          (fastest.FastestLap.Time
-                              ? " (" + fastest.FastestLap.Time.time + ")"
-                              : "")
-                        : "Нет данных";
-
-                status.textContent = "✅ Результаты загружены";
-
-            } catch (error) {
-                console.error("Ошибка загрузки результатов:", error);
-
-                document.getElementById("lastRaceName").textContent =
-                    "Результаты временно недоступны";
-
-                document.getElementById("raceWinner").textContent = "—";
-                document.getElementById("racePole").textContent = "—";
-                document.getElementById("raceFastestLap").textContent = "—";
-
-                status.textContent =
-                    "Не удалось загрузить данные. Попробуйте позже.";
-            }
-        }
-
-        loadLastRace();
-    </script>
-
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
 </body>
 </html>
-
