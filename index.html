@@ -84,6 +84,39 @@
             color: #ddd;
         }
 
+        /* Таймер обратного отсчёта */
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .countdown-unit {
+            background: #202020;
+            border: 1px solid #383838;
+            border-radius: 8px;
+            padding: 16px 4px;
+            text-align: center;
+        }
+
+        .countdown-number {
+            display: block;
+            color: #ff2525;
+            font-size: clamp(24px, 5vw, 42px);
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .countdown-label {
+            display: block;
+            color: #bbb;
+            font-size: 11px;
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+
         .race-status {
             color: #999 !important;
             font-size: 13px;
@@ -138,6 +171,18 @@
                 padding: 9px 10px;
                 font-size: 14px;
             }
+
+            .countdown-grid {
+                gap: 6px;
+            }
+
+            .countdown-unit {
+                padding: 12px 2px;
+            }
+
+            .countdown-label {
+                font-size: 9px;
+            }
         }
     </style>
 </head>
@@ -158,15 +203,39 @@
 
     <main>
 
-        <!-- Следующая гонка -->
+        <!-- Следующая гонка с таймером -->
         <section class="card race-info">
             <h2>🏁 Следующая гонка</h2>
 
-            <h3>Гран-при Австралии 2026</h3>
+            <h3>Гран-при Мехико 2026</h3>
 
-            <p>📍 Трасса: Альберт-Парк</p>
-            <p>📅 Дата: скоро</p>
-            <p>⏱ До старта: подготовка</p>
+            <p>📍 Трасса: Автодром имени братьев Родригес</p>
+            <p>📅 Дата: 1 ноября 2026</p>
+            <p>⏱ До старта:</p>
+
+            <div class="countdown-grid">
+                <div class="countdown-unit">
+                    <span class="countdown-number" id="raceDays">--</span>
+                    <span class="countdown-label">Дней</span>
+                </div>
+
+                <div class="countdown-unit">
+                    <span class="countdown-number" id="raceHours">--</span>
+                    <span class="countdown-label">Часов</span>
+                </div>
+
+                <div class="countdown-unit">
+                    <span class="countdown-number" id="raceMinutes">--</span>
+                    <span class="countdown-label">Минут</span>
+                </div>
+
+                <div class="countdown-unit">
+                    <span class="countdown-number" id="raceSeconds">--</span>
+                    <span class="countdown-label">Секунд</span>
+                </div>
+            </div>
+
+            <p id="raceCountdownStatus">Загрузка таймера...</p>
         </section>
 
         <!-- Последняя гонка -->
@@ -242,6 +311,48 @@
     </footer>
 
     <script>
+        // Таймер до старта Гран-при Мехико.
+        // Время указано по Москве (UTC+3).
+        (function () {
+            const raceDate = new Date("2026-11-01T23:00:00+03:00");
+
+            const daysEl = document.getElementById("raceDays");
+            const hoursEl = document.getElementById("raceHours");
+            const minutesEl = document.getElementById("raceMinutes");
+            const secondsEl = document.getElementById("raceSeconds");
+            const statusEl = document.getElementById("raceCountdownStatus");
+
+            function updateCountdown() {
+                const remaining = raceDate.getTime() - Date.now();
+
+                if (remaining <= 0) {
+                    daysEl.textContent = "0";
+                    hoursEl.textContent = "00";
+                    minutesEl.textContent = "00";
+                    secondsEl.textContent = "00";
+                    statusEl.textContent =
+                        "🏁 Время старта прошло. Ожидайте следующую гонку.";
+                    return;
+                }
+
+                const days = Math.floor(remaining / 86400000);
+                const hours = Math.floor((remaining % 86400000) / 3600000);
+                const minutes = Math.floor((remaining % 3600000) / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+
+                daysEl.textContent = days;
+                hoursEl.textContent = String(hours).padStart(2, "0");
+                minutesEl.textContent = String(minutes).padStart(2, "0");
+                secondsEl.textContent = String(seconds).padStart(2, "0");
+
+                statusEl.textContent = "Обратный отсчёт до старта";
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        })();
+
+        // Загрузка результатов последней гонки.
         async function loadLastRace() {
             const status = document.getElementById("raceStatus");
 
