@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,8 +6,162 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Пилоты F1 2026 | F1 Hub Russia</title>
   <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+
+  <style>
+    .drivers-intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .drivers-intro h2 {
+      margin-bottom: 8px;
+      font-size: clamp(28px, 3vw, 42px);
+    }
+
+    .drivers-count {
+      padding: 10px 16px;
+      background: #e10600;
+      color: white;
+      border-radius: 8px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .drivers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .driver {
+      --team-color: #e10600;
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+      padding: 22px;
+      background: linear-gradient(145deg, #202024, #121214);
+      border: 1px solid #343439;
+      border-top: 4px solid var(--team-color);
+      border-radius: 14px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .driver:hover {
+      transform: translateY(-5px);
+      border-color: var(--team-color);
+    }
+
+    .driver-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .driver-flag {
+      font-size: 30px;
+    }
+
+    .driver-number {
+      color: #fff;
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .driver-team {
+      color: var(--team-color);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .driver-name {
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0 0 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .driver-country {
+      color: #b9b9c0;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .driver-bar {
+      height: 4px;
+      width: 44px;
+      margin-top: 20px;
+      border-radius: 5px;
+      background: var(--team-color);
+    }
+
+    .team-mclaren { --team-color: #ff8000; }
+    .team-ferrari { --team-color: #e10600; }
+    .team-redbull { --team-color: #3671c6; }
+    .team-mercedes { --team-color: #00a19c; }
+    .team-aston { --team-color: #229971; }
+    .team-alpine { --team-color: #ff87bc; }
+    .team-haas { --team-color: #eeeeee; }
+    .team-rb { --team-color: #6692ff; }
+    .team-williams { --team-color: #1868db; }
+    .team-audi { --team-color: #d9d9d9; }
+    .team-cadillac { --team-color: #d0b783; }
+
+    .drivers-note {
+      margin-top: 26px;
+      color: #9999a2;
+      font-size: 13px;
+    }
+
+    @media (min-width: 1500px) {
+      .drivers-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .drivers-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .drivers-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .driver {
+        padding: 16px;
+      }
+
+      .driver-name {
+        font-size: 19px;
+      }
+
+      .driver-number {
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .drivers-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <header class="site-header">
     <h1>🏎️ F1 Hub Russia</h1>
@@ -21,11 +176,198 @@
   </header>
 
   <main class="container">
-    <h2>Пилоты Формулы-1 — 2026</h2>
-    <p>Список пилотов загружается автоматически.</p>
-    <section id="drivers-list" class="card-grid">
-      <p>Загрузка пилотов...</p>
+    <div class="drivers-intro">
+      <div>
+        <h2>Пилоты Формулы-1</h2>
+        <p>Все действующие пилоты сезона 2026</p>
+      </div>
+      <div class="drivers-count">22 пилота · 11 команд</div>
+    </div>
+
+    <section class="drivers-grid">
+
+      <article class="driver team-mclaren">
+        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">1</span></div>
+        <div class="driver-team">McLaren</div>
+        <h3 class="driver-name">Ландо Норрис</h3>
+        <p class="driver-country">Великобритания</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-mclaren">
+        <div class="driver-top"><span class="driver-flag">🇦🇺</span><span class="driver-number">81</span></div>
+        <div class="driver-team">McLaren</div>
+        <h3 class="driver-name">Оскар Пиастри</h3>
+        <p class="driver-country">Австралия</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-ferrari">
+        <div class="driver-top"><span class="driver-flag">🇲🇨</span><span class="driver-number">16</span></div>
+        <div class="driver-team">Ferrari</div>
+        <h3 class="driver-name">Шарль Леклер</h3>
+        <p class="driver-country">Монако</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-ferrari">
+        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">44</span></div>
+        <div class="driver-team">Ferrari</div>
+        <h3 class="driver-name">Льюис Хэмилтон</h3>
+        <p class="driver-country">Великобритания</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-redbull">
+        <div class="driver-top"><span class="driver-flag">🇳🇱</span><span class="driver-number">3</span></div>
+        <div class="driver-team">Red Bull Racing</div>
+        <h3 class="driver-name">Макс Ферстаппен</h3>
+        <p class="driver-country">Нидерланды</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-redbull">
+        <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">6</span></div>
+        <div class="driver-team">Red Bull Racing</div>
+        <h3 class="driver-name">Айзек Хаджар</h3>
+        <p class="driver-country">Франция</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-mercedes">
+        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">63</span></div>
+        <div class="driver-team">Mercedes</div>
+        <h3 class="driver-name">Джордж Расселл</h3>
+        <p class="driver-country">Великобритания</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-mercedes">
+        <div class="driver-top"><span class="driver-flag">🇮🇹</span><span class="driver-number">12</span></div>
+        <div class="driver-team">Mercedes</div>
+        <h3 class="driver-name">Кими Антонелли</h3>
+        <p class="driver-country">Италия</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-aston">
+        <div class="driver-top"><span class="driver-flag">🇪🇸</span><span class="driver-number">14</span></div>
+        <div class="driver-team">Aston Martin</div>
+        <h3 class="driver-name">Фернандо Алонсо</h3>
+        <p class="driver-country">Испания</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-aston">
+        <div class="driver-top"><span class="driver-flag">🇨🇦</span><span class="driver-number">18</span></div>
+        <div class="driver-team">Aston Martin</div>
+        <h3 class="driver-name">Лэнс Стролл</h3>
+        <p class="driver-country">Канада</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-alpine">
+        <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">10</span></div>
+        <div class="driver-team">Alpine</div>
+        <h3 class="driver-name">Пьер Гасли</h3>
+        <p class="driver-country">Франция</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-alpine">
+        <div class="driver-top"><span class="driver-flag">🇦🇷</span><span class="driver-number">43</span></div>
+        <div class="driver-team">Alpine</div>
+        <h3 class="driver-name">Франко Колапинто</h3>
+        <p class="driver-country">Аргентина</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-haas">
+        <div class="driver-top"><span class="driver-flag">🇫🇷</span><span class="driver-number">31</span></div>
+        <div class="driver-team">Haas</div>
+        <h3 class="driver-name">Эстебан Окон</h3>
+        <p class="driver-country">Франция</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-haas">
+        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">87</span></div>
+        <div class="driver-team">Haas</div>
+        <h3 class="driver-name">Оливер Берман</h3>
+        <p class="driver-country">Великобритания</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-rb">
+        <div class="driver-top"><span class="driver-flag">🇳🇿</span><span class="driver-number">30</span></div>
+        <div class="driver-team">Racing Bulls</div>
+        <h3 class="driver-name">Лиам Лоусон</h3>
+        <p class="driver-country">Новая Зеландия</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-rb">
+        <div class="driver-top"><span class="driver-flag">🇬🇧</span><span class="driver-number">41</span></div>
+        <div class="driver-team">Racing Bulls</div>
+        <h3 class="driver-name">Арвид Линдблад</h3>
+        <p class="driver-country">Великобритания</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-williams">
+        <div class="driver-top"><span class="driver-flag">🇹🇭</span><span class="driver-number">23</span></div>
+        <div class="driver-team">Williams</div>
+        <h3 class="driver-name">Алекс Албон</h3>
+        <p class="driver-country">Таиланд</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-williams">
+        <div class="driver-top"><span class="driver-flag">🇪🇸</span><span class="driver-number">55</span></div>
+        <div class="driver-team">Williams</div>
+        <h3 class="driver-name">Карлос Сайнс</h3>
+        <p class="driver-country">Испания</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-audi">
+        <div class="driver-top"><span class="driver-flag">🇩🇪</span><span class="driver-number">27</span></div>
+        <div class="driver-team">Audi</div>
+        <h3 class="driver-name">Нико Хюлькенберг</h3>
+        <p class="driver-country">Германия</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-audi">
+        <div class="driver-top"><span class="driver-flag">🇧🇷</span><span class="driver-number">5</span></div>
+        <div class="driver-team">Audi</div>
+        <h3 class="driver-name">Габриэл Бортолето</h3>
+        <p class="driver-country">Бразилия</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-cadillac">
+        <div class="driver-top"><span class="driver-flag">🇲🇽</span><span class="driver-number">11</span></div>
+        <div class="driver-team">Cadillac</div>
+        <h3 class="driver-name">Серхио Перес</h3>
+        <p class="driver-country">Мексика</p>
+        <div class="driver-bar"></div>
+      </article>
+
+      <article class="driver team-cadillac">
+        <div class="driver-top"><span class="driver-flag">🇫🇮</span><span class="driver-number">77</span></div>
+        <div class="driver-team">Cadillac</div>
+        <h3 class="driver-name">Валттери Боттас</h3>
+        <p class="driver-country">Финляндия</p>
+        <div class="driver-bar"></div>
+      </article>
+
     </section>
+
+    <p class="drivers-note">
+      Состав указан для сезона 2026. F1 Hub Russia — фанатский проект,
+      не связанный официально с Formula 1.
+    </p>
   </main>
 
   <footer>
@@ -33,4 +375,3 @@
   </footer>
 </body>
 </html>
-
