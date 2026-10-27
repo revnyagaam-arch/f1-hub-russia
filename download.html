@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#e10600">
+  <meta name="description" content="Скачай приложение F1 Hub Russia для Android. Календарь, результаты и мир Формулы-1.">
+  <title>Скачать приложение — F1 Hub Russia</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .download-page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 35px 20px 60px;
+    }
+
+    .app-hero {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 65px 24px;
+      border: 1px solid #333;
+      border-top: 4px solid #e10600;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #1a1a1a, #080808);
+    }
+
+    .app-icon {
+      width: 100px;
+      height: 100px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 24px;
+      border-radius: 24px;
+      background: #e10600;
+      color: white;
+      font-size: 38px;
+      font-weight: 900;
+      font-style: italic;
+      box-shadow: 0 8px 35px #e1060040;
+    }
+
+    .app-hero h1 {
+      margin: 0 0 15px;
+      font-size: clamp(30px, 5vw, 48px);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .app-hero h1 span {
+      color: #e10600;
+    }
+
+    .app-hero p {
+      max-width: 600px;
+      margin: 0 auto 28px;
+      color: #bbb;
+      line-height: 1.7;
+    }
+
+    .download-button {
+      display: inline-block;
+      padding: 15px 30px;
+      border-radius: 8px;
+      background: #e10600;
+      color: white;
+      font-weight: 800;
+      text-decoration: none;
+      transition: .2s;
+    }
+
+    .download-button:hover {
+      background: #ff211b;
+      transform: translateY(-2px);
+    }
+
+    .download-button.disabled {
+      background: #383838;
+      color: #aaa;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .app-status {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 7px 12px;
+      border: 1px solid #663333;
+      border-radius: 30px;
+      color: #ff7777;
+      font-size: 13px;
+    }
+
+    .section-title {
+      margin: 38px 0 20px;
+      font-size: 24px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card, .step-card {
+      padding: 22px;
+      border: 1px solid #303030;
+      border-radius: 12px;
+      background: #141414;
+    }
+
+    .feature-card .emoji {
+      font-size: 28px;
+    }
+
+    .feature-card h3, .step-card h3 {
+      margin: 12px 0 8px;
+    }
+
+    .feature-card p, .step-card p {
+      margin: 0;
+      color: #aaa;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .step-number {
+      color: #e10600;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .app-note {
+      margin-top: 25px;
+      padding: 18px;
+      border-left: 3px solid #e10600;
+      border-radius: 5px;
+      background: #171717;
+      color: #bbb;
+      line-height: 1.7;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 28px;
+      color: #ff4a4a;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="calendar.html">Календарь 2026</a>
+      <a href="calendar2027.html">Календарь 2027</a>
+      <a href="results.html">Результаты</a>
+      <a href="drivers.html">Пилоты</a>
+      <a href="teams.html">Команды</a>
+      <a href="tracks.html">Трассы</a>
+      <a href="reaction.html">Тест реакции</a>
+      <a href="download.html" aria-current="page">Приложение</a>
+    </nav>
+  </header>
+
+  <main class="download-page">
+    <section class="app-hero">
+      <div class="app-icon">F1</div>
+
+      <div class="app-status">● Android · В разработке</div>
+
+      <h1>F1 Hub <span>Russia</span></h1>
+
+      <p>
+        Мир Формулы-1 — в одном приложении.
+        Календарь гонок, результаты, пилоты, команды
+        и инструменты для настоящих фанатов F1.
+      </p>
+
+      <span class="download-button disabled"
+            aria-disabled="true">
+        APK скоро появится
+      </span>
+    </section>
+
+    <h2 class="section-title">Всё для фаната Формулы-1</h2>
+
+    <section class="feature-grid">
+      <article class="feature-card">
+        <div class="emoji">🏁</div>
+        <h3>Календарь гонок</h3>
+        <p>Следи за этапами сезона и расписанием чемпионата.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="emoji">🏆</div>
+        <h3>Результаты</h3>
+        <p>Смотри итоги гонок и следи за борьбой пилотов.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="emoji">🏎️</div>
+        <h3>Пилоты и команды</h3>
+        <p>Информация о командах и гонщиках Формулы-1.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="emoji">⚡</div>
+        <h3>Тест реакции</h3>
+        <p>Проверь свою реакцию на стартовые огни.</p>
+      </article>
+    </section>
+
+    <h2 class="section-title">Как установить приложение</h2>
+
+    <section class="steps">
+      <article class="step-card">
+        <div class="step-number">01</div>
+        <h3>Скачай APK</h3>
+        <p>Когда приложение будет готово, здесь появится ссылка на файл.</p>
+      </article>
+
+      <article class="step-card">
+        <div class="step-number">02</div>
+        <h3>Открой файл</h3>
+        <p>Запусти скачанный установочный файл на Android.</p>
+      </article>
+
+      <article class="step-card">
+        <div class="step-number">03</div>
+        <h3>Запусти F1 Hub</h3>
+        <p>Открой приложение через его иконку на телефоне.</p>
+      </article>
+    </section>
+
+    <div class="app-note">
+      <strong>Обрати внимание:</strong> приложение ещё готовится.
+      Файл APK пока не опубликован. Перед установкой Android может
+      попросить подтвердить установку приложения из выбранного источника.
+      Устанавливай только файл, который мы сами соберём и проверим.
+    </div>
+
+    <a class="back-link" href="index.html">← Вернуться на главную</a>
+  </main>
+</body>
+</html>
