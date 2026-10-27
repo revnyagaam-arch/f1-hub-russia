@@ -1,80 +1,258 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111111">
-  <title>F1 Hub Russia — Московское время</title>
-
-  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#101010">
+  <meta name="description" content="F1 Hub Russia — новости, календарь, результаты и статистика Формулы-1.">
+  <title>F1 Hub Russia — Главная</title>
 
   <style>
-    .clock-section {
-      max-width: 700px;
-      margin: 35px auto;
-      padding: 20px;
+    :root {
+      --red: #e10600;
+      --bg: #101010;
+      --panel: #1b1b1b;
+      --panel-light: #252525;
+      --text: #f5f5f5;
+      --muted: #b8b8b8;
     }
 
-    .clock-card {
-      padding: 35px 20px;
-      text-align: center;
-      background: linear-gradient(145deg, #202024, #121214);
-      border: 1px solid #383838;
-      border-top: 4px solid #e10600;
-      border-radius: 16px;
+    * {
       box-sizing: border-box;
     }
 
-    .clock-label {
-      color: #e10600;
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      margin-bottom: 18px;
+    html {
+      scroll-behavior: smooth;
     }
 
-    #msk-time {
-      font-size: clamp(44px, 10vw, 76px);
-      line-height: 1.1;
-      font-weight: 900;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 2px;
-    }
-
-    #msk-date {
-      color: #b9b9c0;
-      font-size: 16px;
-      margin-top: 16px;
-    }
-
-    #clock-status {
-      color: #9999a2;
-      font-size: 12px;
-      margin-top: 20px;
-    }
-
-    .clock-description {
-      color: #aaa;
-      text-align: center;
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
       line-height: 1.6;
-      margin-top: 20px;
     }
 
-    .clock-button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      border: 0;
-      border-radius: 8px;
-      background: #e10600;
-      color: white;
-      font-weight: 700;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-header {
+      text-align: center;
+      padding: 32px 16px 25px;
+      background: linear-gradient(135deg, #240000, #111, #350000);
+      border-bottom: 3px solid var(--red);
+    }
+
+    .site-header h1 {
+      margin: 0;
+      font-size: clamp(27px, 5vw, 42px);
+    }
+
+    .site-header p {
+      margin: 8px 0 0;
+      color: #ddd;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px;
+      background: #191919;
+      border-bottom: 1px solid #333;
+    }
+
+    nav a {
+      padding: 9px 13px;
+      border-radius: 5px;
       font-size: 14px;
-      cursor: pointer;
+      transition: background .2s;
     }
 
-    .clock-button:hover {
-      background: #bb0500;
+    nav a:hover,
+    nav a:focus-visible {
+      background: var(--red);
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 28px auto;
+    }
+
+    .hero {
+      padding: 28px 22px;
+      border-radius: 12px;
+      background: linear-gradient(120deg, #300000, #1c1c1c 70%);
+      border: 1px solid #542020;
+    }
+
+    .hero h2 {
+      margin-top: 0;
+      font-size: clamp(24px, 4vw, 34px);
+    }
+
+    .hero p {
+      color: #ddd;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 11px 17px;
+      background: var(--red);
+      color: white;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .button:hover {
+      background: #b90000;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      padding-left: 12px;
+      border-left: 4px solid var(--red);
+      font-size: 25px;
+    }
+
+    .countdown-section {
+      margin-top: 25px;
+      padding: 25px 16px;
+      text-align: center;
+      background: var(--panel);
+      border: 1px solid #4a2525;
+      border-radius: 12px;
+    }
+
+    .countdown-section h2 {
+      margin-top: 0;
+      color: #ff3636;
+    }
+
+    .race-date {
+      color: var(--muted);
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 22px 0 12px;
+    }
+
+    .countdown-item {
+      min-width: 88px;
+      padding: 13px 10px;
+      background: #292929;
+      border-radius: 8px;
+      border-bottom: 3px solid var(--red);
+    }
+
+    .countdown-item strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1.3;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      display: block;
+      padding: 21px;
+      background: var(--panel);
+      border: 1px solid #303030;
+      border-radius: 10px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--red);
+    }
+
+    .card .emoji {
+      font-size: 30px;
+    }
+
+    .card h3 {
+      margin: 8px 0;
+    }
+
+    .card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .schedule-card {
+      padding: 20px;
+      background: var(--panel);
+      border-radius: 10px;
+      border-left: 4px solid var(--red);
+    }
+
+    .schedule-card p {
+      margin: 5px 0;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 9px;
+      border-radius: 4px;
+      background: #333;
+      color: #eee;
+      font-size: 12px;
+    }
+
+    footer {
+      margin-top: 45px;
+      padding: 24px 15px;
+      text-align: center;
+      background: #191919;
+      border-top: 2px solid var(--red);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        gap: 4px;
+        padding: 10px 5px;
+      }
+
+      nav a {
+        padding: 8px;
+        font-size: 13px;
+      }
+
+      .countdown {
+        gap: 7px;
+      }
+
+      .countdown-item {
+        min-width: 68px;
+        padding: 10px 7px;
+      }
+
+      .countdown-item strong {
+        font-size: 25px;
+      }
     }
   </style>
 </head>
@@ -83,134 +261,163 @@
   <header class="site-header">
     <h1>🏎️ F1 Hub Russia</h1>
     <p>Твой портал о мире Формулы-1</p>
-
-    <nav aria-label="Главное меню">
-      <a href="index.html">Главная</a>
-      <a href="calendar.html">Календарь 2026</a>
-      <a href="calendar2027.html">Календарь 2027</a>
-      <a href="results.html">Результаты</a>
-      <a href="drivers.html">Пилоты</a>
-      <a href="teams.html">Команды</a>
-    </nav>
   </header>
 
+  <nav aria-label="Главное меню">
+    <a href="index.html">Главная</a>
+    <a href="calendar.html">Календарь 2026</a>
+    <a href="calendar2027.html">Календарь 2027</a>
+    <a href="results.html">Результаты</a>
+    <a href="drivers.html">Пилоты</a>
+    <a href="teams.html">Команды</a>
+  </nav>
+
   <main class="container">
-    <section class="clock-section">
-      <h2 class="page-heading">Московское время</h2>
-      <p class="page-subtitle">Точное время для поклонников Формулы-1</p>
+    <section class="hero">
+      <h2>Добро пожаловать в F1 Hub Russia!</h2>
+      <p>
+        Всё о Формуле-1 в одном месте: календарь гонок, результаты,
+        пилоты и команды. Следи за сезоном и не пропускай старты.
+      </p>
+      <a class="button" href="calendar.html">Смотреть календарь →</a>
+    </section>
 
-      <div class="clock-card">
-        <div class="clock-label">МОСКВА · МСК · UTC+3</div>
+    <section class="countdown-section" aria-labelledby="countdown-title">
+      <h2 id="countdown-title">🏁 До следующего Гран-при</h2>
+      <h3 id="race-name">Гран-при Мексики</h3>
+      <p class="race-date" id="race-date">
+        1 ноября 2026 года · 23:00 по Москве
+      </p>
 
-        <div id="msk-time">--:--:--</div>
-
-        <div id="msk-date">Загружаем дату...</div>
-
-        <div id="clock-status">Подключение к серверу времени...</div>
-
-        <button class="clock-button" id="refresh-clock" type="button">
-          Обновить время
-        </button>
+      <div class="countdown" aria-live="off">
+        <div class="countdown-item">
+          <strong id="days">--</strong>
+          <span>Дней</span>
+        </div>
+        <div class="countdown-item">
+          <strong id="hours">--</strong>
+          <span>Часов</span>
+        </div>
+        <div class="countdown-item">
+          <strong id="minutes">--</strong>
+          <span>Минут</span>
+        </div>
+        <div class="countdown-item">
+          <strong id="seconds">--</strong>
+          <span>Секунд</span>
+        </div>
       </div>
 
-      <p class="clock-description">
-        Время отображается по московскому часовому поясу
-        и не зависит от часового пояса компьютера.
+      <p id="countdown-message" class="race-date">
+        Время старта указано по Москве (МСК).
       </p>
+    </section>
+
+    <section style="margin-top: 35px;">
+      <h2 class="section-title">📊 Разделы сайта</h2>
+
+      <div class="cards">
+        <a class="card" href="calendar.html">
+          <div class="emoji">📅</div>
+          <h3>Календарь 2026</h3>
+          <p>Этапы сезона, даты и расписание Гран-при.</p>
+        </a>
+
+        <a class="card" href="calendar2027.html">
+          <div class="emoji">🗓️</div>
+          <h3>Календарь 2027</h3>
+          <p>Страница следующего сезона Формулы-1.</p>
+        </a>
+
+        <a class="card" href="results.html">
+          <div class="emoji">🏆</div>
+          <h3>Результаты</h3>
+          <p>Результаты гонок и информация об этапах.</p>
+        </a>
+
+        <a class="card" href="drivers.html">
+          <div class="emoji">🏎️</div>
+          <h3>Пилоты</h3>
+          <p>Знакомься с гонщиками чемпионата.</p>
+        </a>
+
+        <a class="card" href="teams.html">
+          <div class="emoji">🔧</div>
+          <h3>Команды</h3>
+          <p>Составы команд и их пилоты.</p>
+        </a>
+      </div>
+    </section>
+
+    <section style="margin-top: 35px;">
+      <h2 class="section-title">🌎 Ближайший этап</h2>
+
+      <div class="schedule-card">
+        <h3>🇲🇽 Гран-при Мексики</h3>
+        <p><strong>Дата:</strong> 1 ноября 2026 года</p>
+        <p><strong>Старт гонки:</strong> 23:00 по московскому времени</p>
+        <span class="status">Следующий этап</span>
+        <p>
+          <a class="button" href="calendar.html">Весь календарь</a>
+        </p>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>F1 Hub Russia · 2026</p>
+    <p>🏎️ F1 Hub Russia</p>
+    <p>Фанатский проект о мире Формулы-1. Не является официальным сайтом FIA или Formula 1.</p>
   </footer>
 
   <script>
     (() => {
-      const timeElement = document.getElementById("msk-time");
-      const dateElement = document.getElementById("msk-date");
-      const statusElement = document.getElementById("clock-status");
-      const refreshButton = document.getElementById("refresh-clock");
+      // 1 ноября 2026 года, 23:00 МСК (UTC+3).
+      // Часовой пояс компьютера на интерпретацию даты не влияет.
+      const raceTimestamp = Date.parse("2026-11-01T23:00:00+03:00");
 
-      let serverTime = null;
-      let receivedAt = 0;
-      let syncTimer = null;
-      let requestInProgress = false;
+      const fields = {
+        days: document.getElementById("days"),
+        hours: document.getElementById("hours"),
+        minutes: document.getElementById("minutes"),
+        seconds: document.getElementById("seconds")
+      };
 
-      function formatTime(date) {
-        return new Intl.DateTimeFormat("ru-RU", {
-          timeZone: "Europe/Moscow",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false
-        }).format(date);
-      }
+      const message = document.getElementById("countdown-message");
+      let timerId;
 
-      function formatDate(date) {
-        return new Intl.DateTimeFormat("ru-RU", {
-          timeZone: "Europe/Moscow",
-          weekday: "long",
-          day: "numeric",
-          month: "long",
-          year: "numeric"
-        }).format(date);
-      }
+      function updateCountdown() {
+        const remaining = raceTimestamp - Date.now();
 
-      function renderClock() {
-        if (serverTime === null) return;
-
-        const now = new Date(serverTime + (Date.now() - receivedAt));
-        timeElement.textContent = formatTime(now);
-        dateElement.textContent = formatDate(now);
-      }
-
-      async function syncClock() {
-        if (requestInProgress) return;
-
-        requestInProgress = true;
-        refreshButton.disabled = true;
-        statusElement.textContent = "Синхронизация времени...";
-
-        try {
-          const response = await fetch(
-            "https://worldtimeapi.org/api/timezone/Europe/Moscow",
-            { cache: "no-store" }
-          );
-
-          if (!response.ok) {
-            throw new Error("Сервер времени недоступен");
-          }
-
-          const data = await response.json();
-          const timestamp = Date.parse(data.datetime);
-
-          if (!Number.isFinite(timestamp)) {
-            throw new Error("Получено некорректное время");
-          }
-
-          serverTime = timestamp;
-          receivedAt = Date.now();
-
-          renderClock();
-          statusElement.textContent =
-            "Синхронизировано с сервером · МСК (UTC+3)";
-        } catch (error) {
-          statusElement.textContent =
-            "Не удалось получить время. Проверь интернет и нажми «Обновить время».";
-        } finally {
-          requestInProgress = false;
-          refreshButton.disabled = false;
+        if (remaining <= 0) {
+          fields.days.textContent = "0";
+          fields.hours.textContent = "0";
+          fields.minutes.textContent = "0";
+          fields.seconds.textContent = "0";
+          message.textContent =
+            "Стартовое время наступило. Проверь календарь на следующий этап.";
+          if (timerId) clearInterval(timerId);
+          return;
         }
+
+        fields.days.textContent = Math.floor(
+          remaining / (1000 * 60 * 60 * 24)
+        );
+
+        fields.hours.textContent = Math.floor(
+          (remaining / (1000 * 60 * 60)) % 24
+        );
+
+        fields.minutes.textContent = Math.floor(
+          (remaining / (1000 * 60)) % 60
+        );
+
+        fields.seconds.textContent = Math.floor(
+          (remaining / 1000) % 60
+        );
       }
 
-      refreshButton.addEventListener("click", syncClock);
-
-      renderClock();
-      syncClock();
-
-      setInterval(renderClock, 1000);
-
-      syncTimer = setInterval(syncClock, 5 * 60 * 1000);
+      updateCountdown();
+      timerId = setInterval(updateCountdown, 1000);
     })();
   </script>
 </body>
