@@ -5,127 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#e10600">
   <title>Календарь 2027 | F1 Hub Russia</title>
+
   <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
 
   <style>
-    main {
-      width: min(1100px, calc(100% - 32px));
+    .calendar27 {
+      width: 100%;
+      max-width: 1100px;
       margin: 0 auto;
-      box-sizing: border-box;
     }
 
-    .card {
-      width: 100%;
-      margin: 20px auto;
-      box-sizing: border-box;
+    .calendar27-intro {
+      text-align: center;
+      margin-bottom: 28px;
     }
 
-    .race-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-      box-sizing: border-box;
-      margin: 20px auto;
+    .calendar27-intro h2 {
+      margin-bottom: 10px;
     }
 
-    .race-row {
+    .calendar27-grid {
       display: grid;
-      grid-template-columns: 48px minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
       width: 100%;
-      padding: 16px;
-      box-sizing: border-box;
-      background: #171717;
-      border: 1px solid #333;
-      border-left: 4px solid #e10600;
-      border-radius: 12px;
+      margin: 0 auto;
     }
 
-    .race-round {
+    .calendar27-card {
+      box-sizing: border-box;
+      min-width: 0;
+      padding: 20px;
+      border: 1px solid rgba(225, 6, 0, 0.45);
+      border-radius: 12px;
+      background: #171717;
+      color: #f5f5f5;
+      text-align: left;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .calendar27-card:hover {
+      border-color: #e10600;
+      transform: translateY(-3px);
+    }
+
+    .calendar27-top {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      background: #292929;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .calendar27-round {
       color: #e10600;
       font-weight: 800;
+      font-size: 14px;
     }
 
-    .race-name {
-      color: #fff;
-      font-size: 17px;
+    .calendar27-status {
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: rgba(225, 6, 0, 0.15);
+      color: #ff7777;
+      font-size: 11px;
       font-weight: 700;
-      line-height: 1.4;
     }
 
-    .race-meta {
-      margin-top: 5px;
+    .calendar27-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .calendar27-country {
+      margin: 0 0 8px;
+      color: #d0d0d0;
+    }
+
+    .calendar27-date {
+      margin: 0;
+      color: #a8a8a8;
+      font-size: 14px;
+    }
+
+    .calendar27-note {
+      margin-top: 24px;
       color: #aaa;
       font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 7px 10px;
-      border-radius: 6px;
-      background: #292929;
-      color: #ddd;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .pill.upcoming {
-      background: #332020;
-      color: #ff6565;
-    }
-
-    .status {
       text-align: center;
-      color: #aaa;
-      font-size: 13px;
-      margin-top: 16px;
     }
 
-    .empty {
-      padding: 20px;
-      text-align: center;
-      color: #aaa;
-    }
-
-    @media (max-width: 600px) {
-      main {
-        width: calc(100% - 20px);
+    @media (max-width: 650px) {
+      .calendar27-grid {
+        grid-template-columns: minmax(0, 1fr);
       }
 
-      .race-row {
-        grid-template-columns: 38px minmax(0, 1fr);
-        gap: 10px;
-        padding: 12px;
-      }
-
-      .race-round {
-        width: 34px;
-        height: 34px;
-      }
-
-      .race-row .pill {
-        grid-column: 2;
-        justify-self: start;
-      }
-
-      .race-name {
-        font-size: 15px;
-      }
-
-      .race-meta {
-        font-size: 12px;
+      .calendar27-card {
+        padding: 17px;
       }
     }
   </style>
@@ -140,34 +116,266 @@
   <nav aria-label="Главное меню">
     <a href="index.html">Главная</a>
     <a href="calendar.html">Календарь 2026</a>
-    <a href="calendar2027.html" class="active" aria-current="page">Календарь 2027</a>
+    <a href="calendar2027.html" class="active"
+       aria-current="page">Календарь 2027</a>
     <a href="results.html">Результаты</a>
     <a href="drivers.html">Пилоты</a>
     <a href="teams.html">Команды</a>
   </nav>
 
   <main>
-    <h1 class="page-heading">Календарь F1 2027</h1>
-    <p class="page-subtitle">
-      Этапы сезона, даты и трассы чемпионата.
-    </p>
-
-    <section class="card">
-      <h2>🏁 Этапы сезона 2027</h2>
-
-      <div id="calendar2027">
-        <div class="empty">Загружаем календарь...</div>
+    <section class="calendar27">
+      <div class="calendar27-intro">
+        <h2>🏁 Календарь Формулы-1 — 2027</h2>
+        <p>
+          Предварительный список этапов сезона.
+          Даты и состав календаря требуют подтверждения.
+        </p>
       </div>
 
-      <p id="calendarStatus" class="status">
-        Подготавливаем расписание...
+      <div class="calendar27-grid">
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 01</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Австралии</h3>
+          <p class="calendar27-country">🇦🇺 Мельбурн</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 02</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Китая</h3>
+          <p class="calendar27-country">🇨🇳 Шанхай</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 03</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Японии</h3>
+          <p class="calendar27-country">🇯🇵 Сузука</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 04</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Бахрейна</h3>
+          <p class="calendar27-country">🇧🇭 Сахир</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 05</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Саудовской Аравии</h3>
+          <p class="calendar27-country">🇸🇦 Джидда</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 06</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Майами</h3>
+          <p class="calendar27-country">🇺🇸 Майами</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 07</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Канады</h3>
+          <p class="calendar27-country">🇨🇦 Монреаль</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 08</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Монако</h3>
+          <p class="calendar27-country">🇲🇨 Монте-Карло</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 09</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Испании</h3>
+          <p class="calendar27-country">🇪🇸 Испания</p>
+          <p class="calendar27-date">Трасса и дата уточняются</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 10</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Австрии</h3>
+          <p class="calendar27-country">🇦🇹 Шпильберг</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 11</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Великобритании</h3>
+          <p class="calendar27-country">🇬🇧 Сильверстоун</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 12</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Бельгии</h3>
+          <p class="calendar27-country">🇧🇪 Спа-Франкоршам</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 13</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Венгрии</h3>
+          <p class="calendar27-country">🇭🇺 Будапешт</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 14</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Нидерландов</h3>
+          <p class="calendar27-country">🇳🇱 Зандворт</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 15</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Италии</h3>
+          <p class="calendar27-country">🇮🇹 Монца</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 16</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Азербайджана</h3>
+          <p class="calendar27-country">🇦🇿 Баку</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 17</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Сингапура</h3>
+          <p class="calendar27-country">🇸🇬 Сингапур</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 18</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при США</h3>
+          <p class="calendar27-country">🇺🇸 Остин</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 19</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Мексики</h3>
+          <p class="calendar27-country">🇲🇽 Мехико</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 20</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Сан-Паулу</h3>
+          <p class="calendar27-country">🇧🇷 Сан-Паулу</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 21</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Лас-Вегаса</h3>
+          <p class="calendar27-country">🇺🇸 Лас-Вегас</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 22</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Катара</h3>
+          <p class="calendar27-country">🇶🇦 Лусаил</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+        <article class="calendar27-card">
+          <div class="calendar27-top">
+            <span class="calendar27-round">ЭТАП 23</span>
+            <span class="calendar27-status">Предварительно</span>
+          </div>
+          <h3>Гран-при Абу-Даби</h3>
+          <p class="calendar27-country">🇦🇪 Яс-Марина</p>
+          <p class="calendar27-date">Дата уточняется</p>
+        </article>
+
+      </div>
+
+      <p class="calendar27-note">
+        F1 Hub Russia © 2026 · Календарь носит предварительный характер.
+        Официальные даты и этапы могут отличаться.
       </p>
     </section>
   </main>
 
   <footer>
     <p>F1 Hub Russia © 2026</p>
-    <p>Расписание может изменяться организаторами чемпионата.</p>
   </footer>
 </body>
 </html>
