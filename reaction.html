@@ -285,15 +285,26 @@ p {
 <script>
 "use strict";
 
-/* ВСТАВЬ ДАННЫЕ СВОЕГО ПРОЕКТА SUPABASE */
+/* Вставь сюда данные своего проекта Supabase */
 const SUPABASE_URL = "ВСТАВЬ_PROJECT_URL";
 const SUPABASE_KEY = "ВСТАВЬ_PUBLISHABLE_KEY";
 
-/* Подключение к базе */
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+let db = null;
+
+try {
+  if (
+    window.supabase &&
+    SUPABASE_URL.startsWith("https://") &&
+    SUPABASE_KEY !== "ВСТАВЬ_PUBLISHABLE_KEY"
+  ) {
+    db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+  }
+} catch (error) {
+  console.error("Ошибка подключения Supabase:", error);
+}
 
 const lights = document.getElementById("lights");
 const button = document.getElementById("reaction");
@@ -312,8 +323,12 @@ let pendingScore = null;
 let submitting = false;
 
 function showBest() {
-  const saved = localStorage.getItem("f1ReactionBest");
-  best.textContent = saved ? saved + " мс" : "—";
+  try {
+    const saved = localStorage.getItem("f1ReactionBest");
+    best.textContent = saved ? saved + " мс" : "—";
+  } catch (error) {
+    best.textContent = "—";
+  }
 }
 
 function showLeaderboardMessage(text) {
@@ -323,6 +338,11 @@ function showLeaderboardMessage(text) {
 }
 
 async function loadLeaderboard() {
+  if (!db) {
+    showLeaderboardMessage("Рейтинг пока не подключён.");
+    return;
+  }
+
   showLeaderboardMessage("Загрузка рейтинга...");
 
   try {
@@ -356,7 +376,9 @@ async function loadLeaderboard() {
     });
   } catch (error) {
     console.error("Ошибка загрузки рейтинга:", error);
-    showLeaderboardMessage("Не удалось загрузить рейтинг. Проверь настройки Supabase.");
+    showLeaderboardMessage(
+      "Не удалось загрузить рейтинг. Проверь настройки Supabase."
+    );
   }
 }
 
@@ -417,11 +439,17 @@ button.addEventListener("click", () => {
     message.textContent = "Твоя реакция: " + ms + " мс";
     result.textContent = ms + " мс";
 
-    const oldBest = Number(localStorage.getItem("f1ReactionBest"));
+    try {
+      const oldBest = Number(
+        localStorage.getItem("f1ReactionBest")
+      );
 
-    if (!oldBest || ms < oldBest) {
-      localStorage.setItem("f1ReactionBest", ms);
-      message.textContent += " — НОВЫЙ ЛИЧНЫЙ РЕКОРД!";
+      if (!oldBest || ms < oldBest) {
+        localStorage.setItem("f1ReactionBest", String(ms));
+        message.textContent += " — НОВЫЙ ЛИЧНЫЙ РЕКОРД!";
+      }
+    } catch (error) {
+      console.error("Не удалось сохранить личный рекорд:", error);
     }
 
     saveButton.hidden = false;
@@ -432,15 +460,27 @@ button.addEventListener("click", () => {
 saveButton.addEventListener("click", async () => {
   if (submitting) return;
 
-  const name = nickname.value.trim();
-
-  if (name.length < 2 || name.length > 16) {
-    saveMessage.textContent = "Ник должен содержать от 2 до 16 символов.";
+  if (!db) {
+    saveMessage.textContent =
+      "Рейтинг пока не подключён. Проверь настройки Supabase.";
     return;
   }
 
-  if (pendingScore === null || pendingScore < 80 || pendingScore > 2000) {
-    saveMessage.textContent = "Этот результат нельзя отправить в рейтинг.";
+  const name = nickname.value.trim();
+
+  if (name.length < 2 || name.length > 16) {
+    saveMessage.textContent =
+      "Ник должен содержать от 2 до 16 символов.";
+    return;
+  }
+
+  if (
+    pendingScore === null ||
+    pendingScore < 80 ||
+    pendingScore > 2000
+  ) {
+    saveMessage.textContent =
+      "Этот результат нельзя отправить в рейтинг.";
     return;
   }
 
@@ -458,7 +498,8 @@ saveButton.addEventListener("click", async () => {
 
     if (error) throw error;
 
-    saveMessage.textContent = "Результат отправлен в общий рейтинг!";
+    saveMessage.textContent =
+      "Результат отправлен в общий рейтинг!";
     saveButton.hidden = true;
     pendingScore = null;
 
@@ -478,4 +519,3 @@ loadLeaderboard();
 </script>
 </body>
 </html>
-
