@@ -585,7 +585,7 @@
         }
       }
 
-     logo.addEventListener("click", (event) => {
+ logo.addEventListener("click", (event) => {
   // Ссылка «1» продолжает открывать reaction.html.
   if (event.target.closest("a")) return;
 
@@ -594,13 +594,16 @@
 
   if (clicks >= 3) {
     clicks = 0;
-    // Пасхалка отключена.
+    openCheco();
   } else {
     clickTimer = setTimeout(() => {
       clicks = 0;
     }, 1800);
   }
 });
+
+closeButton.addEventListener("click", closeCheco);
+      
       // Закрытие при нажатии на затемнённый фон.
       popup.addEventListener("click", (event) => {
         if (event.target === popup) closeCheco();
