@@ -3,521 +3,465 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080808">
   <title>Команды F1 2026 | F1 Hub Russia</title>
+  <link rel="stylesheet" href="style.css">
+
   <style>
-    :root {
-      --red: #e10600;
-      --bg: #080808;
-      --panel: #141414;
-      --panel2: #1c1c1c;
-      --text: #f5f5f5;
-      --muted: #a5a5a5;
-      --line: #303030;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(ellipse at 50% -15%, #38100e 0, transparent 48%),
-        var(--bg);
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    header {
-      background: rgba(8,8,8,.95);
-      border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
-    }
-
-    .nav {
-      max-width: 1250px;
-      margin: auto;
-      padding: 17px 22px;
+    .teams-intro {
       display: flex;
       justify-content: space-between;
+      align-items: end;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .teams-intro h2 {
+      margin-bottom: 8px;
+      font-size: clamp(28px, 3vw, 42px);
+    }
+
+    .teams-count {
+      padding: 10px 16px;
+      background: #e10600;
+      color: white;
+      border-radius: 8px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .teams-toolbar {
+      display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 14px;
       flex-wrap: wrap;
+      margin-bottom: 24px;
     }
 
-    .brand {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -1px;
-    }
-
-    .brand span { color: var(--red); }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .nav-links a {
-      padding: 9px 12px;
-      border-radius: 7px;
-      color: #ccc;
-      font-size: 14px;
-      transition: .2s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      background: var(--red);
-      color: white;
-    }
-
-    main {
-      max-width: 1250px;
-      margin: auto;
-      padding: 35px 22px 65px;
-    }
-
-    .hero {
-      padding: 35px 0 27px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 28px;
-    }
-
-    .eyebrow {
-      color: var(--red);
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      font-size: clamp(36px, 7vw, 65px);
-      line-height: 1;
-      margin: 13px 0;
-      letter-spacing: -2px;
-      text-transform: uppercase;
-    }
-
-    h1 span { color: var(--red); }
-
-    .intro {
-      color: var(--muted);
-      max-width: 650px;
-      line-height: 1.65;
-      font-size: 15px;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 24px 0;
-    }
-
-    #search {
+    .teams-search {
       flex: 1;
-      min-width: 210px;
-      padding: 14px 16px;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 9px;
+      min-width: 220px;
+      padding: 13px 16px;
       color: white;
+      background: #171717;
+      border: 1px solid #383838;
+      border-radius: 9px;
       font-size: 15px;
       outline: none;
+      box-sizing: border-box;
     }
 
-    #search:focus { border-color: var(--red); }
-
-    .count {
-      display: flex;
-      align-items: center;
-      color: var(--muted);
-      font-size: 13px;
+    .teams-search:focus {
+      border-color: #e10600;
     }
 
     .teams-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      gap: 20px;
     }
 
     .team-card {
       --team-color: #e10600;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      overflow: hidden;
       position: relative;
-      background: linear-gradient(145deg, #191919, #101010);
-      border: 1px solid #292929;
-      border-radius: 13px;
-      transition: transform .22s, border-color .22s, box-shadow .22s;
-    }
-
-    .team-card::before {
-      content: "";
-      height: 4px;
-      background: var(--team-color);
-      display: block;
+      min-width: 0;
+      padding: 22px;
+      box-sizing: border-box;
+      background: linear-gradient(145deg, #202024, #121214);
+      border: 1px solid #343439;
+      border-top: 4px solid var(--team-color);
+      border-radius: 14px;
+      transition: transform .2s, border-color .2s;
     }
 
     .team-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
       border-color: var(--team-color);
-      box-shadow: 0 12px 35px #0008;
-    }
-
-    .card-link {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      padding: 20px;
-      outline-offset: -4px;
     }
 
     .team-top {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-start;
       gap: 10px;
+      margin-bottom: 20px;
     }
 
     .team-number {
-      color: #666;
-      font-size: 12px;
+      color: var(--team-color);
+      font-size: 13px;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    .country {
-      font-size: 12px;
-      color: #aaa;
-      text-align: right;
+    .team-country {
+      font-size: 25px;
     }
 
-    .team-card h2 {
-      font-size: 22px;
+    .team-name {
+      margin: 0 0 6px;
+      font-size: 25px;
       line-height: 1.2;
-      margin: 17px 0 7px;
+      font-weight: 900;
+      overflow-wrap: anywhere;
     }
 
     .team-full-name {
-      color: var(--muted);
-      font-size: 12px;
-      min-height: 30px;
-      line-height: 1.45;
+      min-height: 38px;
+      margin: 0;
+      color: #a8a8b0;
+      font-size: 13px;
+      line-height: 1.5;
     }
 
-    .divider {
+    .team-divider {
       height: 1px;
-      background: var(--line);
-      margin: 18px 0 15px;
+      margin: 18px 0;
+      background: #38383d;
     }
 
     .drivers-label {
-      font-size: 10px;
-      font-weight: 800;
-      color: #777;
-      letter-spacing: 2px;
       margin-bottom: 12px;
+      color: #9999a2;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
     }
 
-    .driver {
+    .team-driver {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 7px 0;
-      font-size: 14px;
-      font-weight: 700;
+      margin: 10px 0;
+      font-size: 15px;
+      font-weight: 600;
     }
 
     .driver-number {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 31px;
-      border-radius: 5px;
-      background: #242424;
-      border-left: 3px solid var(--team-color);
-      font-size: 12px;
-      color: #eee;
-      flex-shrink: 0;
-    }
-
-    .open-link {
-      margin-top: auto;
-      padding-top: 20px;
-      display: flex;
-      justify-content: space-between;
+      display: inline-flex;
       align-items: center;
-      font-size: 12px;
-      font-weight: 800;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 32px;
+      height: 30px;
       color: var(--team-color);
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      background: #29292e;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 900;
     }
 
-    .arrow { font-size: 20px; transition: transform .2s; }
-    .team-card:hover .arrow { transform: translateX(4px); }
+    .team-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--team-color);
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+    }
 
-    .empty {
+    .team-link:hover {
+      text-decoration: underline;
+    }
+
+    .team-mclaren { --team-color: #ff8000; }
+    .team-ferrari { --team-color: #e10600; }
+    .team-redbull { --team-color: #3671c6; }
+    .team-mercedes { --team-color: #00a19c; }
+    .team-aston { --team-color: #229971; }
+    .team-williams { --team-color: #1868db; }
+    .team-alpine { --team-color: #ff87bc; }
+    .team-audi { --team-color: #d9d9d9; }
+    .team-haas { --team-color: #eeeeee; }
+    .team-rb { --team-color: #6692ff; }
+    .team-cadillac { --team-color: #d0b783; }
+
+    .teams-empty {
       display: none;
-      padding: 40px 15px;
+      padding: 30px 10px;
+      color: #aaa;
       text-align: center;
-      color: var(--muted);
-      border: 1px dashed var(--line);
-      border-radius: 10px;
-      margin-top: 20px;
+      grid-column: 1 / -1;
     }
 
-    footer {
-      text-align: center;
-      padding: 25px 15px;
-      border-top: 1px solid var(--line);
-      color: #777;
-      font-size: 12px;
+    .teams-note {
+      margin-top: 26px;
+      color: #9999a2;
+      font-size: 13px;
+      line-height: 1.6;
     }
 
-    @media (max-width: 950px) {
-      .teams-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 1100px) {
+      .teams-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
-    @media (max-width: 560px) {
-      .nav { padding: 14px; }
-      .brand { font-size: 19px; }
-      .nav-links { gap: 3px; }
-      .nav-links a { padding: 8px; font-size: 12px; }
-      main { padding: 20px 13px 45px; }
-      .hero { padding-top: 28px; }
-      .teams-grid { grid-template-columns: 1fr; gap: 14px; }
-      .card-link { padding: 18px; }
-      .team-card h2 { font-size: 21px; }
+    @media (max-width: 760px) {
+      .teams-grid {
+        gap: 12px;
+      }
+
+      .team-card {
+        padding: 16px;
+      }
+
+      .team-name {
+        font-size: 21px;
+      }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        transition: none !important;
-        scroll-behavior: auto !important;
+    @media (max-width: 500px) {
+      .teams-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .teams-search {
+        min-width: 100%;
+      }
+
+      .team-full-name {
+        min-height: 0;
       }
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <nav class="nav">
-      <a class="brand" href="index.html">F1 HUB <span>RUSSIA</span></a>
-      <div class="nav-links">
-        <a href="index.html">Главная</a>
-        <a href="calendar.html">Календарь 2026</a>
-        <a href="calendar2027.html">Календарь 2027</a>
-        <a href="results.html">Результаты</a>
-        <a href="drivers.html">Пилоты</a>
-        <a class="active" href="teams.html">Команды</a>
-      </div>
+  <header class="site-header">
+    <h1>🏎️ F1 Hub Russia</h1>
+    <nav aria-label="Главное меню">
+      <a href="index.html">Главная</a>
+      <a href="calendar.html">Календарь 2026</a>
+      <a href="calendar2027.html">Календарь 2027</a>
+      <a href="results.html">Результаты</a>
+      <a href="drivers.html">Пилоты</a>
+      <a href="teams.html" aria-current="page">Команды</a>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="eyebrow">Formula One · Season 2026</div>
-      <h1>Команды <span>F1</span></h1>
-      <p class="intro">
-        Все 11 команд чемпионата мира Формулы-1 2026 года.
-        Выбери команду, чтобы открыть страницу с дополнительной информацией.
-      </p>
-    </section>
-
-    <div class="toolbar">
-      <input id="search" type="search" placeholder="Поиск команды или пилота..." aria-label="Поиск команды или пилота">
-      <div class="count" id="count">11 команд</div>
+  <main class="container">
+    <div class="teams-intro">
+      <div>
+        <h2>Команды Формулы-1</h2>
+        <p>Знакомься с командами и составами сезона 2026</p>
+      </div>
+      <div class="teams-count" id="teamsCount">11 команд</div>
     </div>
 
-    <section class="teams-grid" id="teamsGrid" aria-label="Команды Формулы-1">
+    <div class="teams-toolbar">
+      <input
+        class="teams-search"
+        type="search"
+        id="teamSearch"
+        placeholder="🔎 Найти команду или пилота..."
+        aria-label="Поиск команды или пилота"
+      >
+    </div>
 
-      <article class="team-card" style="--team-color:#e10600" data-search="ferrari феррари шарль леклер льюис хэмилтон">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Scuderia_Ferrari" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">01 / F1</span><span class="country">🇮🇹 Италия</span></div>
-          <h2>Scuderia Ferrari</h2>
-          <div class="team-full-name">Scuderia Ferrari HP</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">16</span> Шарль Леклер</div>
-          <div class="driver"><span class="driver-number">44</span> Льюис Хэмилтон</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+    <section class="teams-grid" id="teamsGrid">
+
+      <article class="team-card team-ferrari" data-search="ferrari феррари шарль леклер льюис хэмилтон">
+        <div class="team-top">
+          <span class="team-number">Команда 01</span>
+          <span class="team-country">🇮🇹</span>
+        </div>
+        <h3 class="team-name">Ferrari</h3>
+        <p class="team-full-name">Scuderia Ferrari HP</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">16</span> Шарль Леклер</div>
+        <div class="team-driver"><span class="driver-number">44</span> Льюис Хэмилтон</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Scuderia_Ferrari" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#ff8000" data-search="mclaren макларен ландо норрис оскар пиастри">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/McLaren" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">02 / F1</span><span class="country">🇬🇧 Великобритания</span></div>
-          <h2>McLaren</h2>
-          <div class="team-full-name">McLaren Mastercard F1 Team</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">1</span> Ландо Норрис</div>
-          <div class="driver"><span class="driver-number">81</span> Оскар Пиастри</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-mclaren" data-search="mclaren макларен ландо норрис оскар пиастри">
+        <div class="team-top">
+          <span class="team-number">Команда 02</span>
+          <span class="team-country">🇬🇧</span>
+        </div>
+        <h3 class="team-name">McLaren</h3>
+        <p class="team-full-name">McLaren Formula 1 Team</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">1</span> Ландо Норрис</div>
+        <div class="team-driver"><span class="driver-number">81</span> Оскар Пиастри</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/McLaren" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#27f4d2" data-search="mercedes мерседес джордж расселл кимми антонелли">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Mercedes-Benz_in_Formula_One" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">03 / F1</span><span class="country">🇩🇪 Германия</span></div>
-          <h2>Mercedes</h2>
-          <div class="team-full-name">Mercedes-AMG PETRONAS F1 Team</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">63</span> Джордж Расселл</div>
-          <div class="driver"><span class="driver-number">12</span> Андреа Кими Антонелли</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-redbull" data-search="red bull ред булл редбулл макс ферстаппен айзек хаджар">
+        <div class="team-top">
+          <span class="team-number">Команда 03</span>
+          <span class="team-country">🇦🇹</span>
+        </div>
+        <h3 class="team-name">Red Bull Racing</h3>
+        <p class="team-full-name">Oracle Red Bull Racing</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">3</span> Макс Ферстаппен</div>
+        <div class="team-driver"><span class="driver-number">6</span> Айзек Хаджар</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Red_Bull_Racing" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#3671c6" data-search="red bull ред булл редбулл макс ферстаппен исак хаджар">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Red_Bull_Racing" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">04 / F1</span><span class="country">🇦🇹 Австрия</span></div>
-          <h2>Red Bull Racing</h2>
-          <div class="team-full-name">Oracle Red Bull Racing</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">3</span> Макс Ферстаппен</div>
-          <div class="driver"><span class="driver-number">6</span> Исак Хаджар</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-mercedes" data-search="mercedes мерседес джордж расселл кими антонелли">
+        <div class="team-top">
+          <span class="team-number">Команда 04</span>
+          <span class="team-country">🇩🇪</span>
+        </div>
+        <h3 class="team-name">Mercedes</h3>
+        <p class="team-full-name">Mercedes-AMG PETRONAS F1 Team</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">63</span> Джордж Расселл</div>
+        <div class="team-driver"><span class="driver-number">12</span> Кими Антонелли</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Mercedes-Benz_in_Formula_One" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#229971" data-search="aston martin астон мартин фернандо алонсо лэнс стролл">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Aston_Martin_in_Formula_One" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">05 / F1</span><span class="country">🇬🇧 Великобритания</span></div>
-          <h2>Aston Martin</h2>
-          <div class="team-full-name">Aston Martin Aramco F1 Team</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">14</span> Фернандо Алонсо</div>
-          <div class="driver"><span class="driver-number">18</span> Лэнс Стролл</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-aston" data-search="aston martin астон мартин фернандо алонсо лэнс стролл">
+        <div class="team-top">
+          <span class="team-number">Команда 05</span>
+          <span class="team-country">🇬🇧</span>
+        </div>
+        <h3 class="team-name">Aston Martin</h3>
+        <p class="team-full-name">Aston Martin Aramco F1 Team</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">14</span> Фернандо Алонсо</div>
+        <div class="team-driver"><span class="driver-number">18</span> Лэнс Стролл</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Aston_Martin_in_Formula_One" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#0090ff" data-search="williams уильямс алекс албон карлос сайнс">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Williams_Racing" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">06 / F1</span><span class="country">🇬🇧 Великобритания</span></div>
-          <h2>Williams</h2>
-          <div class="team-full-name">Atlassian Williams F1 Team</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">23</span> Александр Албон</div>
-          <div class="driver"><span class="driver-number">55</span> Карлос Сайнс</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-williams" data-search="williams уильямс алекс албон карлос сайнс">
+        <div class="team-top">
+          <span class="team-number">Команда 06</span>
+          <span class="team-country">🇬🇧</span>
+        </div>
+        <h3 class="team-name">Williams</h3>
+        <p class="team-full-name">Atlassian Williams Racing</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">23</span> Алекс Албон</div>
+        <div class="team-driver"><span class="driver-number">55</span> Карлос Сайнс</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Williams_Grand_Prix_Engineering" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#ff87bc" data-search="alpine альпин пьер гасли франко колапинто">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Alpine_F1_Team" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">07 / F1</span><span class="country">🇫🇷 Франция</span></div>
-          <h2>Alpine</h2>
-          <div class="team-full-name">BWT Alpine Formula One Team</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">10</span> Пьер Гасли</div>
-          <div class="driver"><span class="driver-number">43</span> Франко Колапинто</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-alpine" data-search="alpine альпин пьер гасли франко колапинто">
+        <div class="team-top">
+          <span class="team-number">Команда 07</span>
+          <span class="team-country">🇫🇷</span>
+        </div>
+        <h3 class="team-name">Alpine</h3>
+        <p class="team-full-name">BWT Alpine Formula One Team</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">10</span> Пьер Гасли</div>
+        <div class="team-driver"><span class="driver-number">43</span> Франко Колапинто</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Alpine_F1_Team" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#b6babd" data-search="audi ауди нико хюлькенберг габриэль бортоletto">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Audi" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">08 / F1</span><span class="country">🇩🇪 Германия</span></div>
-          <h2>Audi</h2>
-          <div class="team-full-name">Audi Revolut F1 Team</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">27</span> Нико Хюлькенберг</div>
-          <div class="driver"><span class="driver-number">5</span> Габриэл Бортолето</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-audi" data-search="audi ауди нико хюлькенберг габриэл бортолето">
+        <div class="team-top">
+          <span class="team-number">Команда 08</span>
+          <span class="team-country">🇩🇪</span>
+        </div>
+        <h3 class="team-name">Audi</h3>
+        <p class="team-full-name">Audi Revolut F1 Team</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">27</span> Нико Хюлькенберг</div>
+        <div class="team-driver"><span class="driver-number">5</span> Габриэл Бортолето</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Audi" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#e6002b" data-search="haas хaas хаас эстебан окон оливер берман">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Haas_F1_Team" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">09 / F1</span><span class="country">🇺🇸 США</span></div>
-          <h2>Haas</h2>
-          <div class="team-full-name">TGR Haas F1 Team</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">31</span> Эстебан Окон</div>
-          <div class="driver"><span class="driver-number">87</span> Оливер Берман</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-haas" data-search="haas хaas хаас эстебан окон оливер берман">
+        <div class="team-top">
+          <span class="team-number">Команда 09</span>
+          <span class="team-country">🇺🇸</span>
+        </div>
+        <h3 class="team-name">Haas</h3>
+        <p class="team-full-name">MoneyGram Haas F1 Team</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">31</span> Эстебан Окон</div>
+        <div class="team-driver"><span class="driver-number">87</span> Оливер Берман</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Haas_F1_Team" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#6692ff" data-search="racing bulls рейсинг буллз визакэшапп лиам лоусон арвид линблад">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Racing_Bulls" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">10 / F1</span><span class="country">🇮🇹 Италия</span></div>
-          <h2>Racing Bulls</h2>
-          <div class="team-full-name">Visa Cash App Racing Bulls</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">30</span> Лиам Лоусон</div>
-          <div class="driver"><span class="driver-number">41</span> Арвид Линдблад</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-rb" data-search="racing bulls рейсинг буллз лиам лоусон арвид линдблад">
+        <div class="team-top">
+          <span class="team-number">Команда 10</span>
+          <span class="team-country">🇮🇹</span>
+        </div>
+        <h3 class="team-name">Racing Bulls</h3>
+        <p class="team-full-name">Visa Cash App Racing Bulls</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">30</span> Лиам Лоусон</div>
+        <div class="team-driver"><span class="driver-number">41</span> Арвид Линдблад</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/RB_Formula_One_Team" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
-      <article class="team-card" style="--team-color:#eeeeee" data-search="cadillac кадиллак серхио перес вальтери боттас">
-        <a class="card-link" href="https://ru.wikipedia.org/wiki/Cadillac" target="_blank" rel="noopener noreferrer">
-          <div class="team-top"><span class="team-number">11 / F1</span><span class="country">🇺🇸 США</span></div>
-          <h2>Cadillac</h2>
-          <div class="team-full-name">Cadillac Formula 1 Team</div>
-          <div class="divider"></div>
-          <div class="drivers-label">ПИЛОТЫ</div>
-          <div class="driver"><span class="driver-number">11</span> Серхио Перес</div>
-          <div class="driver"><span class="driver-number">77</span> Валттери Боттас</div>
-          <div class="open-link"><span>О команде</span><span class="arrow">↗</span></div>
-        </a>
+      <article class="team-card team-cadillac" data-search="cadillac кадиллак серхио перес перез валттери боттас">
+        <div class="team-top">
+          <span class="team-number">Команда 11</span>
+          <span class="team-country">🇺🇸</span>
+        </div>
+        <h3 class="team-name">Cadillac</h3>
+        <p class="team-full-name">Cadillac Formula 1 Team</p>
+        <div class="team-divider"></div>
+        <div class="drivers-label">Пилоты</div>
+        <div class="team-driver"><span class="driver-number">11</span> Серхио Перес</div>
+        <div class="team-driver"><span class="driver-number">77</span> Валттери Боттас</div>
+        <a class="team-link" href="https://ru.wikipedia.org/wiki/Cadillac" target="_blank" rel="noopener noreferrer">Подробнее о команде ↗</a>
       </article>
 
+      <div class="teams-empty" id="teamsEmpty">
+        Ничего не найдено. Попробуй изменить запрос.
+      </div>
     </section>
 
-    <div class="empty" id="empty">Ничего не найдено. Попробуй другое название.</div>
+    <p class="teams-note">
+      Составы указаны для сезона 2026. F1 Hub Russia — фанатский проект,
+      не связанный официально с Formula 1.
+    </p>
   </main>
 
   <footer>
-    F1 HUB RUSSIA · Фанатский проект · 2026
+    <p>F1 Hub Russia · 2026</p>
   </footer>
 
   <script>
-    const search = document.getElementById("search");
-    const cards = [...document.querySelectorAll(".team-card")];
-    const count = document.getElementById("count");
-    const empty = document.getElementById("empty");
+    const searchInput = document.getElementById("teamSearch");
+    const teamCards = Array.from(document.querySelectorAll(".team-card"));
+    const teamsCount = document.getElementById("teamsCount");
+    const emptyMessage = document.getElementById("teamsEmpty");
 
-    function filterTeams() {
-      const query = search.value.trim().toLocaleLowerCase("ru");
-      let visible = 0;
+    function updateTeams() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
 
-      cards.forEach(card => {
-        const text = (card.innerText + " " + card.dataset.search)
-          .toLocaleLowerCase("ru");
-        const matches = text.includes(query);
+      teamCards.forEach(card => {
+        const searchableText =
+          (card.innerText + " " + (card.dataset.search || "")).toLowerCase();
 
-        card.style.display = matches ? "flex" : "none";
-        if (matches) visible++;
+        const matches = searchableText.includes(query);
+        card.style.display = matches ? "" : "none";
+
+        if (matches) visibleCount++;
       });
 
-      count.textContent = visible + (visible === 1 ? " команда" :
-        visible >= 2 && visible <= 4 ? " команды" : " команд");
-      empty.style.display = visible === 0 ? "block" : "none";
+      teamsCount.textContent = visibleCount + (
+        visibleCount === 1 ? " команда" :
+        visibleCount >= 2 && visibleCount <= 4 ? " команды" : " команд"
+      );
+
+      emptyMessage.style.display = visibleCount === 0 ? "block" : "none";
     }
 
-    search.addEventListener("input", filterTeams);
+    searchInput.addEventListener("input", updateTeams);
+    updateTeams();
   </script>
 </body>
 </html>
