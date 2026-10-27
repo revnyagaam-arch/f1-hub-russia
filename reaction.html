@@ -3,9 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101010">
 <title>Reaction Test — F1 Hub Russia</title>
+
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -14,17 +18,18 @@ body {
   place-items: center;
   padding: 20px;
   background: #101010;
-  color: #fff;
-  font-family: Arial, sans-serif;
+  color: #f5f5f5;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .panel {
-  width: min(600px, 100%);
+  width: min(650px, 100%);
   padding: 28px;
   text-align: center;
   background: linear-gradient(145deg, #1b1b1b, #300000);
   border: 1px solid #e10600;
   border-radius: 14px;
+  box-shadow: 0 0 35px #e1060020;
 }
 
 .tag {
@@ -34,9 +39,15 @@ body {
   font-weight: bold;
 }
 
-h1 { font-size: clamp(28px, 6vw, 42px); }
+h1 {
+  font-size: clamp(28px, 6vw, 42px);
+  margin: 20px 0 10px;
+}
 
-p { color: #bbb; line-height: 1.6; }
+p {
+  color: #bbb;
+  line-height: 1.6;
+}
 
 .lights {
   display: flex;
@@ -51,6 +62,7 @@ p { color: #bbb; line-height: 1.6; }
   border-radius: 50%;
   background: #350909;
   border: 3px solid #555;
+  box-shadow: inset 0 0 12px #000;
 }
 
 .lights.red .light {
@@ -67,49 +79,163 @@ p { color: #bbb; line-height: 1.6; }
 
 #message {
   min-height: 30px;
-  font-weight: bold;
   font-size: 18px;
+  font-weight: bold;
+}
+
+#reaction,
+#saveScore {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 8px;
+  background: #e10600;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 #reaction {
-  width: 100%;
-  min-height: 100px;
-  margin: 15px 0;
-  border: 0;
-  border-radius: 9px;
-  background: #e10600;
-  color: white;
-  font-size: 21px;
-  font-weight: bold;
-  cursor: pointer;
+  min-height: 95px;
+  margin: 12px 0;
+  font-size: 22px;
   touch-action: manipulation;
 }
 
-#reaction.green { background: #00b85a; color: #001b0d; }
+#reaction.green {
+  background: #00b85a;
+  color: #001b0d;
+}
+
+#reaction:focus-visible,
+#saveScore:focus-visible,
+#nickname:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
+}
+
+#nickname {
+  width: 100%;
+  padding: 13px;
+  margin: 12px 0;
+  background: #111;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 7px;
+  font-size: 16px;
+}
+
+#saveScore {
+  margin-bottom: 10px;
+}
+
+#saveScore:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+#saveScore[hidden] {
+  display: none;
+}
 
 .stats {
   line-height: 2;
-  margin-top: 15px;
+  margin-top: 18px;
 }
 
-a {
+#saveMessage {
+  min-height: 24px;
+  overflow-wrap: anywhere;
+}
+
+.leaderboard {
+  margin-top: 30px;
+  padding: 18px;
+  text-align: left;
+  background: #151515;
+  border: 1px solid #393939;
+  border-radius: 10px;
+}
+
+.leaderboard h2 {
+  color: #e10600;
+  font-size: 21px;
+  text-align: center;
+}
+
+.leaderboard > p {
+  text-align: center;
+  font-size: 13px;
+}
+
+#leaderboard {
+  padding-left: 28px;
+}
+
+#leaderboard li {
+  padding: 12px 4px;
+  border-bottom: 1px solid #333;
+  overflow-wrap: anywhere;
+}
+
+#leaderboard li:last-child {
+  border-bottom: 0;
+}
+
+.score-time {
+  float: right;
+  color: #ff5555;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.back {
   display: inline-block;
-  margin-top: 22px;
+  margin-top: 24px;
   color: #bbb;
   text-decoration: none;
 }
 
-a:hover { color: white; }
+.back:hover {
+  color: white;
+}
+
+@media (max-width: 450px) {
+  .panel {
+    padding: 20px 15px;
+  }
+
+  .light {
+    width: 34px;
+    height: 34px;
+  }
+
+  .lights {
+    gap: 7px;
+  }
+
+  .score-time {
+    float: none;
+    display: block;
+    margin-left: 0;
+  }
+}
 </style>
 </head>
+
 <body>
 <main class="panel">
   <div class="tag">F1 HUB RUSSIA // CLASSIFIED</div>
-  <h1>Проверка реакции</h1>
-  <p>Почувствуй себя на стартовой решётке Формулы-1!</p>
-  <p>Нажми «НАЧАТЬ», дождись зелёного света и нажми как можно быстрее.</p>
 
-  <div class="lights" id="lights">
+  <h1>Проверка реакции</h1>
+
+  <p>
+    Представь, что ты на стартовой решётке Формулы-1.
+    Дождись зелёного сигнала и нажми как можно быстрее!
+  </p>
+
+  <div class="lights" id="lights" aria-label="Стартовые огни">
     <div class="light"></div>
     <div class="light"></div>
     <div class="light"></div>
@@ -118,83 +244,238 @@ a:hover { color: white; }
   </div>
 
   <div id="message" aria-live="polite">Готов к старту?</div>
-  <button id="reaction">НАЧАТЬ</button>
+
+  <button id="reaction" type="button">НАЧАТЬ</button>
 
   <div class="stats">
     Твоя реакция: <strong id="result">—</strong><br>
-    Лучший результат: <strong id="best">—</strong>
+    Лучший личный результат: <strong id="best">—</strong>
   </div>
 
-  <a href="index.html">← Вернуться на главную</a>
+  <section>
+    <input
+      id="nickname"
+      type="text"
+      minlength="2"
+      maxlength="16"
+      placeholder="Твой ник (2–16 символов)"
+      autocomplete="nickname"
+      aria-label="Твой ник"
+    >
+
+    <button id="saveScore" type="button" hidden>
+      В ТАБЛИЦУ РЕКОРДОВ
+    </button>
+
+    <p id="saveMessage" aria-live="polite"></p>
+  </section>
+
+  <section class="leaderboard">
+    <h2>🏆 ТОП-10 ПИЛОТОВ</h2>
+    <p>Общий рейтинг F1 Hub Russia</p>
+    <ol id="leaderboard">
+      <li>Загрузка рейтинга...</li>
+    </ol>
+  </section>
+
+  <a class="back" href="index.html">← Вернуться на главную</a>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+"use strict";
+
+/* ВСТАВЬ ДАННЫЕ СВОЕГО ПРОЕКТА SUPABASE */
+const SUPABASE_URL = "ВСТАВЬ_PROJECT_URL";
+const SUPABASE_KEY = "ВСТАВЬ_PUBLISHABLE_KEY";
+
+/* Подключение к базе */
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
 const lights = document.getElementById("lights");
 const button = document.getElementById("reaction");
 const message = document.getElementById("message");
 const result = document.getElementById("result");
 const best = document.getElementById("best");
+const nickname = document.getElementById("nickname");
+const saveButton = document.getElementById("saveScore");
+const saveMessage = document.getElementById("saveMessage");
+const leaderboard = document.getElementById("leaderboard");
 
 let state = "idle";
 let startTime = 0;
-let timer;
+let timer = null;
+let pendingScore = null;
+let submitting = false;
 
 function showBest() {
   const saved = localStorage.getItem("f1ReactionBest");
   best.textContent = saved ? saved + " мс" : "—";
 }
 
+function showLeaderboardMessage(text) {
+  const item = document.createElement("li");
+  item.textContent = text;
+  leaderboard.replaceChildren(item);
+}
+
+async function loadLeaderboard() {
+  showLeaderboardMessage("Загрузка рейтинга...");
+
+  try {
+    const { data, error } = await db
+      .from("reaction_scores")
+      .select("nickname, reaction_ms, created_at")
+      .order("reaction_ms", { ascending: true })
+      .order("created_at", { ascending: true })
+      .limit(10);
+
+    if (error) throw error;
+
+    leaderboard.replaceChildren();
+
+    if (!data || data.length === 0) {
+      showLeaderboardMessage("Пока нет рекордов. Стань первым!");
+      return;
+    }
+
+    data.forEach((entry, index) => {
+      const item = document.createElement("li");
+      const name = document.createElement("span");
+      const time = document.createElement("span");
+
+      name.textContent = (index + 1) + ". " + entry.nickname;
+      time.className = "score-time";
+      time.textContent = entry.reaction_ms + " мс";
+
+      item.append(name, time);
+      leaderboard.appendChild(item);
+    });
+  } catch (error) {
+    console.error("Ошибка загрузки рейтинга:", error);
+    showLeaderboardMessage("Не удалось загрузить рейтинг. Проверь настройки Supabase.");
+  }
+}
+
 function startTest() {
   clearTimeout(timer);
+
   lights.className = "lights";
   result.textContent = "—";
+  saveButton.hidden = true;
+  saveMessage.textContent = "";
+  pendingScore = null;
+
   state = "waiting";
   button.className = "";
   button.textContent = "ЖДИ ЗЕЛЁНОГО!";
   message.textContent = "Внимание…";
-
   lights.classList.add("red");
+
+  const delay = 2000 + Math.random() * 3000;
 
   timer = setTimeout(() => {
     if (state !== "waiting") return;
+
     state = "green";
     lights.className = "lights green";
     button.className = "green";
     button.textContent = "ЖМИ!";
     message.textContent = "СТАРТ!";
     startTime = performance.now();
-  }, 2000 + Math.random() * 3000);
+  }, delay);
 }
 
 button.addEventListener("click", () => {
   if (state === "idle" || state === "done" || state === "false") {
     startTest();
-  } else if (state === "waiting") {
+    return;
+  }
+
+  if (state === "waiting") {
     clearTimeout(timer);
     state = "false";
     lights.className = "lights";
     button.className = "";
     button.textContent = "ПОПРОБОВАТЬ ЕЩЁ";
-    message.textContent = "ФАЛЬСТАРТ! Нажал слишком рано.";
+    message.textContent = "ФАЛЬСТАРТ! Ты нажал слишком рано.";
     result.textContent = "Фальстарт";
-  } else if (state === "green") {
+    return;
+  }
+
+  if (state === "green") {
     const ms = Math.round(performance.now() - startTime);
+
     state = "done";
+    pendingScore = ms;
+
     button.className = "";
     button.textContent = "ЕЩЁ ОДИН СТАРТ";
     message.textContent = "Твоя реакция: " + ms + " мс";
     result.textContent = ms + " мс";
 
     const oldBest = Number(localStorage.getItem("f1ReactionBest"));
+
     if (!oldBest || ms < oldBest) {
       localStorage.setItem("f1ReactionBest", ms);
-      message.textContent += " — НОВЫЙ РЕКОРД!";
+      message.textContent += " — НОВЫЙ ЛИЧНЫЙ РЕКОРД!";
     }
+
+    saveButton.hidden = false;
     showBest();
   }
 });
 
+saveButton.addEventListener("click", async () => {
+  if (submitting) return;
+
+  const name = nickname.value.trim();
+
+  if (name.length < 2 || name.length > 16) {
+    saveMessage.textContent = "Ник должен содержать от 2 до 16 символов.";
+    return;
+  }
+
+  if (pendingScore === null || pendingScore < 80 || pendingScore > 2000) {
+    saveMessage.textContent = "Этот результат нельзя отправить в рейтинг.";
+    return;
+  }
+
+  submitting = true;
+  saveButton.disabled = true;
+  saveMessage.textContent = "Отправляем результат...";
+
+  try {
+    const { error } = await db
+      .from("reaction_scores")
+      .insert({
+        nickname: name,
+        reaction_ms: pendingScore
+      });
+
+    if (error) throw error;
+
+    saveMessage.textContent = "Результат отправлен в общий рейтинг!";
+    saveButton.hidden = true;
+    pendingScore = null;
+
+    await loadLeaderboard();
+  } catch (error) {
+    console.error("Ошибка сохранения результата:", error);
+    saveMessage.textContent =
+      "Не удалось сохранить. Проверь URL, ключ и настройки таблицы.";
+  } finally {
+    submitting = false;
+    saveButton.disabled = false;
+  }
+});
+
 showBest();
+loadLeaderboard();
 </script>
 </body>
 </html>
+
