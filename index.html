@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#101010">
-  <meta name="description" content="F1 Hub Russia — новости, календарь, результаты и статистика Формулы-1.">
   <title>F1 Hub Russia — Главная</title>
 
   <style>
@@ -18,10 +17,6 @@
 
     * {
       box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
     }
 
     body {
@@ -286,20 +281,21 @@
     <section class="hero">
       <h2>Добро пожаловать в F1 Hub Russia!</h2>
       <p>
-        Всё о Формуле-1 в одном месте: календарь гонок, результаты,
-        пилоты и команды. Следи за сезоном и не пропускай старты.
+        Всё о Формуле-1 в одном месте: календарь гонок,
+        результаты, пилоты и команды. Следи за сезоном
+        и не пропускай старты.
       </p>
       <a class="button" href="calendar.html">Смотреть календарь →</a>
     </section>
 
-    <section class="countdown-section" aria-labelledby="countdown-title">
-      <h2 id="countdown-title">🏁 До следующего Гран-при</h2>
+    <section class="countdown-section">
+      <h2>🏁 До следующего Гран-при</h2>
       <h3 id="race-name">Гран-при Мексики</h3>
-      <p class="race-date" id="race-date">
-        2 ноября 2026 года · 05:00 по Москве
+      <p class="race-date">
+        1 ноября 2026 года · 23:00 по Москве
       </p>
 
-      <div class="countdown" aria-label="Обратный отсчёт">
+      <div class="countdown">
         <div class="countdown-item">
           <strong id="days">--</strong>
           <span>Дней</span>
@@ -319,10 +315,10 @@
       </div>
 
       <p id="countdown-message" class="race-date">
-        Подключение к серверу времени...
+        Рассчитываем время до старта...
       </p>
       <p id="sync-status" class="sync-status">
-        Проверяем время через интернет.
+        Расчёт по абсолютному времени.
       </p>
     </section>
 
@@ -375,52 +371,50 @@
 
   <script>
     (() => {
-      // 2 ноября 2026 года, 05:00 по Москве (UTC+3).
+      // 1 ноября 2026, 23:00 по Москве (UTC+3).
+      // Явное смещение делает целевой момент независимым
+      // от часового пояса браузера.
       const raceTimestamp =
-        Date.parse("2026-11-02T05:00:00+03:00");
+        Date.parse("2026-11-01T23:00:00+03:00");
 
-      const ids = ["days", "hours", "minutes", "seconds"];
-      const fields = {};
+      const fields = {
+        days: document.getElementById("days"),
+        hours: document.getElementById("hours"),
+        minutes: document.getElementById("minutes"),
+        seconds: document.getElementById("seconds")
+      };
 
-      ids.forEach(id => {
-        fields[id] = document.getElementById(id);
-      });
+      const message =
+        document.getElementById("countdown-message");
 
-      const message = document.getElementById("countdown-message");
-      const status = document.getElementById("sync-status");
+      const status =
+        document.getElementById("sync-status");
 
-      let serverBase = null;
-      let performanceBase = null;
-      let syncInProgress = false;
-      let timer = null;
-
-      function setStatus(text) {
-        status.textContent = text;
-      }
-
-      function currentTime() {
-        if (serverBase !== null && performanceBase !== null) {
-          return serverBase + performance.now() - performanceBase;
-        }
-
-        return Date.now();
+      if (
+        Object.values(fields).some(element => !element) ||
+        !message ||
+        !status
+      ) {
+        console.error("Не найдены элементы обратного отсчёта.");
+        return;
       }
 
       function updateCountdown() {
-        const remaining = raceTimestamp - currentTime();
+        // Date.now() возвращает время Unix в миллисекундах.
+        // Часовой пояс компьютера на этот расчёт не влияет.
+        const remaining = raceTimestamp - Date.now();
 
         if (remaining <= 0) {
-          ids.forEach(id => {
-            fields[id].textContent = "0";
-          });
+          fields.days.textContent = "0";
+          fields.hours.textContent = "0";
+          fields.minutes.textContent = "0";
+          fields.seconds.textContent = "0";
 
           message.textContent =
-            "Время старта наступило. Проверь календарь следующего этапа.";
+            "Стартовое время наступило. Проверь календарь следующего этапа.";
 
-          if (timer !== null) {
-            clearInterval(timer);
-            timer = null;
-          }
+          status.textContent =
+            "Проверь системные часы и дату старта.";
 
           return;
         }
@@ -436,102 +430,16 @@
 
         fields.seconds.textContent =
           Math.floor((remaining % 60000) / 1000);
-      }
 
-      async function requestTime(url, parseResponse) {
-        const start = performance.now();
+        message.textContent =
+          "Обратный отсчёт до старта Гран-при Мексики.";
 
-        const response = await fetch(url, {
-          cache: "no-store"
-        });
-
-        if (!response.ok) {
-          throw new Error("Сервер вернул ошибку");
-        }
-
-        const data = await parseResponse(response);
-        const end = performance.now();
-
-        if (!Number.isFinite(data)) {
-          throw new Error("Неверный формат времени");
-        }
-
-        return {
-          timestamp: data + (end - start) / 2,
-          performanceTime: end
-        };
-      }
-
-      async function syncTime() {
-        if (syncInProgress) return;
-        syncInProgress = true;
-
-        try {
-          let result;
-
-          // Источник 1: WorldTimeAPI.
-          try {
-            result = await requestTime(
-              "https://worldtimeapi.org/api/timezone/Europe/Moscow",
-              async response => {
-                const data = await response.json();
-                return typeof data.unixtime === "number"
-                  ? data.unixtime * 1000
-                  : NaN;
-              }
-            );
-          } catch (error) {
-            // Источник 2: TimeAPI.io.
-            result = await requestTime(
-              "https://timeapi.io/api/Time/current/zone?timeZone=Europe%2FMoscow",
-              async response => {
-                const data = await response.json();
-                if (!data.dateTime) return NaN;
-
-                // dateTime возвращается как московское местное время.
-                // Разбираем его явно в часовом поясе Europe/Moscow.
-                const parts = data.dateTime.match(
-                  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/
-                );
-
-                if (!parts) return NaN;
-
-                const [, y, mo, d, h, mi, s] = parts;
-                const formatted =
-                  `${y}-${mo}-${d}T${h}:${mi}:${s}+03:00`;
-
-                return Date.parse(formatted);
-              }
-            );
-          }
-
-          serverBase = result.timestamp;
-          performanceBase = result.performanceTime;
-
-          setStatus("Время синхронизировано через интернет · МСК.");
-          message.textContent = "Обратный отсчёт до старта гонки.";
-        } catch (error) {
-          serverBase = null;
-          performanceBase = null;
-
-          setStatus(
-            "Не удалось подключиться к серверам времени. Используются системные часы устройства."
-          );
-
-          message.textContent =
-            "Отсчёт работает по часам устройства; проверь правильность даты и времени.";
-        } finally {
-          syncInProgress = false;
-          updateCountdown();
-        }
+        status.textContent =
+          "Время старта: 23:00 МСК · Часовой пояс браузера не используется.";
       }
 
       updateCountdown();
-
-      timer = setInterval(updateCountdown, 1000);
-
-      syncTime();
-      setInterval(syncTime, 5 * 60 * 1000);
+      setInterval(updateCountdown, 1000);
     })();
   </script>
 </body>
