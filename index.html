@@ -154,5 +154,57 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
+  
+<div id="msk-clock" style="
+  text-align: center;
+  margin: 16px auto;
+  padding: 12px;
+  color: #fff;
+  background: #171717;
+  border: 1px solid #333;
+  border-radius: 10px;
+  max-width: 280px;
+  font-family: Arial, sans-serif;
+">
+  <div style="color: #aaa; font-size: 12px; margin-bottom: 5px;">
+    МОСКОВСКОЕ ВРЕМЯ · МСК
+  </div>
+  <div id="msk-time" style="font-size: 30px; font-weight: 800;">
+    --:--:--
+  </div>
+  <div id="msk-date" style="color: #aaa; font-size: 13px; margin-top: 5px;">
+    Загрузка даты...
+  </div>
+</div>
+
+<script>
+(function () {
+  const timeElement = document.getElementById("msk-time");
+  const dateElement = document.getElementById("msk-date");
+
+  function updateClock() {
+    const now = new Date();
+
+    timeElement.textContent = new Intl.DateTimeFormat("ru-RU", {
+      timeZone: "Europe/Moscow",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(now);
+
+    dateElement.textContent = new Intl.DateTimeFormat("ru-RU", {
+      timeZone: "Europe/Moscow",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }).format(now);
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+})();
+</script>
+
 </body>
 </html>
