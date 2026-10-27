@@ -18,6 +18,7 @@
     }
 
     * { box-sizing: border-box; }
+
     html { scroll-behavior: smooth; }
 
     body {
@@ -28,7 +29,10 @@
       line-height: 1.6;
     }
 
-    a { color: inherit; text-decoration: none; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
     /* Стартовая заставка */
     #f1-splash {
@@ -40,7 +44,12 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      background: radial-gradient(ellipse at center, #241010 0%, #101010 55%, #050505 100%);
+      background: radial-gradient(
+        ellipse at center,
+        #241010 0%,
+        #101010 55%,
+        #050505 100%
+      );
       color: white;
       animation: splash-exit .7s ease 2.5s forwards;
     }
@@ -119,14 +128,24 @@
     }
 
     @keyframes splash-exit {
-      to { opacity: 0; visibility: hidden; pointer-events: none; }
+      to {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #f1-splash { animation-duration: .2s; animation-delay: 1s; }
+      #f1-splash {
+        animation-duration: .2s;
+        animation-delay: 1s;
+      }
+
       #f1-splash .speed-lines,
       #f1-splash .splash-content,
-      #f1-splash .splash-loader::after { animation: none; }
+      #f1-splash .splash-loader::after {
+        animation: none;
+      }
     }
 
     /* Шапка сайта */
@@ -145,8 +164,12 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .site-header p { margin: 8px 0 0; color: #ddd; }
+    .site-header p {
+      margin: 8px 0 0;
+      color: #ddd;
+    }
 
+    /* Главное меню */
     nav {
       display: flex;
       justify-content: center;
@@ -170,6 +193,7 @@
       outline: none;
     }
 
+    /* Основной контент */
     .container {
       width: min(1100px, 92%);
       margin: 28px auto;
@@ -214,7 +238,10 @@
       transition: background .2s, transform .2s;
     }
 
-    .button:hover { background: #b90000; transform: translateY(-1px); }
+    .button:hover {
+      background: #b90000;
+      transform: translateY(-1px);
+    }
 
     .section { margin-top: 30px; }
 
@@ -225,6 +252,7 @@
       font-size: 25px;
     }
 
+    /* Таблица результатов */
     .table-wrapper {
       overflow-x: auto;
       border: 1px solid #333;
@@ -253,9 +281,13 @@
     }
 
     .results-table td { font-weight: normal; }
+
     .results-table tr:last-child td { border-bottom: none; }
+
     .results-table tbody tr:hover { background: #242424; }
-    .result-label, .driver-name { font-weight: bold !important; }
+
+    .result-label,
+    .driver-name { font-weight: bold !important; }
 
     .team-name {
       color: var(--text);
@@ -264,6 +296,7 @@
       font-weight: normal;
     }
 
+    /* Ссылка на странице остаётся рабочей */
     .secret-link a {
       color: inherit;
       text-decoration: none;
@@ -368,12 +401,11 @@
       font-size: 11px;
     }
 
-    .checo-credit a {
-      text-decoration: underline;
-    }
+    .checo-credit a { text-decoration: underline; }
 
     @media (max-width: 600px) {
       nav { gap: 4px; padding: 10px 5px; }
+
       nav a { padding: 8px; font-size: 13px; }
 
       .results-table th,
@@ -383,8 +415,13 @@
       }
 
       .hero { padding: 24px 17px; }
+
       .checo-card { padding: 12px; }
-      #checo-close { top: 17px; right: 17px; }
+
+      #checo-close {
+        top: 17px;
+        right: 17px;
+      }
     }
   </style>
 </head>
@@ -393,13 +430,17 @@
   <!-- Стартовая заставка -->
   <div id="f1-splash" aria-label="F1 Hub Russia — загрузка" role="status">
     <div class="speed-lines"></div>
+
     <div class="splash-content">
       <img class="splash-logo-image" src="logo.png" alt="F1 Hub Russia">
       <div class="splash-loader"></div>
-      <p class="splash-caption">ТВОЙ МИР ФОРМУЛЫ-1 · PREPARING FOR LIGHTS OUT</p>
+      <p class="splash-caption">
+        ТВОЙ МИР ФОРМУЛЫ-1 · PREPARING FOR LIGHTS OUT
+      </p>
     </div>
   </div>
 
+  <!-- Шапка сайта -->
   <header class="site-header">
     <h1 id="site-logo" title="🤫 Три нажатия...">
       🏎️ F<span class="secret-link"><a href="reaction.html">1</a></span> Hub Russia
@@ -407,6 +448,7 @@
     <p>Твой портал о мире Формулы-1</p>
   </header>
 
+  <!-- Главное меню -->
   <nav aria-label="Главное меню">
     <a href="index.html">Главная</a>
     <a href="calendar.html">Календарь 2026</a>
@@ -418,16 +460,20 @@
   </nav>
 
   <main class="container">
+    <!-- Приветственный блок -->
     <section class="hero">
       <h2>Добро пожаловать в F1 Hub Russia!</h2>
+
       <p>
         Всё о Формуле-1 в одном месте: календарь гонок,
         результаты, пилоты и команды. Следи за сезоном
         и не пропускай главные события.
       </p>
+
       <a class="button" href="calendar.html">Смотреть календарь →</a>
     </section>
 
+    <!-- Результаты последней гонки -->
     <section class="section">
       <h2 class="section-title">🏆 Итоги прошлой гонки</h2>
       <h3>🇺🇸 Гран-при США — 25 октября 2026</h3>
@@ -441,17 +487,20 @@
               <th>Команда / результат</th>
             </tr>
           </thead>
+
           <tbody>
             <tr>
               <td class="result-label">🥇 Победитель</td>
               <td class="driver-name">Кими Антонелли</td>
               <td class="team-name">Mercedes</td>
             </tr>
+
             <tr>
               <td class="result-label">🏁 Поул-позиция</td>
               <td class="driver-name">Кими Антонелли</td>
               <td class="team-name">Mercedes</td>
             </tr>
+
             <tr>
               <td class="result-label">⚡ Лучший круг</td>
               <td class="driver-name">Шарль Леклер</td>
@@ -467,6 +516,7 @@
     </section>
   </main>
 
+  <!-- Подвал -->
   <footer>
     <p>🏎️ F1 Hub Russia</p>
     <p>
@@ -476,19 +526,20 @@
   </footer>
 
   <!-- Секретное окно Чеко -->
-  <div id="checo-easter-egg"
-       role="dialog"
-       aria-modal="true"
-       aria-labelledby="checo-title"
-       aria-hidden="true">
+  <div
+    id="checo-easter-egg"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="checo-title"
+    aria-hidden="true"
+  >
     <div class="checo-card">
       <button id="checo-close" type="button" aria-label="Закрыть">×</button>
 
       <img
         id="checo-photo"
-        src="https://commons.wikimedia.org/wiki/Special:FilePath/Sergio%20P%C3%A9rez%20%2836099986012%29.jpg"
+        src="./checo.jpg"
         alt="Серхио Перес"
-        loading="eager"
       >
 
       <h2 id="checo-title">CHECO?! 🇲🇽</h2>
@@ -497,13 +548,17 @@
 
       <small class="checo-credit">
         Фото: Jake Archibald ·
-        <a href="https://creativecommons.org/licenses/by/2.0/"
-           target="_blank" rel="noopener noreferrer">CC BY 2.0</a>
+        <a
+          href="https://creativecommons.org/licenses/by/2.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >CC BY 2.0</a>
       </small>
     </div>
   </div>
 
   <script>
+    // Пасхалка: три быстрых нажатия на заголовок.
     (() => {
       const logo = document.getElementById("site-logo");
       const popup = document.getElementById("checo-easter-egg");
@@ -535,11 +590,10 @@
       }
 
       logo.addEventListener("click", (event) => {
-        // Не мешаем обычному переходу по ссылке reaction.html.
+        // Ссылка «1» продолжает открывать reaction.html.
         if (event.target.closest("a")) return;
 
         clicks++;
-
         clearTimeout(clickTimer);
 
         if (clicks >= 3) {
@@ -554,22 +608,24 @@
 
       closeButton.addEventListener("click", closeCheco);
 
+      // Закрытие при нажатии на затемнённый фон.
       popup.addEventListener("click", (event) => {
         if (event.target === popup) closeCheco();
       });
 
+      // Закрытие клавишей Escape.
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape" && popup.classList.contains("show")) {
           closeCheco();
         }
       });
 
-      // Если внешнее фото не загрузится, показываем понятное сообщение.
+      // Если фото не найдено, показываем понятный текст.
       photo.addEventListener("error", () => {
-        photo.alt = "Фото Серхио Переса временно недоступно";
+        photo.alt = "Фото Серхио Переса не найдено. Проверь файл checo.jpg.";
       });
     })();
   </script>
 </body>
 </html>
-```
+
