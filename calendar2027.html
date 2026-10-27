@@ -34,6 +34,10 @@
       border-color: #e10600;
     }
 
+    .calendar-card.completed {
+      border-left-color: #555;
+    }
+
     .calendar-top {
       display: flex;
       align-items: center;
@@ -81,6 +85,22 @@
       font-weight: 700;
     }
 
+    .calendar-status.next {
+      background: #e10600;
+      color: white;
+    }
+
+    .calendar-status.done {
+      background: #292929;
+      color: #aaa;
+    }
+
+    .calendar-sprint {
+      color: #ff6565;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .calendar-note {
       color: #999;
       font-size: 13px;
@@ -108,9 +128,7 @@
   <nav aria-label="Главное меню">
     <a href="index.html">Главная</a>
     <a href="calendar.html">Календарь 2026</a>
-    <a href="calendar2027.html" class="active" aria-current="page">
-      Календарь 2027
-    </a>
+    <a href="calendar2027.html" class="active" aria-current="page">Календарь 2027</a>
     <a href="results.html">Результаты</a>
     <a href="drivers.html">Пилоты</a>
     <a href="teams.html">Команды</a>
@@ -118,9 +136,8 @@
 
   <main>
     <h1 class="page-heading">Календарь F1 2027</h1>
-
     <p class="page-subtitle">
-      Этапы чемпионата мира по Формуле-1 сезона 2027.
+      Все 24 этапа сезона, даты, трассы и спринтерские уик-энды.
     </p>
 
     <section class="card">
@@ -130,30 +147,284 @@
 
         <article class="calendar-card">
           <div class="calendar-top">
-            <span class="calendar-round">СЕЗОН 2027</span>
-            <span class="calendar-date">2027</span>
+            <span class="calendar-round">ЭТАП 01</span>
+            <span class="calendar-date">12–14 марта</span>
           </div>
+          <h3 class="calendar-name">Гран-при Бахрейна</h3>
+          <div class="calendar-country">📍 Бахрейн</div>
+          <div class="calendar-circuit">🏁 Сахир</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
 
-          <h3 class="calendar-name">Расписание сезона</h3>
-
-          <div class="calendar-country">
-            Даты этапов уточняются
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 02</span>
+            <span class="calendar-date">19–21 марта</span>
           </div>
+          <h3 class="calendar-name">Гран-при Саудовской Аравии</h3>
+          <div class="calendar-country">📍 Саудовская Аравия</div>
+          <div class="calendar-circuit">🏁 Джидда</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
 
-          <div class="calendar-circuit">
-            🏁 Официальный календарь будет добавлен после подтверждения расписания.
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 03</span>
+            <span class="calendar-date">2–4 апреля</span>
           </div>
+          <h3 class="calendar-name">Гран-при Австралии</h3>
+          <div class="calendar-country">📍 Австралия</div>
+          <div class="calendar-circuit">🏁 Альберт-Парк, Мельбурн</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
 
-          <span class="calendar-status">
-            Ожидается расписание
-          </span>
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 04</span>
+            <span class="calendar-date">9–11 апреля</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Японии</h3>
+          <div class="calendar-country">📍 Япония</div>
+          <div class="calendar-circuit">🏁 Сузука</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 05</span>
+            <span class="calendar-date">16–18 апреля</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Китая</h3>
+          <div class="calendar-country">📍 Китай</div>
+          <div class="calendar-circuit">🏁 Шанхай</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 06</span>
+            <span class="calendar-date">30 апреля – 2 мая</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Майами</h3>
+          <div class="calendar-country">📍 США</div>
+          <div class="calendar-circuit">🏁 Miami International Autodrome</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 07</span>
+            <span class="calendar-date">21–23 мая</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Канады</h3>
+          <div class="calendar-country">📍 Канада</div>
+          <div class="calendar-circuit">🏁 Circuit Gilles-Villeneuve, Монреаль</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 08</span>
+            <span class="calendar-date">4–6 июня</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Монако</h3>
+          <div class="calendar-country">📍 Монако</div>
+          <div class="calendar-circuit">🏁 Уличная трасса Монте-Карло</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 09</span>
+            <span class="calendar-date">18–20 июня</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Португалии</h3>
+          <div class="calendar-country">📍 Португалия</div>
+          <div class="calendar-circuit">🏁 Алгарве, Портиман</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 10</span>
+            <span class="calendar-date">2–4 июля</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Великобритании</h3>
+          <div class="calendar-country">📍 Великобритания</div>
+          <div class="calendar-circuit">🏁 Сильверстоун</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 11</span>
+            <span class="calendar-date">9–11 июля</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Австрии</h3>
+          <div class="calendar-country">📍 Австрия</div>
+          <div class="calendar-circuit">🏁 Ред Булл Ринг, Шпильберг</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 12</span>
+            <span class="calendar-date">23–25 июля</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Бельгии</h3>
+          <div class="calendar-country">📍 Бельгия</div>
+          <div class="calendar-circuit">🏁 Спа-Франкоршам</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 13</span>
+            <span class="calendar-date">30 июля – 1 августа</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Венгрии</h3>
+          <div class="calendar-country">📍 Венгрия</div>
+          <div class="calendar-circuit">🏁 Хунгароринг, Будапешт</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 14</span>
+            <span class="calendar-date">3–5 сентября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Италии</h3>
+          <div class="calendar-country">📍 Италия</div>
+          <div class="calendar-circuit">🏁 Монца</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 15</span>
+            <span class="calendar-date">10–12 сентября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Испании</h3>
+          <div class="calendar-country">📍 Испания</div>
+          <div class="calendar-circuit">🏁 Мадрид, Madring</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 16</span>
+            <span class="calendar-date">24–26 сентября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Азербайджана</h3>
+          <div class="calendar-country">📍 Азербайджан</div>
+          <div class="calendar-circuit">🏁 Бакинская городская трасса</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 17</span>
+            <span class="calendar-date">1–3 октября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Турции</h3>
+          <div class="calendar-country">📍 Турция</div>
+          <div class="calendar-circuit">🏁 Истанбул-Парк*</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 18</span>
+            <span class="calendar-date">8–10 октября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Сингапура</h3>
+          <div class="calendar-country">📍 Сингапур</div>
+          <div class="calendar-circuit">🏁 Марина-Бэй</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 19</span>
+            <span class="calendar-date">22–24 октября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при США</h3>
+          <div class="calendar-country">📍 США</div>
+          <div class="calendar-circuit">🏁 Circuit of the Americas, Остин</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 20</span>
+            <span class="calendar-date">29–31 октября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Мехико</h3>
+          <div class="calendar-country">📍 Мексика</div>
+          <div class="calendar-circuit">🏁 Автодром имени братьев Родригес</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 21</span>
+            <span class="calendar-date">5–7 ноября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Сан-Паулу</h3>
+          <div class="calendar-country">📍 Бразилия</div>
+          <div class="calendar-circuit">🏁 Интерлагос</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 22</span>
+            <span class="calendar-date">18–20 ноября</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Лас-Вегаса</h3>
+          <div class="calendar-country">📍 США</div>
+          <div class="calendar-circuit">🏁 Las Vegas Strip Circuit</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 23</span>
+            <span class="calendar-date">3–5 декабря</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Катара</h3>
+          <div class="calendar-country">📍 Катар</div>
+          <div class="calendar-circuit">🏁 Лусаил</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
+        </article>
+
+        <article class="calendar-card">
+          <div class="calendar-top">
+            <span class="calendar-round">ЭТАП 24</span>
+            <span class="calendar-date">10–12 декабря</span>
+          </div>
+          <h3 class="calendar-name">Гран-при Абу-Даби</h3>
+          <div class="calendar-country">📍 ОАЭ</div>
+          <div class="calendar-circuit">🏁 Яс-Марина</div>
+          <div class="calendar-sprint">⚡ Уик-энд со спринтом</div>
+          <span class="calendar-status">Запланирован</span>
         </article>
 
       </div>
 
       <p class="calendar-note">
-        Информация на этой странице размещена непосредственно в HTML.
-        Внешняя загрузка данных не используется.
+        В календаре 24 этапа и 10 спринтерских уик-эндов.
+        *Проведение этапа в Турции зависит от омологации трассы FIA.
+        Расписание может измениться.
       </p>
     </section>
   </main>
