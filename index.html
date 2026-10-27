@@ -553,73 +553,66 @@
     </div>
   </div>
 
-  <script>
-    // Пасхалка: три быстрых нажатия на заголовок.
-    (() => {
-      const logo = document.getElementById("site-logo");
-      const popup = document.getElementById("checo-easter-egg");
-      const closeButton = document.getElementById("checo-close");
-      
-      if (!logo || !popup || !closeButton) return;
-      
-      let clicks = 0;
-      let clickTimer = null;
-      let previousFocus = null;
+ 
+<script>
+  // Пасхалка: три быстрых нажатия на заголовок.
+  (() => {
+    const logo = document.getElementById("site-logo");
+    const popup = document.getElementById("checo-easter-egg");
+    const closeButton = document.getElementById("checo-close");
 
-      function openCheco() {
-        previousFocus = document.activeElement;
-        popup.classList.add("show");
-        popup.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
-        closeButton.focus();
+    if (!logo || !popup || !closeButton) return;
+
+    let clicks = 0;
+    let clickTimer = null;
+    let previousFocus = null;
+
+    function openCheco() {
+      previousFocus = document.activeElement;
+      popup.classList.add("show");
+      popup.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeButton.focus();
+    }
+
+    function closeCheco() {
+      popup.classList.remove("show");
+      popup.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+
+      if (previousFocus && typeof previousFocus.focus === "function") {
+        previousFocus.focus();
       }
+    }
 
-      function closeCheco() {
-        popup.classList.remove("show");
-        popup.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
+    logo.addEventListener("click", (event) => {
+      if (event.target.closest("a")) return;
 
-        if (previousFocus && typeof previousFocus.focus === "function") {
-          previousFocus.focus();
-        }
+      clicks++;
+      clearTimeout(clickTimer);
+
+      if (clicks >= 3) {
+        clicks = 0;
+        openCheco();
+      } else {
+        clickTimer = setTimeout(() => {
+          clicks = 0;
+        }, 1800);
       }
+    });
 
- logo.addEventListener("click", (event) => {
-  // Ссылка «1» продолжает открывать reaction.html.
-  if (event.target.closest("a")) return;
+    closeButton.addEventListener("click", closeCheco);
 
-  clicks++;
-  clearTimeout(clickTimer);
+    popup.addEventListener("click", (event) => {
+      if (event.target === popup) closeCheco();
+    });
 
-  if (clicks >= 3) {
-    clicks = 0;
-    openCheco();
-  } else {
-    clickTimer = setTimeout(() => {
-      clicks = 0;
-    }, 1800);
-  }
-});
-
-closeButton.addEventListener("click", closeCheco);
-      
-      // Закрытие при нажатии на затемнённый фон.
-      popup.addEventListener("click", (event) => {
-        if (event.target === popup) closeCheco();
-      });
-
-      // Закрытие клавишей Escape.
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && popup.classList.contains("show")) {
-          closeCheco();
-        }
-      });
-
-      // Если фото не найдено, показываем понятный текст.
-      photo.addEventListener("error", () => {
-        photo.alt = "Фото Серхио Переса не найдено. Проверь файл checo.jpg.";
-      });
-    })();
-  </script>
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && popup.classList.contains("show")) {
+        closeCheco();
+      }
+    });
+  })();
+</script>
 </body>
 </html>
