@@ -1,495 +1,341 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101010">
-  <meta name="description" content="F1 Hub Russia — календарь, результаты, пилоты и команды Формулы-1.">
-  <link rel="icon" type="image/png" href="logo.png">
-  <title>F1 Hub Russia — Главная</title>
+  <meta name="theme-color" content="#111111">
+  <title>F1 Hub Russia</title>
+  <link rel="stylesheet" href="style.css">
 
   <style>
-    :root {
-      --red: #e10600;
-      --bg: #101010;
-      --panel: #1b1b1b;
-      --text: #f5f5f5;
-      --muted: #b8b8b8;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    /* Стартовая заставка */
-    #f1-splash {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background: radial-gradient(ellipse at center, #241010 0%, #101010 55%, #050505 100%);
-      color: white;
-      animation: splash-exit .7s ease 2.5s forwards;
-    }
-
-    #f1-splash .speed-lines {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: .2;
-      background: repeating-linear-gradient(
-        115deg,
-        transparent 0,
-        transparent 70px,
-        rgba(225, 6, 0, .22) 71px,
-        transparent 73px,
-        transparent 140px
-      );
-      animation: lines-move 1.5s linear infinite;
-    }
-
-    #f1-splash .splash-content {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      padding: 24px;
-      text-align: center;
-      animation: logo-enter .8s ease both;
-    }
-
-    #f1-splash .splash-logo-image {
-      display: block;
-      width: min(280px, 75vw);
-      max-height: 280px;
-      object-fit: contain;
-      margin: 0 auto 20px;
-      filter: drop-shadow(0 0 22px rgba(225, 6, 0, .18));
-    }
-
-    #f1-splash .splash-loader {
-      width: 150px;
-      height: 3px;
-      margin: 28px auto 0;
-      overflow: hidden;
-      background: #333;
-    }
-
-    #f1-splash .splash-loader::after {
-      content: "";
-      display: block;
-      width: 45%;
-      height: 100%;
-      background: var(--red);
-      animation: loader-move 1s ease-in-out infinite;
-    }
-
-    #f1-splash .splash-caption {
-      margin-top: 14px;
-      color: #aaa;
-      font-size: 10px;
-      letter-spacing: 2px;
-    }
-
-    @keyframes loader-move {
-      from { transform: translateX(-110%); }
-      to { transform: translateX(340%); }
-    }
-
-    @keyframes lines-move {
-      from { background-position: 0 0; }
-      to { background-position: 140px 0; }
-    }
-
-    @keyframes logo-enter {
-      from { opacity: 0; transform: translateY(18px) scale(.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    @keyframes splash-exit {
-      to { opacity: 0; visibility: hidden; pointer-events: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      #f1-splash { animation-duration: .2s; animation-delay: 1s; }
-      #f1-splash .speed-lines,
-      #f1-splash .splash-content,
-      #f1-splash .splash-loader::after { animation: none; }
-    }
-
-    /* Шапка сайта */
-    .site-header {
-      text-align: center;
-      padding: 32px 16px 25px;
-      background: linear-gradient(135deg, #240000, #111, #350000);
-      border-bottom: 3px solid var(--red);
-    }
-
-    .site-header h1 {
-      margin: 0;
-      font-size: clamp(27px, 5vw, 42px);
+    /* Заголовок сайта */
+    #site-logo {
       cursor: pointer;
       user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .site-header p { margin: 8px 0 0; color: #ddd; }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 14px;
-      background: #191919;
-      border-bottom: 1px solid #333;
-    }
-
-    nav a {
-      padding: 9px 13px;
-      border-radius: 5px;
-      font-size: 14px;
-      transition: background .2s, transform .2s;
-    }
-
-    nav a:hover,
-    nav a:focus-visible {
-      background: var(--red);
-      outline: none;
-    }
-
-    .container {
-      width: min(1100px, 92%);
-      margin: 28px auto;
-    }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 28px 22px;
-      border-radius: 12px;
-      background: linear-gradient(120deg, #300000, #1c1c1c 70%);
-      border: 1px solid #542020;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      right: -45px;
-      top: -35px;
-      width: 100px;
-      height: 180px;
-      background: rgba(225, 6, 0, .12);
-      transform: rotate(30deg);
-      pointer-events: none;
-    }
-
-    .hero h2 {
-      margin-top: 0;
-      font-size: clamp(24px, 4vw, 34px);
-    }
-
-    .hero p { color: #ddd; }
-
-    .button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 11px 17px;
-      background: var(--red);
-      color: white;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: background .2s, transform .2s;
-    }
-
-    .button:hover { background: #b90000; transform: translateY(-1px); }
-
-    .section { margin-top: 30px; }
-
-    .section-title {
-      margin: 0 0 18px;
-      padding-left: 12px;
-      border-left: 4px solid var(--red);
-      font-size: 25px;
-    }
-
-    .table-wrapper {
-      overflow-x: auto;
-      border: 1px solid #333;
-      border-radius: 10px;
-      background: var(--panel);
-    }
-
-    .results-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    .results-table th,
-    .results-table td {
-      padding: 16px;
-      border-bottom: 1px solid #333;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 15px;
-    }
-
-    .results-table th {
-      background: #292929;
-      color: #ff5555;
-      font-weight: bold;
-    }
-
-    .results-table td { font-weight: normal; }
-    .results-table tr:last-child td { border-bottom: none; }
-    .results-table tbody tr:hover { background: #242424; }
-    .result-label, .driver-name { font-weight: bold !important; }
-
-    .team-name {
-      color: var(--text);
-      font-size: inherit;
-      font-family: inherit;
-      font-weight: normal;
     }
 
     .secret-link a {
       color: inherit;
       text-decoration: none;
-      cursor: inherit;
     }
 
-    footer {
-      margin-top: 45px;
-      padding: 24px 15px;
+    /* Обратный отсчёт */
+    .race-countdown {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 30px 20px;
       text-align: center;
-      background: #191919;
-      border-top: 2px solid var(--red);
-      color: var(--muted);
+      color: white;
+      background: linear-gradient(135deg, #252525, #111);
+      border: 1px solid #444;
+      border-top: 4px solid #e10600;
+      border-radius: 12px;
+      box-sizing: border-box;
+    }
+
+    .race-countdown h2 {
+      margin: 0 0 10px;
+      font-size: clamp(22px, 4vw, 32px);
+    }
+
+    .race-name {
+      color: #ccc;
+      margin-bottom: 25px;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .countdown-unit {
+      background: #202020;
+      border: 1px solid #383838;
+      border-radius: 8px;
+      padding: 18px 5px;
+    }
+
+    .countdown-number {
+      display: block;
+      color: #ff2525;
+      font-size: clamp(27px, 6vw, 46px);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-label {
+      display: block;
+      color: #bbb;
+      font-size: 12px;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+
+    .countdown-footer {
+      margin: 22px 0 0;
+      color: #aaa;
       font-size: 13px;
     }
 
-    /* Пасхалка с Серхио Пересом */
+    /* Пасхалка Чеко */
     #checo-easter-egg {
       position: fixed;
       inset: 0;
-      z-index: 100001;
-      display: flex;
+      z-index: 9999;
+      display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, .9);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity .3s ease, visibility .3s ease;
+      padding: 18px;
+      background: rgba(0, 0, 0, 0.88);
+      box-sizing: border-box;
     }
 
-    #checo-easter-egg.show {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
+    #checo-easter-egg.is-visible {
+      display: flex;
+      animation: checo-fade-in 0.25s ease;
     }
 
     .checo-card {
       position: relative;
-      width: min(420px, 100%);
+      width: min(100%, 440px);
       max-height: 90vh;
       overflow-y: auto;
-      padding: 18px;
+      padding: 22px;
+      box-sizing: border-box;
       text-align: center;
-      background: linear-gradient(145deg, #202020, #101010);
-      border: 2px solid var(--red);
-      border-radius: 14px;
-      box-shadow: 0 0 35px rgba(225, 6, 0, .4);
-      transform: scale(.85) translateY(15px);
-      transition: transform .3s ease;
-    }
-
-    #checo-easter-egg.show .checo-card {
-      transform: scale(1) translateY(0);
-    }
-
-    .checo-card img {
-      display: block;
-      width: 100%;
-      max-height: 58vh;
-      object-fit: contain;
-      border-radius: 8px;
-      background: #080808;
-    }
-
-    .checo-card h2 {
-      margin: 12px 0 4px;
-      color: #ff3030;
-      font-size: 28px;
-    }
-
-    .checo-card p {
-      margin: 4px 0;
-      color: #ddd;
+      color: #fff;
+      background: linear-gradient(145deg, #252525, #101010);
+      border: 2px solid #e10600;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(225, 6, 0, 0.3);
     }
 
     #checo-close {
       position: absolute;
-      z-index: 2;
-      top: 24px;
-      right: 24px;
+      top: 8px;
+      right: 12px;
+      z-index: 1;
       width: 38px;
       height: 38px;
-      border: 1px solid rgba(255,255,255,.3);
+      border: 0;
       border-radius: 50%;
-      background: var(--red);
-      color: white;
-      font-size: 25px;
-      line-height: 1;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.75);
+      font-size: 28px;
       cursor: pointer;
     }
 
-    #checo-close:hover { background: #b90000; }
+    #checo-photo {
+      display: block;
+      width: 100%;
+      max-height: 55vh;
+      object-fit: cover;
+      border-radius: 10px;
+      background: #222;
+    }
+
+    .checo-card h2 {
+      margin: 18px 0 10px;
+      color: #ff2525;
+      font-size: clamp(25px, 6vw, 34px);
+    }
+
+    .checo-card p {
+      margin: 10px 0;
+    }
 
     .checo-credit {
       display: block;
-      margin-top: 12px;
-      color: #999;
+      margin-top: 18px;
+      color: #aaa;
       font-size: 11px;
     }
 
     .checo-credit a {
-      text-decoration: underline;
+      color: #ddd;
     }
 
-    @media (max-width: 600px) {
-      nav { gap: 4px; padding: 10px 5px; }
-      nav a { padding: 8px; font-size: 13px; }
+    @keyframes checo-fade-in {
+      from {
+        opacity: 0;
+        transform: scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
 
-      .results-table th,
-      .results-table td {
-        padding: 12px 9px;
-        font-size: 13px;
+    @media (max-width: 450px) {
+      .countdown-grid {
+        gap: 6px;
       }
 
-      .hero { padding: 24px 17px; }
-      .checo-card { padding: 12px; }
-      #checo-close { top: 17px; right: 17px; }
+      .countdown-unit {
+        padding: 14px 2px;
+      }
+
+      .countdown-label {
+        font-size: 10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #checo-easter-egg.is-visible {
+        animation: none;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- Стартовая заставка -->
-  <div id="f1-splash" aria-label="F1 Hub Russia — загрузка" role="status">
-    <div class="speed-lines"></div>
-    <div class="splash-content">
-      <img class="splash-logo-image" src="logo.png" alt="F1 Hub Russia">
-      <div class="splash-loader"></div>
-      <p class="splash-caption">ТВОЙ МИР ФОРМУЛЫ-1 · PREPARING FOR LIGHTS OUT</p>
-    </div>
-  </div>
 
-  <header class="site-header">
-    <h1 id="site-logo" title="🤫 Три нажатия...">
-      🏎️ F<span class="secret-link"><a href="reaction.html">1</a></span> Hub Russia
+  <header>
+    <h1 id="site-logo" title="🤫 Три быстрых нажатия...">
+      🏎️ F<span class="secret-link"><a href="reaction.html">1</a></span>
+      Hub Russia
     </h1>
-    <p>Твой портал о мире Формулы-1</p>
+    <p>Формула-1 и симрейсинг на русском</p>
   </header>
 
-  <nav aria-label="Главное меню">
+  <nav>
     <a href="index.html">Главная</a>
-    <a href="calendar.html">Календарь 2026</a>
+    <a href="calendar.html">Календарь</a>
     <a href="calendar2027.html">Календарь 2027</a>
     <a href="results.html">Результаты</a>
     <a href="drivers.html">Пилоты</a>
     <a href="teams.html">Команды</a>
-    <a href="tracks.html">Трассы F1</a>
+    <a href="tracks.html">Трассы</a>
+    <a href="download.html">Скачать</a>
   </nav>
 
-  <main class="container">
-    <section class="hero">
-      <h2>Добро пожаловать в F1 Hub Russia!</h2>
-      <p>
-        Всё о Формуле-1 в одном месте: календарь гонок,
-        результаты, пилоты и команды. Следи за сезоном
-        и не пропускай главные события.
+  <main>
+
+    <!-- Обратный отсчёт до гонки -->
+    <section class="race-countdown">
+      <h2>🏁 До следующей гонки</h2>
+
+      <p class="race-name">
+        Гран-при Мехико · 1 ноября 2026
       </p>
-      <a class="button" href="calendar.html">Смотреть календарь →</a>
+
+      <div class="countdown-grid" id="raceCountdown">
+        <div class="countdown-unit">
+          <span class="countdown-number" id="raceDays">--</span>
+          <span class="countdown-label">Дней</span>
+        </div>
+
+        <div class="countdown-unit">
+          <span class="countdown-number" id="raceHours">--</span>
+          <span class="countdown-label">Часов</span>
+        </div>
+
+        <div class="countdown-unit">
+          <span class="countdown-number" id="raceMinutes">--</span>
+          <span class="countdown-label">Минут</span>
+        </div>
+
+        <div class="countdown-unit">
+          <span class="countdown-number" id="raceSeconds">--</span>
+          <span class="countdown-label">Секунд</span>
+        </div>
+      </div>
+
+      <p class="countdown-footer" id="raceCountdownStatus">
+        Старт гонки — 20:00 по московскому времени
+      </p>
     </section>
 
-    <section class="section">
-      <h2 class="section-title">🏆 Итоги прошлой гонки</h2>
-      <h3>🇺🇸 Гран-при США — 25 октября 2026</h3>
+    <!-- Следующая гонка -->
+    <section class="card">
+      <h2>🏁 Следующая гонка</h2>
+      <h3>Гран-при Мехико 2026</h3>
+      <p>📍 Трасса: Автодром имени братьев Родригес</p>
+      <p>📅 Дата: 1 ноября 2026 года</p>
+      <p>⏱ Старт: 20:00 по московскому времени</p>
+    </section>
 
-      <div class="table-wrapper">
-        <table class="results-table">
+    <!-- Последняя гонка -->
+    <section class="card">
+      <h2>🏆 Последняя гонка</h2>
+      <h3>Результаты появятся после обновления</h3>
+      <p>🥇 Победитель: —</p>
+      <p>🏎 Поул-позиция: —</p>
+      <p>⚡ Лучший круг: —</p>
+      <a href="results.html">Все результаты →</a>
+    </section>
+
+    <!-- Чемпионат пилотов -->
+    <section class="card">
+      <h2>📊 Чемпионат пилотов</h2>
+
+      <div style="overflow-x: auto;">
+        <table>
           <thead>
             <tr>
-              <th>Показатель</th>
+              <th>Место</th>
               <th>Пилот</th>
-              <th>Команда / результат</th>
+              <th>Команда</th>
+              <th>Очки</th>
             </tr>
           </thead>
+
           <tbody>
             <tr>
-              <td class="result-label">🥇 Победитель</td>
-              <td class="driver-name">Кими Антонелли</td>
-              <td class="team-name">Mercedes</td>
+              <td>1</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
             </tr>
             <tr>
-              <td class="result-label">🏁 Поул-позиция</td>
-              <td class="driver-name">Кими Антонелли</td>
-              <td class="team-name">Mercedes</td>
+              <td>2</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
             </tr>
             <tr>
-              <td class="result-label">⚡ Лучший круг</td>
-              <td class="driver-name">Шарль Леклер</td>
-              <td class="team-name">1:37.976 · Ferrari</td>
+              <td>3</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <p>
-        <a class="button" href="results.html">Все результаты →</a>
-      </p>
+      <p><a href="drivers.html">Все пилоты →</a></p>
     </section>
+
   </main>
 
   <footer>
-    <p>🏎️ F1 Hub Russia</p>
-    <p>
-      Фанатский проект о мире Формулы-1.
-      Не является официальным сайтом FIA или Formula 1.
-    </p>
+    <p>F1 Hub Russia © 2026</p>
+    <p>Создано фанатом Формулы-1 🏎️</p>
   </footer>
 
   <!-- Секретное окно Чеко -->
-  <div id="checo-easter-egg"
-       role="dialog"
-       aria-modal="true"
-       aria-labelledby="checo-title"
-       aria-hidden="true">
+  <div
+    id="checo-easter-egg"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="checo-title"
+    aria-hidden="true"
+  >
     <div class="checo-card">
-      <button id="checo-close" type="button" aria-label="Закрыть">×</button>
-<img
-  id="checo-photo"
-  src="./checo.jpg"
-  alt="Серхио Перес"
->
- 
+      <button
+        id="checo-close"
+        type="button"
+        aria-label="Закрыть"
+      >×</button>
 
+      <img
+        id="checo-photo"
+        src="./checo.jpg"
+        alt="Серхио Перес"
       >
 
       <h2 id="checo-title">CHECO?! 🇲🇽</h2>
@@ -498,46 +344,83 @@
 
       <small class="checo-credit">
         Фото: Jake Archibald ·
-        <a href="https://creativecommons.org/licenses/by/2.0/"
-           target="_blank" rel="noopener noreferrer">CC BY 2.0</a>
+        <a
+          href="https://creativecommons.org/licenses/by/2.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >CC BY 2.0</a>
       </small>
     </div>
   </div>
 
   <script>
-    (() => {
+    // Обратный отсчёт до Гран-при Мехико.
+    (function () {
+      const raceDate = new Date("2026-11-01T20:00:00+03:00");
+
+      const daysEl = document.getElementById("raceDays");
+      const hoursEl = document.getElementById("raceHours");
+      const minutesEl = document.getElementById("raceMinutes");
+      const secondsEl = document.getElementById("raceSeconds");
+      const statusEl = document.getElementById("raceCountdownStatus");
+
+      function updateCountdown() {
+        const remaining = raceDate.getTime() - Date.now();
+
+        if (remaining <= 0) {
+          daysEl.textContent = "00";
+          hoursEl.textContent = "00";
+          minutesEl.textContent = "00";
+          secondsEl.textContent = "00";
+          statusEl.textContent =
+            "🏁 Время старта прошло! Удачного просмотра гонки!";
+          return;
+        }
+
+        const days = Math.floor(remaining / 86400000);
+        const hours = Math.floor((remaining % 86400000) / 3600000);
+        const minutes = Math.floor((remaining % 3600000) / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+
+        daysEl.textContent = String(days).padStart(2, "0");
+        hoursEl.textContent = String(hours).padStart(2, "0");
+        minutesEl.textContent = String(minutes).padStart(2, "0");
+        secondsEl.textContent = String(seconds).padStart(2, "0");
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+
+    // Пасхалка: три быстрых нажатия на заголовок.
+    (function () {
       const logo = document.getElementById("site-logo");
-      const popup = document.getElementById("checo-easter-egg");
+      const modal = document.getElementById("checo-easter-egg");
       const closeButton = document.getElementById("checo-close");
       const photo = document.getElementById("checo-photo");
 
-      if (!logo || !popup || !closeButton || !photo) return;
-
       let clicks = 0;
       let clickTimer = null;
-      let previousFocus = null;
 
-      function openCheco() {
-        previousFocus = document.activeElement;
-        popup.classList.add("show");
-        popup.setAttribute("aria-hidden", "false");
+      function openModal() {
+        modal.classList.add("is-visible");
+        modal.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
         closeButton.focus();
       }
 
-      function closeCheco() {
-        popup.classList.remove("show");
-        popup.setAttribute("aria-hidden", "true");
+      function closeModal() {
+        modal.classList.remove("is-visible");
+        modal.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
-
-        if (previousFocus && typeof previousFocus.focus === "function") {
-          previousFocus.focus();
-        }
+        logo.focus();
       }
 
-      logo.addEventListener("click", (event) => {
-        // Не мешаем обычному переходу по ссылке reaction.html.
-        if (event.target.closest("a")) return;
+      logo.addEventListener("click", function (event) {
+        // Не открывать пасхалку, если пользователь нажал ссылку «1».
+        if (event.target.closest("a")) {
+          return;
+        }
 
         clicks++;
 
@@ -545,32 +428,38 @@
 
         if (clicks >= 3) {
           clicks = 0;
-          openCheco();
-        } else {
-          clickTimer = setTimeout(() => {
-            clicks = 0;
-          }, 1800);
+          openModal();
+          return;
+        }
+
+        clickTimer = setTimeout(function () {
+          clicks = 0;
+        }, 1800);
+      });
+
+      closeButton.addEventListener("click", closeModal);
+
+      modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+          closeModal();
         }
       });
 
-      closeButton.addEventListener("click", closeCheco);
-
-      popup.addEventListener("click", (event) => {
-        if (event.target === popup) closeCheco();
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && popup.classList.contains("show")) {
-          closeCheco();
+      document.addEventListener("keydown", function (event) {
+        if (
+          event.key === "Escape" &&
+          modal.classList.contains("is-visible")
+        ) {
+          closeModal();
         }
       });
 
-      // Если внешнее фото не загрузится, показываем понятное сообщение.
-      photo.addEventListener("error", () => {
-        photo.alt = "Фото Серхио Переса временно недоступно";
+      // Если фотография не найдена, покажем понятное сообщение.
+      photo.addEventListener("error", function () {
+        photo.alt = "Фото не найдено. Добавь файл checo.jpg в корень сайта.";
       });
     })();
   </script>
+
 </body>
 </html>
-```
