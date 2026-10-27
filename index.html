@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#101010">
-  <meta name="description" content="F1 Hub Russia — новости, календарь, результаты и статистика Формулы-1.">
+  <meta name="description" content="F1 Hub Russia — календарь, результаты, пилоты и команды Формулы-1.">
   <title>F1 Hub Russia — Главная</title>
 
   <style>
@@ -12,7 +12,6 @@
       --red: #e10600;
       --bg: #101010;
       --panel: #1b1b1b;
-      --panel-light: #252525;
       --text: #f5f5f5;
       --muted: #b8b8b8;
     }
@@ -112,6 +111,10 @@
       background: #b90000;
     }
 
+    .section {
+      margin-top: 30px;
+    }
+
     .section-title {
       margin: 0 0 18px;
       padding-left: 12px;
@@ -165,59 +168,50 @@
       font-size: 13px;
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      display: block;
-      padding: 21px;
-      background: var(--panel);
-      border: 1px solid #303030;
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid #333;
       border-radius: 10px;
-      transition: transform .2s, border-color .2s;
+      background: var(--panel);
     }
 
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: var(--red);
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
     }
 
-    .card .emoji {
-      font-size: 30px;
+    .results-table th,
+    .results-table td {
+      padding: 16px;
+      border-bottom: 1px solid #333;
     }
 
-    .card h3 {
-      margin: 8px 0;
-    }
-
-    .card p {
-      margin-bottom: 0;
-      color: var(--muted);
+    .results-table th {
+      background: #292929;
+      color: #ff5555;
       font-size: 14px;
     }
 
-    .schedule-card {
-      padding: 20px;
-      background: var(--panel);
-      border-radius: 10px;
-      border-left: 4px solid var(--red);
+    .results-table tr:last-child td {
+      border-bottom: none;
     }
 
-    .schedule-card p {
-      margin: 5px 0;
+    .results-table tbody tr:hover {
+      background: #242424;
     }
 
-    .status {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 4px 9px;
-      border-radius: 4px;
-      background: #333;
-      color: #eee;
-      font-size: 12px;
+    .result-label {
+      font-weight: bold;
+    }
+
+    .driver-name {
+      font-weight: bold;
+    }
+
+    .team-name {
+      color: var(--muted);
+      font-size: 13px;
     }
 
     footer {
@@ -230,7 +224,7 @@
       font-size: 13px;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 600px) {
       nav {
         gap: 4px;
         padding: 10px 5px;
@@ -252,6 +246,12 @@
 
       .countdown-item strong {
         font-size: 25px;
+      }
+
+      .results-table th,
+      .results-table td {
+        padding: 12px 9px;
+        font-size: 13px;
       }
     }
   </style>
@@ -289,7 +289,7 @@
         1 ноября 2026 года · 23:00 по Москве
       </p>
 
-      <div class="countdown" aria-live="off">
+      <div class="countdown" aria-label="Обратный отсчёт">
         <div class="countdown-item">
           <strong id="days">--</strong>
           <span>Дней</span>
@@ -313,67 +313,58 @@
       </p>
     </section>
 
-    <section style="margin-top: 35px;">
-      <h2 class="section-title">📊 Разделы сайта</h2>
+    <section class="section">
+      <h2 class="section-title">🏆 Итоги прошлой гонки</h2>
+      <h3>🇺🇸 Гран-при США — 25 октября 2026</h3>
 
-      <div class="cards">
-        <a class="card" href="calendar.html">
-          <div class="emoji">📅</div>
-          <h3>Календарь 2026</h3>
-          <p>Этапы сезона, даты и расписание Гран-при.</p>
-        </a>
-
-        <a class="card" href="calendar2027.html">
-          <div class="emoji">🗓️</div>
-          <h3>Календарь 2027</h3>
-          <p>Страница следующего сезона Формулы-1.</p>
-        </a>
-
-        <a class="card" href="results.html">
-          <div class="emoji">🏆</div>
-          <h3>Результаты</h3>
-          <p>Результаты гонок и информация об этапах.</p>
-        </a>
-
-        <a class="card" href="drivers.html">
-          <div class="emoji">🏎️</div>
-          <h3>Пилоты</h3>
-          <p>Знакомься с гонщиками чемпионата.</p>
-        </a>
-
-        <a class="card" href="teams.html">
-          <div class="emoji">🔧</div>
-          <h3>Команды</h3>
-          <p>Составы команд и их пилоты.</p>
-        </a>
+      <div class="table-wrapper">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Показатель</th>
+              <th>Пилот</th>
+              <th>Команда / результат</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="result-label">🥇 Победитель</td>
+              <td class="driver-name">Кими Антонелли</td>
+              <td class="team-name">Mercedes</td>
+            </tr>
+            <tr>
+              <td class="result-label">🏁 Поул-позиция</td>
+              <td class="driver-name">Кими Антонелли</td>
+              <td class="team-name">Mercedes</td>
+            </tr>
+            <tr>
+              <td class="result-label">⚡ Лучший круг</td>
+              <td class="driver-name">Шарль Леклер</td>
+              <td>1:37.976 · Ferrari</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </section>
 
-    <section style="margin-top: 35px;">
-      <h2 class="section-title">🌎 Ближайший этап</h2>
-
-      <div class="schedule-card">
-        <h3>🇲🇽 Гран-при Мексики</h3>
-        <p><strong>Дата:</strong> 1 ноября 2026 года</p>
-        <p><strong>Старт гонки:</strong> 23:00 по московскому времени</p>
-        <span class="status">Следующий этап</span>
-        <p>
-          <a class="button" href="calendar.html">Весь календарь</a>
-        </p>
-      </div>
+      <p>
+        <a class="button" href="results.html">Все результаты →</a>
+      </p>
     </section>
   </main>
 
   <footer>
     <p>🏎️ F1 Hub Russia</p>
-    <p>Фанатский проект о мире Формулы-1. Не является официальным сайтом FIA или Formula 1.</p>
+    <p>
+      Фанатский проект о мире Формулы-1.
+      Не является официальным сайтом FIA или Formula 1.
+    </p>
   </footer>
 
   <script>
     (() => {
-      // 1 ноября 2026 года, 23:00 МСК (UTC+3).
-      // Часовой пояс компьютера на интерпретацию даты не влияет.
-      const raceTimestamp = Date.parse("2026-11-01T23:00:00+03:00");
+      // 1 ноября 2026 года, 23:00 по Москве (UTC+3).
+      const raceTimestamp =
+        new Date("2026-11-01T23:00:00+03:00").getTime();
 
       const fields = {
         days: document.getElementById("days"),
@@ -393,27 +384,27 @@
           fields.hours.textContent = "0";
           fields.minutes.textContent = "0";
           fields.seconds.textContent = "0";
+
           message.textContent =
-            "Стартовое время наступило. Проверь календарь на следующий этап.";
-          if (timerId) clearInterval(timerId);
+            "Время старта наступило. Проверь календарь на следующий этап.";
+
+          if (timerId) {
+            clearInterval(timerId);
+          }
           return;
         }
 
-        fields.days.textContent = Math.floor(
-          remaining / (1000 * 60 * 60 * 24)
-        );
+        fields.days.textContent =
+          Math.floor(remaining / 86400000);
 
-        fields.hours.textContent = Math.floor(
-          (remaining / (1000 * 60 * 60)) % 24
-        );
+        fields.hours.textContent =
+          Math.floor((remaining % 86400000) / 3600000);
 
-        fields.minutes.textContent = Math.floor(
-          (remaining / (1000 * 60)) % 60
-        );
+        fields.minutes.textContent =
+          Math.floor((remaining % 3600000) / 60000);
 
-        fields.seconds.textContent = Math.floor(
-          (remaining / 1000) % 60
-        );
+        fields.seconds.textContent =
+          Math.floor((remaining % 60000) / 1000);
       }
 
       updateCountdown();
@@ -422,4 +413,3 @@
   </script>
 </body>
 </html>
-
