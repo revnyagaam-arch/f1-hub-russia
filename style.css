@@ -228,3 +228,61 @@ footer p {
     font-size: 13px;
   }
 }
+
+/* ЕДИНЫЙ ЦЕНТРИРОВАННЫЙ HEADER НА ВСЕХ СТРАНИЦАХ */
+
+header {
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.brand {
+  text-align: center;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+/* ЗАГОЛОВКИ И ОПИСАНИЯ ПО ЦЕНТРУ */
+
+.hero {
+  text-align: center;
+}
+
+.hero p,
+.intro {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* НЕ ВЫХОДИМ ЗА ГРАНИЦЫ ЭКРАНА */
+
+@media (max-width: 600px) {
+  .nav {
+    padding: 16px 10px;
+  }
+
+  .nav-links {
+    gap: 5px;
+  }
+
+  .nav-links a {
+    padding: 8px 10px;
+  }
+}
