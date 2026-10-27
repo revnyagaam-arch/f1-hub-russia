@@ -7,9 +7,7 @@
 <title>Reaction Test — F1 Hub Russia</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -83,23 +81,18 @@ p {
   font-weight: bold;
 }
 
-#reaction,
-#saveScore {
+#reaction {
   width: 100%;
+  min-height: 95px;
+  margin: 12px 0;
   padding: 15px;
   border: 0;
   border-radius: 8px;
   background: #e10600;
   color: white;
-  font-size: 17px;
+  font-size: 22px;
   font-weight: bold;
   cursor: pointer;
-}
-
-#reaction {
-  min-height: 95px;
-  margin: 12px 0;
-  font-size: 22px;
   touch-action: manipulation;
 }
 
@@ -108,35 +101,9 @@ p {
   color: #001b0d;
 }
 
-#reaction:focus-visible,
-#saveScore:focus-visible,
-#nickname:focus-visible {
+#reaction:focus-visible {
   outline: 3px solid white;
   outline-offset: 3px;
-}
-
-#nickname {
-  width: 100%;
-  padding: 13px;
-  margin: 12px 0;
-  background: #111;
-  color: white;
-  border: 1px solid #555;
-  border-radius: 7px;
-  font-size: 16px;
-}
-
-#saveScore {
-  margin-bottom: 10px;
-}
-
-#saveScore:disabled {
-  opacity: .6;
-  cursor: wait;
-}
-
-#saveScore[hidden] {
-  display: none;
 }
 
 .stats {
@@ -144,50 +111,8 @@ p {
   margin-top: 18px;
 }
 
-#saveMessage {
-  min-height: 24px;
-  overflow-wrap: anywhere;
-}
-
-.leaderboard {
-  margin-top: 30px;
-  padding: 18px;
-  text-align: left;
-  background: #151515;
-  border: 1px solid #393939;
-  border-radius: 10px;
-}
-
-.leaderboard h2 {
-  color: #e10600;
-  font-size: 21px;
-  text-align: center;
-}
-
-.leaderboard > p {
-  text-align: center;
-  font-size: 13px;
-}
-
-#leaderboard {
-  padding-left: 28px;
-}
-
-#leaderboard li {
-  padding: 12px 4px;
-  border-bottom: 1px solid #333;
-  overflow-wrap: anywhere;
-}
-
-#leaderboard li:last-child {
-  border-bottom: 0;
-}
-
-.score-time {
-  float: right;
+#best {
   color: #ff5555;
-  font-weight: bold;
-  margin-left: 8px;
 }
 
 .back {
@@ -213,12 +138,6 @@ p {
 
   .lights {
     gap: 7px;
-  }
-
-  .score-time {
-    float: none;
-    display: block;
-    margin-left: 0;
   }
 }
 </style>
@@ -252,133 +171,28 @@ p {
     Лучший личный результат: <strong id="best">—</strong>
   </div>
 
-  <section>
-    <input
-      id="nickname"
-      type="text"
-      minlength="2"
-      maxlength="16"
-      placeholder="Твой ник (2–16 символов)"
-      autocomplete="nickname"
-      aria-label="Твой ник"
-    >
-
-    <button id="saveScore" type="button" hidden>
-      В ТАБЛИЦУ РЕКОРДОВ
-    </button>
-
-    <p id="saveMessage" aria-live="polite"></p>
-  </section>
-
-  <section class="leaderboard">
-    <h2>🏆 ТОП-10 ПИЛОТОВ</h2>
-    <p>Общий рейтинг F1 Hub Russia</p>
-    <ol id="leaderboard">
-      <li>Загрузка рейтинга...</li>
-    </ol>
-  </section>
-
   <a class="back" href="index.html">← Вернуться на главную</a>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 "use strict";
-
-/* Вставь сюда данные своего проекта Supabase */
-const SUPABASE_URL = "https://kaomhkqhaivpzttxqugp.supabase.co/rest/v1/";
-const SUPABASE_KEY = "sb_publishable_qaKbOSG98qkOKJ-DTTSC1A_riGCORDV";
-
-let db = null;
-
-try {
-  if (
-    window.supabase &&
-    SUPABASE_URL.startsWith("https://") &&
-    SUPABASE_KEY !== "ВСТАВЬ_PUBLISHABLE_KEY"
-  ) {
-    db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-  }
-} catch (error) {
-  console.error("Ошибка подключения Supabase:", error);
-}
 
 const lights = document.getElementById("lights");
 const button = document.getElementById("reaction");
 const message = document.getElementById("message");
 const result = document.getElementById("result");
 const best = document.getElementById("best");
-const nickname = document.getElementById("nickname");
-const saveButton = document.getElementById("saveScore");
-const saveMessage = document.getElementById("saveMessage");
-const leaderboard = document.getElementById("leaderboard");
 
 let state = "idle";
 let startTime = 0;
 let timer = null;
-let pendingScore = null;
-let submitting = false;
 
 function showBest() {
   try {
     const saved = localStorage.getItem("f1ReactionBest");
     best.textContent = saved ? saved + " мс" : "—";
   } catch (error) {
-    best.textContent = "—";
-  }
-}
-
-function showLeaderboardMessage(text) {
-  const item = document.createElement("li");
-  item.textContent = text;
-  leaderboard.replaceChildren(item);
-}
-
-async function loadLeaderboard() {
-  if (!db) {
-    showLeaderboardMessage("Рейтинг пока не подключён.");
-    return;
-  }
-
-  showLeaderboardMessage("Загрузка рейтинга...");
-
-  try {
-    const { data, error } = await db
-      .from("reaction_scores")
-      .select("nickname, reaction_ms, created_at")
-      .order("reaction_ms", { ascending: true })
-      .order("created_at", { ascending: true })
-      .limit(10);
-
-    if (error) throw error;
-
-    leaderboard.replaceChildren();
-
-    if (!data || data.length === 0) {
-      showLeaderboardMessage("Пока нет рекордов. Стань первым!");
-      return;
-    }
-
-    data.forEach((entry, index) => {
-      const item = document.createElement("li");
-      const name = document.createElement("span");
-      const time = document.createElement("span");
-
-      name.textContent = (index + 1) + ". " + entry.nickname;
-      time.className = "score-time";
-      time.textContent = entry.reaction_ms + " мс";
-
-      item.append(name, time);
-      leaderboard.appendChild(item);
-    });
-  } catch (error) {
-    console.error("Ошибка загрузки рейтинга:", error);
-    showLeaderboardMessage(
-      "Не удалось загрузить рейтинг. Проверь настройки Supabase."
-    );
+    best.textContent = "Недоступно";
   }
 }
 
@@ -387,10 +201,6 @@ function startTest() {
 
   lights.className = "lights";
   result.textContent = "—";
-  saveButton.hidden = true;
-  saveMessage.textContent = "";
-  pendingScore = null;
-
   state = "waiting";
   button.className = "";
   button.textContent = "ЖДИ ЗЕЛЁНОГО!";
@@ -432,90 +242,28 @@ button.addEventListener("click", () => {
     const ms = Math.round(performance.now() - startTime);
 
     state = "done";
-    pendingScore = ms;
-
     button.className = "";
     button.textContent = "ЕЩЁ ОДИН СТАРТ";
     message.textContent = "Твоя реакция: " + ms + " мс";
     result.textContent = ms + " мс";
 
     try {
-      const oldBest = Number(
-        localStorage.getItem("f1ReactionBest")
-      );
+      const saved = localStorage.getItem("f1ReactionBest");
+      const oldBest = saved === null ? null : Number(saved);
 
-      if (!oldBest || ms < oldBest) {
+      if (oldBest === null || !Number.isFinite(oldBest) || ms < oldBest) {
         localStorage.setItem("f1ReactionBest", String(ms));
         message.textContent += " — НОВЫЙ ЛИЧНЫЙ РЕКОРД!";
       }
     } catch (error) {
-      console.error("Не удалось сохранить личный рекорд:", error);
+      message.textContent += " (не удалось сохранить рекорд в браузере)";
     }
 
-    saveButton.hidden = false;
     showBest();
   }
 });
 
-saveButton.addEventListener("click", async () => {
-  if (submitting) return;
-
-  if (!db) {
-    saveMessage.textContent =
-      "Рейтинг пока не подключён. Проверь настройки Supabase.";
-    return;
-  }
-
-  const name = nickname.value.trim();
-
-  if (name.length < 2 || name.length > 16) {
-    saveMessage.textContent =
-      "Ник должен содержать от 2 до 16 символов.";
-    return;
-  }
-
-  if (
-    pendingScore === null ||
-    pendingScore < 80 ||
-    pendingScore > 2000
-  ) {
-    saveMessage.textContent =
-      "Этот результат нельзя отправить в рейтинг.";
-    return;
-  }
-
-  submitting = true;
-  saveButton.disabled = true;
-  saveMessage.textContent = "Отправляем результат...";
-
-  try {
-    const { error } = await db
-      .from("reaction_scores")
-      .insert({
-        nickname: name,
-        reaction_ms: pendingScore
-      });
-
-    if (error) throw error;
-
-    saveMessage.textContent =
-      "Результат отправлен в общий рейтинг!";
-    saveButton.hidden = true;
-    pendingScore = null;
-
-    await loadLeaderboard();
-  } catch (error) {
-    console.error("Ошибка сохранения результата:", error);
-    saveMessage.textContent =
-      "Не удалось сохранить. Проверь URL, ключ и настройки таблицы.";
-  } finally {
-    submitting = false;
-    saveButton.disabled = false;
-  }
-});
-
 showBest();
-loadLeaderboard();
 </script>
 </body>
 </html>
