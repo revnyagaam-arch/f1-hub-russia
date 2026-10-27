@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -16,9 +17,9 @@
       --muted: #b8b8b8;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -28,11 +29,129 @@
       line-height: 1.6;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    a { color: inherit; text-decoration: none; }
+
+    /* Стартовая заставка */
+    #f1-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at center, #241010 0%, #101010 55%, #050505 100%);
+      color: white;
+      animation: splash-exit .7s ease 2.5s forwards;
     }
 
+    #f1-splash .speed-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .35;
+      background: repeating-linear-gradient(
+        115deg,
+        transparent 0,
+        transparent 70px,
+        rgba(225, 6, 0, .22) 71px,
+        transparent 73px,
+        transparent 140px
+      );
+      animation: lines-move 1.5s linear infinite;
+    }
+
+    #f1-splash .splash-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      animation: logo-enter .8s ease both;
+    }
+
+    #f1-splash .splash-stripe {
+      width: min(220px, 60vw);
+      height: 7px;
+      margin: 0 auto 30px;
+      background: var(--red);
+      transform: skewX(-35deg);
+      box-shadow: 0 0 25px rgba(225, 6, 0, .65);
+    }
+
+    #f1-splash .splash-logo {
+      margin: 0;
+      font-size: clamp(34px, 9vw, 58px);
+      font-weight: 900;
+      font-style: italic;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      text-shadow: 0 3px 24px rgba(225, 6, 0, .2);
+    }
+
+    #f1-splash .splash-logo span { color: var(--red); }
+
+    #f1-splash .splash-subtitle {
+      margin: 14px 0 0;
+      color: #aaa;
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+    }
+
+    #f1-splash .splash-loader {
+      width: 150px;
+      height: 3px;
+      margin: 42px auto 0;
+      overflow: hidden;
+      background: #333;
+    }
+
+    #f1-splash .splash-loader::after {
+      content: "";
+      display: block;
+      width: 45%;
+      height: 100%;
+      background: var(--red);
+      animation: loader-move 1s ease-in-out infinite;
+    }
+
+    #f1-splash .splash-caption {
+      margin-top: 14px;
+      color: #777;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    @keyframes loader-move {
+      from { transform: translateX(-110%); }
+      to { transform: translateX(340%); }
+    }
+
+    @keyframes lines-move {
+      from { background-position: 0 0; }
+      to { background-position: 140px 0; }
+    }
+
+    @keyframes logo-enter {
+      from { opacity: 0; transform: translateY(18px) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes splash-exit {
+      to { opacity: 0; visibility: hidden; pointer-events: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #f1-splash { animation-duration: .2s; animation-delay: 1s; }
+      #f1-splash .speed-lines,
+      #f1-splash .splash-content,
+      #f1-splash .splash-loader::after { animation: none; }
+    }
+
+    /* Шапка сайта */
     .site-header {
       text-align: center;
       padding: 32px 16px 25px;
@@ -45,10 +164,7 @@
       font-size: clamp(27px, 5vw, 42px);
     }
 
-    .site-header p {
-      margin: 8px 0 0;
-      color: #ddd;
-    }
+    .site-header p { margin: 8px 0 0; color: #ddd; }
 
     nav {
       display: flex;
@@ -64,12 +180,13 @@
       padding: 9px 13px;
       border-radius: 5px;
       font-size: 14px;
-      transition: background .2s;
+      transition: background .2s, transform .2s;
     }
 
     nav a:hover,
     nav a:focus-visible {
       background: var(--red);
+      outline: none;
     }
 
     .container {
@@ -78,10 +195,24 @@
     }
 
     .hero {
+      position: relative;
+      overflow: hidden;
       padding: 28px 22px;
       border-radius: 12px;
       background: linear-gradient(120deg, #300000, #1c1c1c 70%);
       border: 1px solid #542020;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -45px;
+      top: -35px;
+      width: 100px;
+      height: 180px;
+      background: rgba(225, 6, 0, .12);
+      transform: rotate(30deg);
+      pointer-events: none;
     }
 
     .hero h2 {
@@ -89,9 +220,7 @@
       font-size: clamp(24px, 4vw, 34px);
     }
 
-    .hero p {
-      color: #ddd;
-    }
+    .hero p { color: #ddd; }
 
     .button {
       display: inline-block;
@@ -101,15 +230,12 @@
       color: white;
       border-radius: 6px;
       font-weight: bold;
+      transition: background .2s, transform .2s;
     }
 
-    .button:hover {
-      background: #b90000;
-    }
+    .button:hover { background: #b90000; transform: translateY(-1px); }
 
-    .section {
-      margin-top: 30px;
-    }
+    .section { margin-top: 30px; }
 
     .section-title {
       margin: 0 0 18px;
@@ -145,28 +271,26 @@
       font-weight: bold;
     }
 
-    .results-table td {
-      font-weight: normal;
-    }
+    .results-table td { font-weight: normal; }
 
-    .results-table tr:last-child td {
-      border-bottom: none;
-    }
+    .results-table tr:last-child td { border-bottom: none; }
 
-    .results-table tbody tr:hover {
-      background: #242424;
-    }
+    .results-table tbody tr:hover { background: #242424; }
 
     .result-label,
-    .driver-name {
-      font-weight: bold !important;
-    }
+    .driver-name { font-weight: bold !important; }
 
     .team-name {
       color: var(--text);
       font-size: inherit;
       font-family: inherit;
       font-weight: normal;
+    }
+
+    .secret-link a {
+      color: inherit;
+      text-decoration: none;
+      cursor: inherit;
     }
 
     footer {
@@ -180,33 +304,35 @@
     }
 
     @media (max-width: 600px) {
-      nav {
-        gap: 4px;
-        padding: 10px 5px;
-      }
-
-      nav a {
-        padding: 8px;
-        font-size: 13px;
-      }
+      nav { gap: 4px; padding: 10px 5px; }
+      nav a { padding: 8px; font-size: 13px; }
 
       .results-table th,
       .results-table td {
         padding: 12px 9px;
         font-size: 13px;
       }
-    }
-        .secret-link a {
-      color: inherit;
-      text-decoration: none;
-      cursor: inherit;
+
+      .hero { padding: 24px 17px; }
     }
   </style>
 </head>
 
 <body>
+  <!-- Стартовая заставка -->
+  <div id="f1-splash" aria-label="F1 Hub Russia — загрузка" role="status">
+    <div class="speed-lines"></div>
+    <div class="splash-content">
+      <div class="splash-stripe"></div>
+      <h1 class="splash-logo">F1 HUB <span>RUSSIA</span></h1>
+      <p class="splash-subtitle">Твой мир Формулы-1</p>
+      <div class="splash-loader"></div>
+      <p class="splash-caption">PREPARING FOR LIGHTS OUT</p>
+    </div>
+  </div>
+
   <header class="site-header">
- <h1>🏎️ F<span class="secret-link"><a href="reaction.html">1</a></span> Hub Russia</h1>
+    <h1>🏎️ F<span class="secret-link"><a href="reaction.html">1</a></span> Hub Russia</h1>
     <p>Твой портал о мире Формулы-1</p>
   </header>
 
@@ -272,7 +398,7 @@
   </main>
 
   <footer>
-  <p>🏎️ F1 Hub Russia</p>
+    <p>🏎️ F1 Hub Russia</p>
     <p>
       Фанатский проект о мире Формулы-1.
       Не является официальным сайтом FIA или Formula 1.
@@ -280,4 +406,4 @@
   </footer>
 </body>
 </html>
-
+```
