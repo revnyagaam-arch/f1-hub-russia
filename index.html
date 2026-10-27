@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#101010">
   <meta name="description" content="F1 Hub Russia — календарь, результаты, пилоты и команды Формулы-1.">
+  <link rel="icon" type="image/png" href="logo.png">
   <title>F1 Hub Russia — Главная</title>
 
   <style>
@@ -17,7 +18,6 @@
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -40,8 +40,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      background:
-        radial-gradient(ellipse at center, #241010 0%, #101010 55%, #050505 100%);
+      background: radial-gradient(ellipse at center, #241010 0%, #101010 55%, #050505 100%);
       color: white;
       animation: splash-exit .7s ease 2.5s forwards;
     }
@@ -50,7 +49,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      opacity: .35;
+      opacity: .2;
       background: repeating-linear-gradient(
         115deg,
         transparent 0,
@@ -71,39 +70,19 @@
       animation: logo-enter .8s ease both;
     }
 
-    #f1-splash .splash-stripe {
-      width: min(220px, 60vw);
-      height: 7px;
-      margin: 0 auto 30px;
-      background: var(--red);
-      transform: skewX(-35deg);
-      box-shadow: 0 0 25px rgba(225, 6, 0, .65);
-    }
-
-    #f1-splash .splash-logo {
-      margin: 0;
-      font-size: clamp(34px, 9vw, 58px);
-      font-weight: 900;
-      font-style: italic;
-      line-height: 1.1;
-      letter-spacing: -2px;
-      text-shadow: 0 3px 24px rgba(225, 6, 0, .2);
-    }
-
-    #f1-splash .splash-logo span { color: var(--red); }
-
-    #f1-splash .splash-subtitle {
-      margin: 14px 0 0;
-      color: #aaa;
-      font-size: 11px;
-      letter-spacing: 5px;
-      text-transform: uppercase;
+    #f1-splash .splash-logo-image {
+      display: block;
+      width: min(280px, 75vw);
+      max-height: 280px;
+      object-fit: contain;
+      margin: 0 auto 20px;
+      filter: drop-shadow(0 0 22px rgba(225, 6, 0, .18));
     }
 
     #f1-splash .splash-loader {
       width: 150px;
       height: 3px;
-      margin: 42px auto 0;
+      margin: 28px auto 0;
       overflow: hidden;
       background: #333;
     }
@@ -119,7 +98,7 @@
 
     #f1-splash .splash-caption {
       margin-top: 14px;
-      color: #777;
+      color: #aaa;
       font-size: 10px;
       letter-spacing: 2px;
     }
@@ -271,13 +250,9 @@
     }
 
     .results-table td { font-weight: normal; }
-
     .results-table tr:last-child td { border-bottom: none; }
-
     .results-table tbody tr:hover { background: #242424; }
-
-    .result-label,
-    .driver-name { font-weight: bold !important; }
+    .result-label, .driver-name { font-weight: bold !important; }
 
     .team-name {
       color: var(--text);
@@ -322,11 +297,9 @@
   <div id="f1-splash" aria-label="F1 Hub Russia — загрузка" role="status">
     <div class="speed-lines"></div>
     <div class="splash-content">
-      <div class="splash-stripe"></div>
-      <h1 class="splash-logo">F1 HUB <span>RUSSIA</span></h1>
-      <p class="splash-subtitle">Твой мир Формулы-1</p>
+      <img class="splash-logo-image" src="logo.png" alt="F1 Hub Russia">
       <div class="splash-loader"></div>
-      <p class="splash-caption">PREPARING FOR LIGHTS OUT</p>
+      <p class="splash-caption">ТВОЙ МИР ФОРМУЛЫ-1 · PREPARING FOR LIGHTS OUT</p>
     </div>
   </div>
 
@@ -404,5 +377,7 @@
     </p>
   </footer>
 </body>
+</html>
+
 </html>
 ```
