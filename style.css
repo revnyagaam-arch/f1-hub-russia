@@ -286,3 +286,37 @@ header {
     padding: 8px 10px;
   }
 }
+
+/* Центрируем шапку и категории на всех страницах */
+header {
+  text-align: center !important;
+}
+
+.nav {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.brand {
+  text-align: center !important;
+  width: 100%;
+}
+
+.nav-links {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  gap: 10px;
+}
+
+.nav-links a {
+  text-align: center !important;
+}
