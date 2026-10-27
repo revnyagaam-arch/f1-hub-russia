@@ -585,25 +585,22 @@
         }
       }
 
-      logo.addEventListener("click", (event) => {
-        // Ссылка «1» продолжает открывать reaction.html.
-        if (event.target.closest("a")) return;
+     logo.addEventListener("click", (event) => {
+  // Ссылка «1» продолжает открывать reaction.html.
+  if (event.target.closest("a")) return;
 
-        clicks++;
-        clearTimeout(clickTimer);
+  clicks++;
+  clearTimeout(clickTimer);
 
-        if (clicks >= 3) {
-          clicks = 0;
-          openCheco();
-        } else {
-          clickTimer = setTimeout(() => {
-            clicks = 0;
-          }, 1800);
-        }
-      });
-
-      closeButton.addEventListener("click", closeCheco);
-
+  if (clicks >= 3) {
+    clicks = 0;
+    // Пасхалка отключена.
+  } else {
+    clickTimer = setTimeout(() => {
+      clicks = 0;
+    }, 1800);
+  }
+});
       // Закрытие при нажатии на затемнённый фон.
       popup.addEventListener("click", (event) => {
         if (event.target === popup) closeCheco();
