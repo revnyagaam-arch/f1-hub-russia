@@ -168,6 +168,11 @@
       font-size: 13px;
     }
 
+    .sync-status {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
     .table-wrapper {
       overflow-x: auto;
       border: 1px solid #333;
@@ -185,12 +190,15 @@
     .results-table td {
       padding: 16px;
       border-bottom: 1px solid #333;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      font-weight: normal;
     }
 
     .results-table th {
       background: #292929;
       color: #ff5555;
-      font-size: 14px;
+      font-weight: bold;
     }
 
     .results-table tr:last-child td {
@@ -201,20 +209,16 @@
       background: #242424;
     }
 
-    .result-label {
-      font-weight: bold;
-    }
-
+    .result-label,
     .driver-name {
-      font-weight: bold;
+      font-weight: bold !important;
     }
 
     .team-name {
-  color: var(--text);
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: normal;
-}
+      color: var(--text);
+      font-size: inherit;
+      font-family: inherit;
+      font-weight: normal;
     }
 
     footer {
@@ -289,7 +293,7 @@
       <h2 id="countdown-title">🏁 До следующего Гран-при</h2>
       <h3 id="race-name">Гран-при Мексики</h3>
       <p class="race-date" id="race-date">
-        1 ноября 2026 года · 23:00 по Москве
+        2 ноября 2026 года · 05:00 по Москве
       </p>
 
       <div class="countdown" aria-label="Обратный отсчёт">
@@ -312,7 +316,10 @@
       </div>
 
       <p id="countdown-message" class="race-date">
-        Время старта указано по Москве (МСК).
+        Подключение к серверу точного времени...
+      </p>
+      <p id="sync-status" class="sync-status">
+        Время проверяется через интернет.
       </p>
     </section>
 
@@ -333,17 +340,17 @@
             <tr>
               <td class="result-label">🥇 Победитель</td>
               <td class="driver-name">Кими Антонелли</td>
-              <td class="team-name"><td>Mercedes</td>
+              <td class="team-name">Mercedes</td>
             </tr>
             <tr>
               <td class="result-label">🏁 Поул-позиция</td>
               <td class="driver-name">Кими Антонелли</td>
-              <td class="team-name"><td>Mercedes</td>
+              <td class="team-name">Mercedes</td>
             </tr>
             <tr>
               <td class="result-label">⚡ Лучший круг</td>
               <td class="driver-name">Шарль Леклер</td>
-              <td>1:37.976 · Ferrari</td>
+              <td class="team-name">1:37.976 · Ferrari</td>
             </tr>
           </tbody>
         </table>
@@ -365,9 +372,8 @@
 
   <script>
     (() => {
-      // 1 ноября 2026 года, 23:00 по Москве (UTC+3).
-      const raceTimestamp =
-        new Date("2026-11-01T23:00:00+03:00").getTime();
+      // Старт гонки: 2 ноября 2026, 05:00 по Москве (UTC+3).
+      const raceTimestamp = Date.parse("2026-11-02T05:00:00+03:00");
 
       const fields = {
         days: document.getElementById("days"),
@@ -377,10 +383,74 @@
       };
 
       const message = document.getElementById("countdown-message");
-      let timerId;
+      const syncStatus = document.getElementById("sync-status");
+
+      // Сохраняем время сервера и используем монотонный таймер,
+      // чтобы отсчёт не зависел от часов и часового пояса компьютера.
+      let serverTimeAtSync = null;
+      let performanceAtSync = null;
+      let timerId = null;
+      let syncInProgress = false;
+
+      function getCurrentTime() {
+        if (serverTimeAtSync === null || performanceAtSync === null) {
+          return null;
+        }
+
+        return serverTimeAtSync +
+          (performance.now() - performanceAtSync);
+      }
+
+      async function syncTime() {
+        if (syncInProgress) return;
+        syncInProgress = true;
+
+        const requestStarted = performance.now();
+
+        try {
+          const response = await fetch(
+            "https://timeapi.world/timezone/Europe/Moscow",
+            { cache: "no-store" }
+          );
+
+          if (!response.ok) {
+            throw new Error("Сервер времени вернул ошибку.");
+          }
+
+          const data = await response.json();
+
+          if (typeof data.unixtime !== "number") {
+            throw new Error("Не удалось прочитать время сервера.");
+          }
+
+          const requestFinished = performance.now();
+          const roundTrip = requestFinished - requestStarted;
+
+          // Компенсируем примерно половину времени запроса.
+          serverTimeAtSync = data.unixtime * 1000 + roundTrip / 2;
+          performanceAtSync = requestFinished;
+
+          syncStatus.textContent =
+            "Синхронизировано с интернетом · часовой пояс Europe/Moscow";
+          updateCountdown();
+        } catch (error) {
+          syncStatus.textContent =
+            "Нет связи с сервером времени. Повторяем попытку...";
+          message.textContent =
+            "Отсчёт появится после синхронизации времени.";
+        } finally {
+          syncInProgress = false;
+        }
+      }
 
       function updateCountdown() {
-        const remaining = raceTimestamp - Date.now();
+        const now = getCurrentTime();
+
+        if (now === null) {
+          return;
+        }
+
+        const remaining = raceTimestamp - now;
 
         if (remaining <= 0) {
           fields.days.textContent = "0";
@@ -389,11 +459,13 @@
           fields.seconds.textContent = "0";
 
           message.textContent =
-            "Время старта наступило. Проверь календарь на следующий этап.";
+            "Время старта наступило. Проверь календарь следующего этапа.";
 
-          if (timerId) {
+          if (timerId !== null) {
             clearInterval(timerId);
+            timerId = null;
           }
+
           return;
         }
 
@@ -408,10 +480,23 @@
 
         fields.seconds.textContent =
           Math.floor((remaining % 60000) / 1000);
+
+        message.textContent =
+          "До старта гонки по московскому времени.";
       }
 
-      updateCountdown();
-      timerId = setInterval(updateCountdown, 1000);
+      async function start() {
+        await syncTime();
+
+        if (timerId === null) {
+          timerId = setInterval(updateCountdown, 1000);
+        }
+
+        // Обновляем время с сервера раз в 5 минут.
+        setInterval(syncTime, 5 * 60 * 1000);
+      }
+
+      start();
     })();
   </script>
 </body>
