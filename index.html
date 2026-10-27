@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#101010">
-  <meta name="description" content="F1 Hub Russia — календарь, результаты, пилоты и команды Формулы-1.">
+  <meta name="description" content="F1 Hub Russia — новости, календарь, результаты и статистика Формулы-1.">
   <title>F1 Hub Russia — Главная</title>
 
   <style>
@@ -192,13 +192,16 @@
       border-bottom: 1px solid #333;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 15px;
-      font-weight: normal;
     }
 
     .results-table th {
       background: #292929;
       color: #ff5555;
       font-weight: bold;
+    }
+
+    .results-table td {
+      font-weight: normal;
     }
 
     .results-table tr:last-child td {
@@ -316,10 +319,10 @@
       </div>
 
       <p id="countdown-message" class="race-date">
-        Подключение к серверу точного времени...
+        Подключение к серверу времени...
       </p>
       <p id="sync-status" class="sync-status">
-        Время проверяется через интернет.
+        Проверяем время через интернет.
       </p>
     </section>
 
@@ -372,98 +375,51 @@
 
   <script>
     (() => {
-      // Старт гонки: 2 ноября 2026, 05:00 по Москве (UTC+3).
-      const raceTimestamp = Date.parse("2026-11-02T05:00:00+03:00");
+      // 2 ноября 2026 года, 05:00 по Москве (UTC+3).
+      const raceTimestamp =
+        Date.parse("2026-11-02T05:00:00+03:00");
 
-      const fields = {
-        days: document.getElementById("days"),
-        hours: document.getElementById("hours"),
-        minutes: document.getElementById("minutes"),
-        seconds: document.getElementById("seconds")
-      };
+      const ids = ["days", "hours", "minutes", "seconds"];
+      const fields = {};
+
+      ids.forEach(id => {
+        fields[id] = document.getElementById(id);
+      });
 
       const message = document.getElementById("countdown-message");
-      const syncStatus = document.getElementById("sync-status");
+      const status = document.getElementById("sync-status");
 
-      // Сохраняем время сервера и используем монотонный таймер,
-      // чтобы отсчёт не зависел от часов и часового пояса компьютера.
-      let serverTimeAtSync = null;
-      let performanceAtSync = null;
-      let timerId = null;
+      let serverBase = null;
+      let performanceBase = null;
       let syncInProgress = false;
+      let timer = null;
 
-      function getCurrentTime() {
-        if (serverTimeAtSync === null || performanceAtSync === null) {
-          return null;
-        }
-
-        return serverTimeAtSync +
-          (performance.now() - performanceAtSync);
+      function setStatus(text) {
+        status.textContent = text;
       }
 
-      async function syncTime() {
-        if (syncInProgress) return;
-        syncInProgress = true;
-
-        const requestStarted = performance.now();
-
-        try {
-          const response = await fetch(
-            "https://timeapi.world/timezone/Europe/Moscow",
-            { cache: "no-store" }
-          );
-
-          if (!response.ok) {
-            throw new Error("Сервер времени вернул ошибку.");
-          }
-
-          const data = await response.json();
-
-          if (typeof data.unixtime !== "number") {
-            throw new Error("Не удалось прочитать время сервера.");
-          }
-
-          const requestFinished = performance.now();
-          const roundTrip = requestFinished - requestStarted;
-
-          // Компенсируем примерно половину времени запроса.
-          serverTimeAtSync = data.unixtime * 1000 + roundTrip / 2;
-          performanceAtSync = requestFinished;
-
-          syncStatus.textContent =
-            "Синхронизировано с интернетом · часовой пояс Europe/Moscow";
-          updateCountdown();
-        } catch (error) {
-          syncStatus.textContent =
-            "Нет связи с сервером времени. Повторяем попытку...";
-          message.textContent =
-            "Отсчёт появится после синхронизации времени.";
-        } finally {
-          syncInProgress = false;
+      function currentTime() {
+        if (serverBase !== null && performanceBase !== null) {
+          return serverBase + performance.now() - performanceBase;
         }
+
+        return Date.now();
       }
 
       function updateCountdown() {
-        const now = getCurrentTime();
-
-        if (now === null) {
-          return;
-        }
-
-        const remaining = raceTimestamp - now;
+        const remaining = raceTimestamp - currentTime();
 
         if (remaining <= 0) {
-          fields.days.textContent = "0";
-          fields.hours.textContent = "0";
-          fields.minutes.textContent = "0";
-          fields.seconds.textContent = "0";
+          ids.forEach(id => {
+            fields[id].textContent = "0";
+          });
 
           message.textContent =
             "Время старта наступило. Проверь календарь следующего этапа.";
 
-          if (timerId !== null) {
-            clearInterval(timerId);
-            timerId = null;
+          if (timer !== null) {
+            clearInterval(timer);
+            timer = null;
           }
 
           return;
@@ -480,23 +436,102 @@
 
         fields.seconds.textContent =
           Math.floor((remaining % 60000) / 1000);
-
-        message.textContent =
-          "До старта гонки по московскому времени.";
       }
 
-      async function start() {
-        await syncTime();
+      async function requestTime(url, parseResponse) {
+        const start = performance.now();
 
-        if (timerId === null) {
-          timerId = setInterval(updateCountdown, 1000);
+        const response = await fetch(url, {
+          cache: "no-store"
+        });
+
+        if (!response.ok) {
+          throw new Error("Сервер вернул ошибку");
         }
 
-        // Обновляем время с сервера раз в 5 минут.
-        setInterval(syncTime, 5 * 60 * 1000);
+        const data = await parseResponse(response);
+        const end = performance.now();
+
+        if (!Number.isFinite(data)) {
+          throw new Error("Неверный формат времени");
+        }
+
+        return {
+          timestamp: data + (end - start) / 2,
+          performanceTime: end
+        };
       }
 
-      start();
+      async function syncTime() {
+        if (syncInProgress) return;
+        syncInProgress = true;
+
+        try {
+          let result;
+
+          // Источник 1: WorldTimeAPI.
+          try {
+            result = await requestTime(
+              "https://worldtimeapi.org/api/timezone/Europe/Moscow",
+              async response => {
+                const data = await response.json();
+                return typeof data.unixtime === "number"
+                  ? data.unixtime * 1000
+                  : NaN;
+              }
+            );
+          } catch (error) {
+            // Источник 2: TimeAPI.io.
+            result = await requestTime(
+              "https://timeapi.io/api/Time/current/zone?timeZone=Europe%2FMoscow",
+              async response => {
+                const data = await response.json();
+                if (!data.dateTime) return NaN;
+
+                // dateTime возвращается как московское местное время.
+                // Разбираем его явно в часовом поясе Europe/Moscow.
+                const parts = data.dateTime.match(
+                  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/
+                );
+
+                if (!parts) return NaN;
+
+                const [, y, mo, d, h, mi, s] = parts;
+                const formatted =
+                  `${y}-${mo}-${d}T${h}:${mi}:${s}+03:00`;
+
+                return Date.parse(formatted);
+              }
+            );
+          }
+
+          serverBase = result.timestamp;
+          performanceBase = result.performanceTime;
+
+          setStatus("Время синхронизировано через интернет · МСК.");
+          message.textContent = "Обратный отсчёт до старта гонки.";
+        } catch (error) {
+          serverBase = null;
+          performanceBase = null;
+
+          setStatus(
+            "Не удалось подключиться к серверам времени. Используются системные часы устройства."
+          );
+
+          message.textContent =
+            "Отсчёт работает по часам устройства; проверь правильность даты и времени.";
+        } finally {
+          syncInProgress = false;
+          updateCountdown();
+        }
+      }
+
+      updateCountdown();
+
+      timer = setInterval(updateCountdown, 1000);
+
+      syncTime();
+      setInterval(syncTime, 5 * 60 * 1000);
     })();
   </script>
 </body>
