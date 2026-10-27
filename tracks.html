@@ -3,483 +3,309 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101010">
-  <title>Трассы Формулы-1 — F1 Hub Russia</title>
+  <title>Трассы Формулы-1 | F1 Hub Russia</title>
+  <link rel="stylesheet" href="style.css">
 
   <style>
-    :root {
-      --red: #e10600;
-      --bg: #101010;
-      --panel: #1b1b1b;
-      --text: #f5f5f5;
-      --muted: #aaa;
+    .tracks-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+      color: #fff;
     }
 
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.5;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    header {
-      padding: 28px 16px;
+    .tracks-heading {
       text-align: center;
-      background: linear-gradient(135deg, #300000, #111);
-      border-bottom: 3px solid var(--red);
+      margin-bottom: 28px;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: clamp(27px, 5vw, 40px);
+    .tracks-heading h1 {
+      font-size: clamp(30px, 5vw, 48px);
+      margin-bottom: 10px;
+      text-transform: uppercase;
     }
 
-    header p { color: #ddd; }
+    .tracks-heading h1 span {
+      color: #e10600;
+    }
 
-    nav {
+    .tracks-heading p {
+      color: #bdbdbd;
+    }
+
+    .tracks-controls {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px;
-      background: #191919;
-      border-bottom: 1px solid #333;
-    }
-
-    nav a {
-      padding: 8px 12px;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-
-    nav a:hover { background: var(--red); }
-
-    main {
-      width: min(1200px, 94%);
-      margin: 28px auto;
-    }
-
-    .intro {
-      padding: 22px;
-      border: 1px solid #542020;
-      border-radius: 10px;
-      background: linear-gradient(120deg, #300000, #1b1b1b);
-    }
-
-    .intro h2 { margin-top: 0; }
-
-    .muted { color: var(--muted); }
-
-    .controls {
-      display: grid;
-      grid-template-columns: minmax(180px, 1fr) auto;
       gap: 12px;
-      margin: 22px 0;
+      margin: 25px 0;
     }
 
-    input, select {
-      width: 100%;
-      padding: 12px;
-      color: white;
-      background: #202020;
+    .tracks-controls input,
+    .tracks-controls select {
+      flex: 1;
+      min-width: 190px;
+      padding: 13px 15px;
+      color: #fff;
+      background: #191919;
       border: 1px solid #444;
-      border-radius: 7px;
-      font: inherit;
+      border-radius: 8px;
+      font-size: 15px;
     }
 
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .filters button {
-      padding: 9px 14px;
-      color: white;
-      background: #242424;
-      border: 1px solid #444;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .filters button.active,
-    .filters button:hover {
-      background: var(--red);
-      border-color: var(--red);
-    }
-
-    #count {
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    .grid {
+    .tracks-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 18px;
     }
 
     .track-card {
-      overflow: hidden;
-      background: var(--panel);
-      border: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 190px;
+      padding: 20px;
+      background: linear-gradient(145deg, #202020, #111);
+      border: 1px solid #383838;
+      border-top: 3px solid #e10600;
       border-radius: 10px;
       transition: transform .2s, border-color .2s;
     }
 
     .track-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--red);
+      transform: translateY(-4px);
+      border-color: #e10600;
     }
 
-    .track-image {
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px;
-      background:
-        radial-gradient(ellipse at center, #252525, #151515);
-      border-bottom: 1px solid #333;
+    .track-number {
+      color: #e10600;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    .track-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    .track-card h2 {
+      font-size: 20px;
+      margin: 12px 0 8px;
     }
 
-    .track-info { padding: 16px; }
-
-    .track-info h3 {
-      margin: 0 0 6px;
-      font-size: 19px;
-    }
-
-    .track-info p {
-      margin: 5px 0;
-      color: var(--muted);
+    .track-country {
+      color: #bdbdbd;
       font-size: 14px;
+      margin-bottom: 18px;
     }
 
     .track-link {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 8px 11px;
-      border-radius: 5px;
-      background: var(--red);
-      font-size: 13px;
+      display: block;
+      margin-top: auto;
+      padding: 11px 12px;
+      text-align: center;
+      color: white;
+      background: #e10600;
+      border-radius: 6px;
       font-weight: bold;
+      text-decoration: none;
+      transition: background .2s;
     }
 
-    .empty {
+    .track-link:hover {
+      background: #b90000;
+    }
+
+    .tracks-count {
+      color: #aaa;
+      margin: 0 0 18px;
+      font-size: 14px;
+    }
+
+    .tracks-back {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .tracks-back:hover {
+      color: #e10600;
+    }
+
+    .no-tracks {
+      grid-column: 1 / -1;
       padding: 30px;
       text-align: center;
-      color: var(--muted);
-      background: var(--panel);
-      border-radius: 8px;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding: 24px 12px;
-      text-align: center;
-      color: var(--muted);
-      background: #191919;
-      border-top: 2px solid var(--red);
-      font-size: 13px;
-    }
-
-    @media (max-width: 600px) {
-      .controls { grid-template-columns: 1fr; }
-      .grid { grid-template-columns: 1fr; }
+      color: #bbb;
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>🏁 Трассы Формулы-1</h1>
-    <p>F1 Hub Russia · Каталог автодромов</p>
-  </header>
+  <main class="tracks-page">
+    <a class="tracks-back" href="index.html">← На главную</a>
 
-  <nav>
-    <a href="index.html">Главная</a>
-    <a href="calendar.html">Календарь 2026</a>
-    <a href="calendar2027.html">Календарь 2027</a>
-    <a href="results.html">Результаты</a>
-    <a href="drivers.html">Пилоты</a>
-    <a href="teams.html">Команды</a>
-    <a href="tracks.html">Трассы F1</a>
-  </nav>
+    <header class="tracks-heading">
+      <h1>Трассы <span>Формулы-1</span></h1>
+      <p>Знаменитые автодромы, городские трассы и легендарные места из истории F1.</p>
+    </header>
 
-  <main>
-    <section class="intro">
-      <h2>Все трассы чемпионата</h2>
-      <p>
-        Исследуй современные и исторические автодромы Формулы-1.
-        Ищи по названию, смотри схемы и открывай подробную информацию.
-      </p>
-      <p class="muted">
-        Схемы и исторические варианты загружаются из открытого
-        проекта F1 Circuits SVG. Для загрузки изображений нужен интернет.
-      </p>
-    </section>
-
-    <div class="controls">
+    <div class="tracks-controls">
       <input
-        id="search"
+        id="trackSearch"
         type="search"
         placeholder="🔎 Найти трассу или страну..."
-        aria-label="Поиск трасс"
+        aria-label="Поиск трассы"
       >
 
-      <select id="sort" aria-label="Сортировка трасс">
+      <select id="trackFilter" aria-label="Фильтр трасс">
+        <option value="all">Все трассы</option>
+        <option value="current">Календарь 2026</option>
+        <option value="historic">Исторические трассы</option>
+      </select>
+
+      <select id="trackSort" aria-label="Сортировка трасс">
+        <option value="default">Стандартный порядок</option>
         <option value="name">По названию</option>
         <option value="country">По стране</option>
       </select>
     </div>
 
-    <div class="filters">
-      <button class="active" data-filter="all">Все трассы</button>
-      <button data-filter="current">Современные</button>
-      <button data-filter="historic">Исторические</button>
-    </div>
-
-    <p id="count">Загрузка каталога...</p>
-    <section id="grid" class="grid" aria-live="polite"></section>
-    <p id="error" class="empty" hidden>
-      Не удалось загрузить список трасс. Проверь подключение к интернету
-      и обнови страницу.
-    </p>
+    <p class="tracks-count" id="tracksCount"></p>
+    <section class="tracks-grid" id="tracksGrid" aria-label="Каталог трасс"></section>
   </main>
 
-  <footer>
-    <p>F1 Hub Russia · Фанатский проект</p>
-    <p>
-      Схемы трасс: F1 Circuits SVG.
-      Проект не связан с официальной Formula 1 или FIA.
-    </p>
-  </footer>
-
   <script>
-    (() => {
-      const base =
-  "https://raw.githubusercontent.com/julesr0y/f1-circuits-svg/main/";
+    const tracks = [
+      // Трассы календаря 2026
+      { name: "Albert Park", country: "Австралия · Мельбурн", type: "current", wiki: "Albert Park Grand Prix Circuit" },
+      { name: "Shanghai International Circuit", country: "Китай · Шанхай", type: "current", wiki: "Shanghai International Circuit" },
+      { name: "Suzuka", country: "Япония · Судзука", type: "current", wiki: "Suzuka International Racing Course" },
+      { name: "Miami International Autodrome", country: "США · Майами", type: "current", wiki: "Miami International Autodrome" },
+      { name: "Circuit Gilles-Villeneuve", country: "Канада · Монреаль", type: "current", wiki: "Circuit Gilles-Villeneuve" },
+      { name: "Circuit de Monaco", country: "Монако · Монте-Карло", type: "current", wiki: "Circuit de Monaco" },
+      { name: "Circuit de Barcelona-Catalunya", country: "Испания · Барселона", type: "current", wiki: "Circuit de Barcelona-Catalunya" },
+      { name: "Red Bull Ring", country: "Австрия · Шпильберг", type: "current", wiki: "Red Bull Ring" },
+      { name: "Silverstone", country: "Великобритания · Сильверстоун", type: "current", wiki: "Silverstone Circuit" },
+      { name: "Spa-Francorchamps", country: "Бельгия · Ставло", type: "current", wiki: "Circuit de Spa-Francorchamps" },
+      { name: "Hungaroring", country: "Венгрия · Модьород", type: "current", wiki: "Hungaroring" },
+      { name: "Zandvoort", country: "Нидерланды · Зандворт", type: "current", wiki: "Circuit Zandvoort" },
+      { name: "Monza", country: "Италия · Монца", type: "current", wiki: "Autodromo Nazionale Monza" },
+      { name: "Madring", country: "Испания · Мадрид", type: "current", wiki: "Madring" },
+      { name: "Baku City Circuit", country: "Азербайджан · Баку", type: "current", wiki: "Baku City Circuit" },
+      { name: "Marina Bay", country: "Сингапур", type: "current", wiki: "Marina Bay Street Circuit" },
+      { name: "Circuit of the Americas", country: "США · Остин", type: "current", wiki: "Circuit of the Americas" },
+      { name: "Hermanos Rodríguez", country: "Мексика · Мехико", type: "current", wiki: "Autódromo Hermanos Rodríguez" },
+      { name: "Interlagos", country: "Бразилия · Сан-Паулу", type: "current", wiki: "Autódromo José Carlos Pace" },
+      { name: "Las Vegas Strip Circuit", country: "США · Лас-Вегас", type: "current", wiki: "Las Vegas Strip Circuit" },
+      { name: "Lusail International Circuit", country: "Катар · Лусаил", type: "current", wiki: "Lusail International Circuit" },
+      { name: "Yas Marina", country: "ОАЭ · Абу-Даби", type: "current", wiki: "Yas Marina Circuit" },
 
-      const grid = document.getElementById("grid");
-      const search = document.getElementById("search");
-      const sort = document.getElementById("sort");
-      const count = document.getElementById("count");
-      const error = document.getElementById("error");
-      const buttons = [...document.querySelectorAll("[data-filter]")];
+      // Исторические и другие трассы F1
+      { name: "Imola", country: "Италия · Имола", type: "historic", wiki: "Imola Circuit" },
+      { name: "Hockenheimring", country: "Германия · Хоккенхайм", type: "historic", wiki: "Hockenheimring" },
+      { name: "Nürburgring", country: "Германия · Нюрбург", type: "historic", wiki: "Nürburgring" },
+      { name: "Sepang International Circuit", country: "Малайзия · Сепанг", type: "historic", wiki: "Sepang International Circuit" },
+      { name: "Istanbul Park", country: "Турция · Стамбул", type: "historic", wiki: "Istanbul Park" },
+      { name: "Circuit Paul Ricard", country: "Франция · Ле-Кастелле", type: "historic", wiki: "Circuit Paul Ricard" },
+      { name: "Magny-Cours", country: "Франция · Невер", type: "historic", wiki: "Circuit de Nevers Magny-Cours" },
+      { name: "Jerez", country: "Испания · Херес", type: "historic", wiki: "Circuito de Jerez" },
+      { name: "Valencia Street Circuit", country: "Испания · Валенсия", type: "historic", wiki: "Valencia Street Circuit" },
+      { name: "Adelaide Street Circuit", country: "Австралия · Аделаида", type: "historic", wiki: "Adelaide Street Circuit" },
+      { name: "Fuji Speedway", country: "Япония · Фудзи", type: "historic", wiki: "Fuji Speedway" },
+      { name: "Indianapolis Motor Speedway", country: "США · Индианаполис", type: "historic", wiki: "Indianapolis Motor Speedway" },
+      { name: "Watkins Glen", country: "США · Уоткинс-Глен", type: "historic", wiki: "Watkins Glen International" },
+      { name: "Long Beach", country: "США · Лонг-Бич", type: "historic", wiki: "Long Beach street circuit" },
+      { name: "Detroit Street Circuit", country: "США · Детройт", type: "historic", wiki: "Detroit street circuit" },
+      { name: "Phoenix Street Circuit", country: "США · Финикс", type: "historic", wiki: "Phoenix street circuit" },
+      { name: "Kyalami", country: "ЮАР · Мидранд", type: "historic", wiki: "Kyalami" },
+      { name: "Brands Hatch", country: "Великобритания · Кент", type: "historic", wiki: "Brands Hatch" },
+      { name: "Donington Park", country: "Великобритания · Лестершир", type: "historic", wiki: "Donington Park" },
+      { name: "Aintree", country: "Великобритания · Ливерпуль", type: "historic", wiki: "Aintree Motor Racing Circuit" },
+      { name: "Rouen-Les-Essarts", country: "Франция · Руан", type: "historic", wiki: "Rouen-Les-Essarts" },
+      { name: "Dijon-Prenois", country: "Франция · Дижон", type: "historic", wiki: "Dijon-Prenois" },
+      { name: "Zolder", country: "Бельгия · Зольдер", type: "historic", wiki: "Circuit Zolder" },
+      { name: "Montjuïc", country: "Испания · Барселона", type: "historic", wiki: "Montjuïc circuit" },
+      { name: "Buddh International Circuit", country: "Индия · Большая Нойда", type: "historic", wiki: "Buddh International Circuit" },
+      { name: "Korean International Circuit", country: "Южная Корея · Ёнам", type: "historic", wiki: "Korean International Circuit" },
+      { name: "Sochi Autodrom", country: "Россия · Сочи", type: "historic", wiki: "Sochi Autodrom" },
+      { name: "Bahrain International Circuit", country: "Бахрейн · Сахир", type: "historic", wiki: "Bahrain International Circuit" },
+      { name: "Jeddah Corniche Circuit", country: "Саудовская Аравия · Джидда", type: "historic", wiki: "Jeddah Corniche Circuit" },
+      { name: "Portimão", country: "Португалия · Алгарве", type: "historic", wiki: "Algarve International Circuit" },
+      { name: "Estoril", country: "Португалия · Эшторил", type: "historic", wiki: "Circuito do Estoril" },
+      { name: "Jacarepaguá", country: "Бразилия · Рио-де-Жанейро", type: "historic", wiki: "Autódromo Internacional Nelson Piquet" },
+      { name: "Buenos Aires", country: "Аргентина · Буэнос-Айрес", type: "historic", wiki: "Autódromo Oscar y Juan Gálvez" },
+      { name: "AVUS", country: "Германия · Берлин", type: "historic", wiki: "AVUS" },
+      { name: "Bremgarten", country: "Швейцария · Берн", type: "historic", wiki: "Circuit Bremgarten" },
+      { name: "Pescara Circuit", country: "Италия · Пескара", type: "historic", wiki: "Pescara Circuit" },
+      { name: "Reims-Gueux", country: "Франция · Реймс", type: "historic", wiki: "Reims-Gueux" },
+      { name: "Charade Circuit", country: "Франция · Клермон-Ферран", type: "historic", wiki: "Charade Circuit" },
+      { name: "Baku — исторический поиск", country: "Азербайджан", type: "historic", wiki: "Azerbaijan Grand Prix" }
+    ];
 
-      let tracks = [];
-      let activeFilter = "all";
+    const grid = document.getElementById("tracksGrid");
+    const search = document.getElementById("trackSearch");
+    const filter = document.getElementById("trackFilter");
+    const sort = document.getElementById("trackSort");
+    const count = document.getElementById("tracksCount");
 
-      // Список автодромов, принимавших Гран-при чемпионата мира.
-      // ID используются для поиска соответствующих SVG-файлов.
-      const circuits = [
-        ["Adelaide Street Circuit", "Аделаида", "Австралия", "adelaide"],
-        ["Ain-Diab Circuit", "Касабланка", "Марокко", "ain-diab"],
-        ["Aintree Motor Racing Circuit", "Эйнтри", "Великобритания", "aintree"],
-        ["Algarve International Circuit", "Портиман", "Португалия", "algarve"],
-        ["Anderstorp Raceway", "Андерсторп", "Швеция", "anderstorp"],
-        ["Autodromo Enzo e Dino Ferrari", "Имола", "Италия", "imola"],
-        ["Autodromo del Mugello", "Скарперия", "Италия", "mugello"],
-        ["Autodromo Nazionale Monza", "Монца", "Италия", "monza"],
-        ["Autódromo Hermanos Rodríguez", "Мехико", "Мексика", "mexico-city"],
-        ["Autódromo Internacional Nelson Piquet", "Рио-де-Жанейро", "Бразилия", "jacarepagua"],
-        ["Autódromo José Carlos Pace", "Сан-Паулу", "Бразилия", "interlagos"],
-        ["Autódromo Juan y Oscar Gálvez", "Буэнос-Айрес", "Аргентина", "buenos-aires"],
-        ["Autódromo do Estoril", "Эшторил", "Португалия", "estoril"],
-        ["AVUS", "Берлин", "Германия", "avus"],
-        ["Bahrain International Circuit", "Сахир", "Бахрейн", "bahrain"],
-        ["Baku City Circuit", "Баку", "Азербайджан", "baku"],
-        ["Brands Hatch", "Фокхэм", "Великобритания", "brands-hatch"],
-        ["Buddh International Circuit", "Грейтер-Нойда", "Индия", "buddh"],
-        ["Bugatti Circuit", "Ле-Ман", "Франция", "bugatti"],
-        ["Caesars Palace Circuit", "Лас-Вегас", "США", "caesars-palace"],
-        ["Canadian Tire Motorsport Park", "Боуманвилл", "Канада", "mosport"],
-        ["Charade Circuit", "Клермон-Ферран", "Франция", "charade"],
-        ["Circuit Bremgarten", "Берн", "Швейцария", "bremgarten"],
-        ["Circuit Gilles-Villeneuve", "Монреаль", "Канада", "montreal"],
-        ["Circuit Mont-Tremblant", "Мон-Тремблан", "Канада", "mont-tremblant"],
-        ["Circuit Zandvoort", "Зандворт", "Нидерланды", "zandvoort"],
-        ["Circuit Paul Ricard", "Ле-Кастелле", "Франция", "paul-ricard"],
-        ["Circuit Zolder", "Зольдер", "Бельгия", "zolder"],
-        ["Circuit de Barcelona-Catalunya", "Барселона", "Испания", "barcelona"],
-        ["Circuit de Monaco", "Монте-Карло", "Монако", "monaco"],
-        ["Circuit de Nevers Magny-Cours", "Маньи-Кур", "Франция", "magny-cours"],
-        ["Circuit de Spa-Francorchamps", "Спа", "Бельгия", "spa-francorchamps"],
-        ["Circuit of the Americas", "Остин", "США", "austin"],
-        ["Circuito da Boavista", "Порту", "Португалия", "boavista"],
-        ["Circuito de Jerez", "Херес", "Испания", "jerez"],
-        ["Madring", "Мадрид", "Испания", "madrid"],
-        ["Circuito de Monsanto", "Лиссабон", "Португалия", "monsanto"],
-        ["Circuito de Montjuïc", "Барселона", "Испания", "montjuic"],
-        ["Circuito del Jarama", "Мадрид", "Испания", "jarama"],
-        ["Detroit Street Circuit", "Детройт", "США", "detroit"],
-        ["Dijon-Prenois", "Дижон", "Франция", "dijon"],
-        ["Donington Park", "Лестершир", "Великобритания", "donington"],
-        ["Fair Park", "Даллас", "США", "dallas"],
-        ["Fuji Speedway", "Ояма", "Япония", "fuji"],
-        ["Hockenheimring", "Хоккенхайм", "Германия", "hockenheim"],
-        ["Hungaroring", "Будапешт", "Венгрия", "hungaroring"],
-        ["Indianapolis Motor Speedway", "Индианаполис", "США", "indianapolis"],
-        ["Istanbul Park", "Стамбул", "Турция", "istanbul"],
-        ["Jeddah Corniche Circuit", "Джидда", "Саудовская Аравия", "jeddah"],
-        ["Korea International Circuit", "Ёнам", "Южная Корея", "yeongam"],
-        ["Kyalami", "Мидранд", "ЮАР", "kyalami"],
-        ["Las Vegas Strip Circuit", "Лас-Вегас", "США", "las-vegas"],
-        ["Long Beach Street Circuit", "Лонг-Бич", "США", "long-beach"],
-        ["Losail International Circuit", "Лусаил", "Катар", "losail"],
-        ["Marina Bay Street Circuit", "Сингапур", "Сингапур", "singapore"],
-        ["Albert Park Grand Prix Circuit", "Мельбурн", "Австралия", "melbourne"],
-        ["Miami International Autodrome", "Майами", "США", "miami"],
-        ["Nivelles-Baulers", "Нивель", "Бельгия", "nivelles"],
-        ["Nürburgring", "Нюрбург", "Германия", "nurburgring"],
-        ["Okayama International Circuit", "Окаяма", "Япония", "okayama"],
-        ["Pedralbes Circuit", "Барселона", "Испания", "pedralbes"],
-        ["Pescara Circuit", "Пескара", "Италия", "pescara"],
-        ["Phoenix Street Circuit", "Финикс", "США", "phoenix"],
-        ["Prince George Circuit", "Ист-Лондон", "ЮАР", "prince-george"],
-        ["Red Bull Ring", "Шпильберг", "Австрия", "red-bull-ring"],
-        ["Reims-Gueux", "Реймс", "Франция", "reims"],
-        ["Riverside International Raceway", "Риверсайд", "США", "riverside"],
-        ["Rouen-Les-Essarts", "Руан", "Франция", "rouen"],
-        ["Sebring International Raceway", "Себринг", "США", "sebring"],
-        ["Sepang International Circuit", "Сепанг", "Малайзия", "sepang"],
-        ["Shanghai International Circuit", "Шанхай", "Китай", "shanghai"],
-        ["Silverstone Circuit", "Сильверстоун", "Великобритания", "silverstone"],
-        ["Sochi Autodrom", "Сочи", "Россия", "sochi"],
-        ["Suzuka Circuit", "Сузука", "Япония", "suzuka"],
-        ["Valencia Street Circuit", "Валенсия", "Испания", "valencia"],
-        ["Watkins Glen International", "Уоткинс-Глен", "США", "watkins-glen"],
-        ["Yas Marina Circuit", "Абу-Даби", "ОАЭ", "yas-marina"],
-        ["Zeltweg Airfield", "Цельтвег", "Австрия", "zeltweg"]
-      ];
+    function wikipediaSearch(title) {
+      return "https://ru.wikipedia.org/w/index.php?search=" +
+        encodeURIComponent(title) +
+        "&title=Служебная:Поиск&fulltext=1";
+    }
 
-      const modern = new Set([
-        "bahrain", "baku", "barcelona", "austin", "jeddah",
-        "las-vegas", "losail", "singapore", "melbourne", "miami",
-        "mexico-city", "monaco", "montreal", "monza", "shanghai",
-        "silverstone", "red-bull-ring", "suzuka", "yas-marina",
-        "hungaroring", "zandvoort", "madrid", "interlagos",
-        "spa-francorchamps"
-      ]);
+    function renderTracks() {
+      const query = search.value.trim().toLowerCase();
 
-      tracks = circuits.map(([name, city, country, id]) => ({
-        name, city, country, id,
-        modern: modern.has(id)
-      }));
+      let shown = tracks.filter(track => {
+        const matchesSearch =
+          track.name.toLowerCase().includes(query) ||
+          track.country.toLowerCase().includes(query);
 
-      function render() {
-        const query = search.value.trim().toLowerCase();
+        const matchesFilter =
+          filter.value === "all" || track.type === filter.value;
 
-        let filtered = tracks.filter(track => {
-          const matchesSearch =
-            `${track.name} ${track.city} ${track.country}`
-              .toLowerCase().includes(query);
-
-          const matchesFilter =
-            activeFilter === "all" ||
-            (activeFilter === "current" && track.modern) ||
-            (activeFilter === "historic" && !track.modern);
-
-          return matchesSearch && matchesFilter;
-        });
-
-        filtered.sort((a, b) => {
-          const field = sort.value === "country" ? "country" : "name";
-          return a[field].localeCompare(b[field], "ru");
-        });
-
-        grid.replaceChildren();
-        count.textContent = `Найдено трасс: ${filtered.length} из ${tracks.length}`;
-
-        if (!filtered.length) {
-          grid.innerHTML =
-            '<div class="empty">Ничего не найдено. Попробуй другой запрос.</div>';
-          return;
-        }
-
-        filtered.forEach(track => {
-          const card = document.createElement("article");
-          card.className = "track-card";
-
-          const imageBox = document.createElement("div");
-          imageBox.className = "track-image";
-
-          const img = document.createElement("img");
-          img.alt = `Схема трассы ${track.name}`;
-          img.loading = "lazy";
-          img.src = `${base}circuits/minimal/white-outline/${track.id}-1.svg`;
-
-          img.onerror = () => {
-            // Если файл использует другой вариант имени,
-            // пробуем стандартный белый вариант.
-            img.onerror = () => {
-              img.style.display = "none";
-              imageBox.innerHTML =
-                '<p class="muted">Схема недоступна для этого названия.</p>';
-            };
-            img.src = `${base}circuits/minimal/white/${track.id}-1.svg`;
-          };
-
-          imageBox.appendChild(img);
-
-          const info = document.createElement("div");
-          info.className = "track-info";
-
-          const title = document.createElement("h3");
-          title.textContent = track.name;
-
-          const location = document.createElement("p");
-          location.textContent = `📍 ${track.city}, ${track.country}`;
-
-          const era = document.createElement("p");
-          era.textContent = track.modern
-            ? "🏁 Современная трасса"
-            : "📜 Историческая трасса";
-
-          const link = document.createElement("a");
-          link.className = "track-link";
-          link.href = `https://f1-circuits-svg.alwaysdata.net/`;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-          link.textContent = "Схемы и варианты трассы ↗";
-
-          info.append(title, location, era, link);
-          card.append(imageBox, info);
-          grid.appendChild(card);
-        });
-      }
-
-      buttons.forEach(button => {
-        button.addEventListener("click", () => {
-          activeFilter = button.dataset.filter;
-
-          buttons.forEach(item => {
-            item.classList.toggle("active", item === button);
-          });
-
-          render();
-        });
+        return matchesSearch && matchesFilter;
       });
 
-      search.addEventListener("input", render);
-      sort.addEventListener("change", render);
+      if (sort.value === "name") {
+        shown.sort((a, b) => a.name.localeCompare(b.name, "ru"));
+      } else if (sort.value === "country") {
+        shown.sort((a, b) => a.country.localeCompare(b.country, "ru"));
+      }
 
-      // Каталог работает и без API: список хранится в самом файле.
-      render();
-    })();
+      count.textContent = `Найдено трасс: ${shown.length}`;
+
+      if (shown.length === 0) {
+        grid.innerHTML = '<div class="no-tracks">Ничего не найдено. Попробуй другое название.</div>';
+        return;
+      }
+
+      grid.innerHTML = shown.map((track, index) => {
+        const category = track.type === "current"
+          ? "КАЛЕНДАРЬ 2026"
+          : "ИСТОРИЯ F1";
+
+        const url = wikipediaSearch(track.wiki);
+
+        return `
+          <article class="track-card">
+            <div class="track-number">${category} · ${String(index + 1).padStart(2, "0")}</div>
+            <h2>${track.name}</h2>
+            <div class="track-country">${track.country}</div>
+            <a class="track-link"
+               href="${url}"
+               target="_blank"
+               rel="noopener noreferrer">
+              Читать в Википедии ↗
+            </a>
+          </article>
+        `;
+      }).join("");
+    }
+
+    search.addEventListener("input", renderTracks);
+    filter.addEventListener("change", renderTracks);
+    sort.addEventListener("change", renderTracks);
+
+    renderTracks();
   </script>
 </body>
 </html>
