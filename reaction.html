@@ -1,269 +1,286 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101010">
-<title>Reaction Test — F1 Hub Russia</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101010">
+  <title>Reaction Test — F1 Hub Russia</title>
 
-<style>
-* { box-sizing: border-box; }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background: #101010;
-  color: #f5f5f5;
-  font-family: Arial, Helvetica, sans-serif;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: #101010;
+      color: #f5f5f5;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-.panel {
-  width: min(650px, 100%);
-  padding: 28px;
-  text-align: center;
-  background: linear-gradient(145deg, #1b1b1b, #300000);
-  border: 1px solid #e10600;
-  border-radius: 14px;
-  box-shadow: 0 0 35px #e1060020;
-}
+    .panel {
+      width: min(650px, 100%);
+      padding: 28px;
+      text-align: center;
+      background: linear-gradient(145deg, #1b1b1b, #300000);
+      border: 1px solid #e10600;
+      border-radius: 14px;
+      box-shadow: 0 0 35px #e1060020;
+    }
 
-.tag {
-  color: #e10600;
-  letter-spacing: 3px;
-  font-size: 12px;
-  font-weight: bold;
-}
+    .tag {
+      color: #e10600;
+      letter-spacing: 3px;
+      font-size: 12px;
+      font-weight: bold;
+    }
 
-h1 {
-  font-size: clamp(28px, 6vw, 42px);
-  margin: 20px 0 10px;
-}
+    h1 {
+      font-size: clamp(28px, 6vw, 42px);
+      margin: 20px 0 10px;
+    }
 
-p {
-  color: #bbb;
-  line-height: 1.6;
-}
+    p {
+      color: #bbb;
+      line-height: 1.6;
+    }
 
-.lights {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 30px 0;
-}
+    .lights {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 30px 0;
+    }
 
-.light {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #350909;
-  border: 3px solid #555;
-  box-shadow: inset 0 0 12px #000;
-}
+    .light {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #350909;
+      border: 3px solid #555;
+      box-shadow: inset 0 0 12px #000;
+    }
 
-.lights.red .light {
-  background: #e10600;
-  border-color: #ff5555;
-  box-shadow: 0 0 15px #e1060080;
-}
+    .lights.red .light {
+      background: #e10600;
+      border-color: #ff5555;
+      box-shadow: 0 0 15px #e1060080;
+    }
 
-.lights.green .light {
-  background: #00e676;
-  border-color: #8affbd;
-  box-shadow: 0 0 20px #00e67680;
-}
+    .lights.green .light {
+      background: #00e676;
+      border-color: #8affbd;
+      box-shadow: 0 0 20px #00e67680;
+    }
 
-#message {
-  min-height: 30px;
-  font-size: 18px;
-  font-weight: bold;
-}
+    #message {
+      min-height: 30px;
+      font-size: 18px;
+      font-weight: bold;
+    }
 
-#reaction {
-  width: 100%;
-  min-height: 95px;
-  margin: 12px 0;
-  padding: 15px;
-  border: 0;
-  border-radius: 8px;
-  background: #e10600;
-  color: white;
-  font-size: 22px;
-  font-weight: bold;
-  cursor: pointer;
-  touch-action: manipulation;
-}
+    #reaction {
+      width: 100%;
+      min-height: 95px;
+      margin: 12px 0;
+      padding: 15px;
+      border: 0;
+      border-radius: 8px;
+      background: #e10600;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
 
-#reaction.green {
-  background: #00b85a;
-  color: #001b0d;
-}
+    #reaction.green {
+      background: #00b85a;
+      color: #001b0d;
+    }
 
-#reaction:focus-visible {
-  outline: 3px solid white;
-  outline-offset: 3px;
-}
+    #reaction:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 3px;
+    }
 
-.stats {
-  line-height: 2;
-  margin-top: 18px;
-}
+    .stats {
+      line-height: 2;
+      margin-top: 18px;
+    }
 
-#best {
-  color: #ff5555;
-}
+    #best {
+      color: #ff5555;
+    }
 
-.back {
-  display: inline-block;
-  margin-top: 24px;
-  color: #bbb;
-  text-decoration: none;
-}
+    .back {
+      display: inline-block;
+      margin-top: 24px;
+      color: #bbb;
+      text-decoration: none;
+    }
 
-.back:hover {
-  color: white;
-}
+    .back:hover {
+      color: white;
+    }
 
-@media (max-width: 450px) {
-  .panel {
-    padding: 20px 15px;
-  }
+    @media (max-width: 450px) {
+      .panel {
+        padding: 20px 15px;
+      }
 
-  .light {
-    width: 34px;
-    height: 34px;
-  }
+      .light {
+        width: 34px;
+        height: 34px;
+      }
 
-  .lights {
-    gap: 7px;
-  }
-}
-</style>
+      .lights {
+        gap: 7px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<main class="panel">
-  <div class="tag">F1 HUB RUSSIA // CLASSIFIED</div>
+  <main class="panel">
+    <div class="tag">F1 HUB RUSSIA // CLASSIFIED</div>
 
-  <h1>Проверка реакции</h1>
+    <h1>Проверка реакции</h1>
 
-  <p>
-    Представь, что ты на стартовой решётке Формулы-1.
-    Дождись зелёного сигнала и нажми как можно быстрее!
-  </p>
+    <p>
+      Представь, что ты на стартовой решётке Формулы-1.
+      Дождись зелёного сигнала и нажми как можно быстрее!
+    </p>
 
-  <div class="lights" id="lights" aria-label="Стартовые огни">
-    <div class="light"></div>
-    <div class="light"></div>
-    <div class="light"></div>
-    <div class="light"></div>
-    <div class="light"></div>
-  </div>
+    <div class="lights" id="lights" aria-label="Стартовые огни">
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+      <div class="light"></div>
+    </div>
 
-  <div id="message" aria-live="polite">Готов к старту?</div>
+    <div id="message" aria-live="polite">Готов к старту?</div>
 
-  <button id="reaction" type="button">НАЧАТЬ</button>
+    <button id="reaction" type="button">НАЧАТЬ</button>
 
-  <div class="stats">
-    Твоя реакция: <strong id="result">—</strong><br>
-    Лучший личный результат: <strong id="best">—</strong>
-  </div>
+    <div class="stats">
+      Твоя реакция: <strong id="result">—</strong><br>
+      Лучшее личное время: <strong id="best">—</strong>
+    </div>
 
-  <a class="back" href="index.html">← Вернуться на главную</a>
-</main>
+    <a class="back" href="index.html">← Вернуться на главную</a>
+  </main>
 
-<script>
-"use strict";
+  <script>
+    "use strict";
 
-const lights = document.getElementById("lights");
-const button = document.getElementById("reaction");
-const message = document.getElementById("message");
-const result = document.getElementById("result");
-const best = document.getElementById("best");
+    const lights = document.getElementById("lights");
+    const button = document.getElementById("reaction");
+    const message = document.getElementById("message");
+    const result = document.getElementById("result");
+    const best = document.getElementById("best");
 
-let state = "idle";
-let startTime = 0;
-let timer = null;
+    let state = "idle";
+    let startTime = 0;
+    let timer = null;
 
-function showBest() {
-  try {
-    const saved = localStorage.getItem("f1ReactionBest");
-    best.textContent = saved ? saved + " мс" : "—";
-  } catch (error) {
-    best.textContent = "Недоступно";
-  }
-}
-
-function startTest() {
-  clearTimeout(timer);
-
-  lights.className = "lights";
-  result.textContent = "—";
-  state = "waiting";
-  button.className = "";
-  button.textContent = "ЖДИ ЗЕЛЁНОГО!";
-  message.textContent = "Внимание…";
-  lights.classList.add("red");
-
-  const delay = 2000 + Math.random() * 3000;
-
-  timer = setTimeout(() => {
-    if (state !== "waiting") return;
-
-    state = "green";
-    lights.className = "lights green";
-    button.className = "green";
-    button.textContent = "ЖМИ!";
-    message.textContent = "СТАРТ!";
-    startTime = performance.now();
-  }, delay);
-}
-
-button.addEventListener("click", () => {
-  if (state === "idle" || state === "done" || state === "false") {
-    startTest();
-    return;
-  }
-
-  if (state === "waiting") {
-    clearTimeout(timer);
-    state = "false";
-    lights.className = "lights";
-    button.className = "";
-    button.textContent = "ПОПРОБОВАТЬ ЕЩЁ";
-    message.textContent = "ФАЛЬСТАРТ! Ты нажал слишком рано.";
-    result.textContent = "Фальстарт";
-    return;
-  }
-
-  if (state === "green") {
-    const ms = Math.round(performance.now() - startTime);
-
-    state = "done";
-    button.className = "";
-    button.textContent = "ЕЩЁ ОДИН СТАРТ";
-    message.textContent = "Твоя реакция: " + ms + " мс";
-    result.textContent = ms + " мс";
-
-    try {
-      const saved = localStorage.getItem("f1ReactionBest");
-      const oldBest = saved === null ? null : Number(saved);
-
-      if (oldBest === null || !Number.isFinite(oldBest) || ms < oldBest) {
-        localStorage.setItem("f1ReactionBest", String(ms));
-        message.textContent += " — НОВЫЙ ЛИЧНЫЙ РЕКОРД!";
+    function showBest() {
+      try {
+        const saved = localStorage.getItem("f1ReactionBest");
+        best.textContent = saved ? saved + " мс" : "—";
+      } catch (error) {
+        best.textContent = "Недоступно";
       }
-    } catch (error) {
-      message.textContent += " (не удалось сохранить рекорд в браузере)";
     }
 
-    showBest();
-  }
-});
+    function startTest() {
+      clearTimeout(timer);
 
-showBest();
-</script>
+      lights.className = "lights";
+      result.textContent = "—";
+      state = "waiting";
+
+      button.className = "";
+      button.textContent = "ЖДИ ЗЕЛЁНОГО!";
+      message.textContent = "Внимание…";
+      lights.classList.add("red");
+
+      const delay = 2000 + Math.random() * 3000;
+
+      timer = setTimeout(() => {
+        if (state !== "waiting") return;
+
+        state = "green";
+        lights.className = "lights green";
+        button.className = "green";
+        button.textContent = "ЖМИ!";
+        message.textContent = "СТАРТ!";
+        startTime = performance.now();
+      }, delay);
+    }
+
+    button.addEventListener("click", () => {
+      if (
+        state === "idle" ||
+        state === "done" ||
+        state === "false"
+      ) {
+        startTest();
+        return;
+      }
+
+      if (state === "waiting") {
+        clearTimeout(timer);
+        state = "false";
+
+        lights.className = "lights";
+        button.className = "";
+        button.textContent = "ПОПРОБОВАТЬ ЕЩЁ";
+
+        message.textContent =
+          "ФАЛЬСТАРТ! Ты нажал слишком рано.";
+
+        result.textContent = "Фальстарт";
+        return;
+      }
+
+      if (state === "green") {
+        const ms = Math.round(performance.now() - startTime);
+
+        state = "done";
+        button.className = "";
+        button.textContent = "ЕЩЁ ОДИН СТАРТ";
+
+        message.textContent = "Твоя реакция: " + ms + " мс";
+        result.textContent = ms + " мс";
+
+        try {
+          const saved = localStorage.getItem("f1ReactionBest");
+          const oldBest = saved === null ? null : Number(saved);
+
+          if (
+            oldBest === null ||
+            !Number.isFinite(oldBest) ||
+            ms < oldBest
+          ) {
+            localStorage.setItem("f1ReactionBest", String(ms));
+            message.textContent += " — НОВЫЙ ЛИЧНЫЙ РЕКОРД!";
+          }
+        } catch (error) {
+          message.textContent +=
+            " (не удалось сохранить рекорд в браузере)";
+        }
+
+        showBest();
+      }
+    });
+
+    showBest();
+  </script>
 </body>
 </html>
