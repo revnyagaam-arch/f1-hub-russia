@@ -6,7 +6,115 @@
   <meta name="theme-color" content="#e10600">
   <title>Календарь 2027 | F1 Hub Russia</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .calendar-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      padding: 20px;
+      background: #171717;
+      border: 1px solid #333;
+      border-left: 4px solid #e10600;
+      border-radius: 12px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .calendar-card:hover {
+      transform: translateY(-3px);
+      border-color: #e10600;
+    }
+
+    .calendar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .calendar-round {
+      color: #e10600;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .calendar-date {
+      color: #bbb;
+      font-size: 13px;
+    }
+
+    .calendar-name {
+      margin: 0;
+      color: #fff;
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .calendar-circuit {
+      color: #ddd;
+      font-size: 14px;
+    }
+
+    .calendar-country {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .calendar-status {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: #292929;
+      color: #ddd;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .calendar-status.next {
+      background: #e10600;
+      color: white;
+    }
+
+    .calendar-status.done {
+      background: #292929;
+      color: #aaa;
+    }
+
+    .calendar-sprint {
+      color: #ff6565;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .calendar-note {
+      color: #999;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .calendar-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .calendar-card {
+        padding: 16px;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <header class="site-header">
     <h1>🏎️ F1 Hub Russia</h1>
@@ -23,164 +131,42 @@
   </nav>
 
   <main>
-    <h1 class="page-heading">Календарь 2027</h1>
+    <h1 class="page-heading">Календарь F1 2027</h1>
     <p class="page-subtitle">
-      Предварительный список этапов сезона Формулы-1.
+      Этапы сезона, трассы и даты гонок.
     </p>
 
     <section class="card">
-      <h2>🏁 Этапы сезона 2027</h2>
+      <h2>🏁 Этапы чемпионата</h2>
 
-      <div class="calendar-grid">
-
+      <div id="calendar2027Cards" class="calendar-grid">
         <article class="calendar-card">
-          <h3>01. Гран-при Австралии</h3>
-          <p>🇦🇺 Мельбурн</p>
-          <p>Дата уточняется</p>
+          <div class="calendar-top">
+            <span class="calendar-round">СЕЗОН 2027</span>
+            <span class="calendar-date">2027</span>
+          </div>
+          <h3 class="calendar-name">Календарь сезона</h3>
+          <div class="calendar-country">
+            Официальные даты уточняются
+          </div>
+          <div class="calendar-circuit">
+            🏁 Список этапов будет обновлён после подтверждения расписания.
+          </div>
+          <span class="calendar-status">Ожидается расписание</span>
         </article>
-
-        <article class="calendar-card">
-          <h3>02. Гран-при Китая</h3>
-          <p>🇨🇳 Шанхай</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>03. Гран-при Японии</h3>
-          <p>🇯🇵 Сузука</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>04. Гран-при Бахрейна</h3>
-          <p>🇧🇭 Сахир</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>05. Гран-при Саудовской Аравии</h3>
-          <p>🇸🇦 Джидда</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>06. Гран-при Майами</h3>
-          <p>🇺🇸 Майами</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>07. Гран-при Канады</h3>
-          <p>🇨🇦 Монреаль</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>08. Гран-при Монако</h3>
-          <p>🇲🇨 Монте-Карло</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>09. Гран-при Испании</h3>
-          <p>🇪🇸 Испания</p>
-          <p>Трасса и дата уточняются</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>10. Гран-при Австрии</h3>
-          <p>🇦🇹 Шпильберг</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>11. Гран-при Великобритании</h3>
-          <p>🇬🇧 Сильверстоун</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>12. Гран-при Бельгии</h3>
-          <p>🇧🇪 Спа-Франкоршам</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>13. Гран-при Венгрии</h3>
-          <p>🇭🇺 Будапешт</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>14. Гран-при Нидерландов</h3>
-          <p>🇳🇱 Зандворт</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>15. Гран-при Италии</h3>
-          <p>🇮🇹 Монца</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>16. Гран-при Азербайджана</h3>
-          <p>🇦🇿 Баку</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>17. Гран-при Сингапура</h3>
-          <p>🇸🇬 Сингапур</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>18. Гран-при США</h3>
-          <p>🇺🇸 Остин</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>19. Гран-при Мексики</h3>
-          <p>🇲🇽 Мехико</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>20. Гран-при Сан-Паулу</h3>
-          <p>🇧🇷 Сан-Паулу</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>21. Гран-при Лас-Вегаса</h3>
-          <p>🇺🇸 Лас-Вегас</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>22. Гран-при Катара</h3>
-          <p>🇶🇦 Лусаил</p>
-          <p>Дата уточняется</p>
-        </article>
-
-        <article class="calendar-card">
-          <h3>23. Гран-при Абу-Даби</h3>
-          <p>🇦🇪 Яс-Марина</p>
-          <p>Дата уточняется</p>
-        </article>
-
       </div>
 
-      <p class="page-subtitle">
-        Календарь предварительный. Официальные даты и состав сезона могут отличаться.
+      <p class="calendar-note">
+        Календарь 2027 года будет обновлён после подтверждения официальных
+        дат и этапов чемпионата. Данные загружаются непосредственно со
+        страницы — внешний API не используется.
       </p>
     </section>
   </main>
 
   <footer>
     <p>F1 Hub Russia © 2026</p>
+    <p>Календарь сезона Формулы-1 2027.</p>
   </footer>
 </body>
 </html>
