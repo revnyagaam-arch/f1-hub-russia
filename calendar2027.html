@@ -81,22 +81,6 @@
       font-weight: 700;
     }
 
-    .calendar-status.next {
-      background: #e10600;
-      color: white;
-    }
-
-    .calendar-status.done {
-      background: #292929;
-      color: #aaa;
-    }
-
-    .calendar-sprint {
-      color: #ff6565;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
     .calendar-note {
       color: #999;
       font-size: 13px;
@@ -124,7 +108,9 @@
   <nav aria-label="Главное меню">
     <a href="index.html">Главная</a>
     <a href="calendar.html">Календарь 2026</a>
-    <a href="calendar2027.html" class="active" aria-current="page">Календарь 2027</a>
+    <a href="calendar2027.html" class="active" aria-current="page">
+      Календарь 2027
+    </a>
     <a href="results.html">Результаты</a>
     <a href="drivers.html">Пилоты</a>
     <a href="teams.html">Команды</a>
@@ -132,34 +118,42 @@
 
   <main>
     <h1 class="page-heading">Календарь F1 2027</h1>
+
     <p class="page-subtitle">
-      Этапы сезона, трассы и даты гонок.
+      Этапы чемпионата мира по Формуле-1 сезона 2027.
     </p>
 
     <section class="card">
       <h2>🏁 Этапы чемпионата</h2>
 
-      <div id="calendar2027Cards" class="calendar-grid">
+      <div class="calendar-grid">
+
         <article class="calendar-card">
           <div class="calendar-top">
             <span class="calendar-round">СЕЗОН 2027</span>
             <span class="calendar-date">2027</span>
           </div>
-          <h3 class="calendar-name">Календарь сезона</h3>
+
+          <h3 class="calendar-name">Расписание сезона</h3>
+
           <div class="calendar-country">
-            Официальные даты уточняются
+            Даты этапов уточняются
           </div>
+
           <div class="calendar-circuit">
-            🏁 Список этапов будет обновлён после подтверждения расписания.
+            🏁 Официальный календарь будет добавлен после подтверждения расписания.
           </div>
-          <span class="calendar-status">Ожидается расписание</span>
+
+          <span class="calendar-status">
+            Ожидается расписание
+          </span>
         </article>
+
       </div>
 
       <p class="calendar-note">
-        Календарь 2027 года будет обновлён после подтверждения официальных
-        дат и этапов чемпионата. Данные загружаются непосредственно со
-        страницы — внешний API не используется.
+        Информация на этой странице размещена непосредственно в HTML.
+        Внешняя загрузка данных не используется.
       </p>
     </section>
   </main>
