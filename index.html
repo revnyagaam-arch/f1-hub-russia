@@ -559,10 +559,9 @@
       const logo = document.getElementById("site-logo");
       const popup = document.getElementById("checo-easter-egg");
       const closeButton = document.getElementById("checo-close");
-      const photo = document.getElementById("checo-photo");
-
-      if (!logo || !popup || !closeButton || !photo) return;
-
+      
+      if (!logo || !popup || !closeButton) return;
+      
       let clicks = 0;
       let clickTimer = null;
       let previousFocus = null;
